@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+  <script>
+    (function () {
+      try {
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (savedTheme === 'dark' || (!savedTheme && prefersDark)) document.documentElement.classList.add('dark');
+        else document.documentElement.classList.remove('dark');
+      } catch (e) {}
+    })();
+  </script>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IronRoute CDL Academy — Home 2</title>
+  <meta name="description" content="FMCSA-registered ELDT truck driving school. Class A, B and C CDL training, endorsements, behind-the-wheel hours, and a job placement team with 40+ carrier partners." />
+
+  <!-- ================= FAVICON (Semi Truck) ================= -->
+  <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%2315803d'/%3E%3Cpath d='M5 10h13v11H5z' fill='none' stroke='%23ffffff' stroke-width='1.8' stroke-linejoin='round'/%3E%3Cpath d='M18 14h5l4 4v3h-9z' fill='none' stroke='%23ffffff' stroke-width='1.8' stroke-linejoin='round'/%3E%3Ccircle cx='10' cy='23' r='2.4' fill='none' stroke='%23bbf7d0' stroke-width='1.8'/%3E%3Ccircle cx='22' cy='23' r='2.4' fill='none' stroke='%23bbf7d0' stroke-width='1.8'/%3E%3C/svg%3E" />
+
+  <!-- ================= FONTS ================= -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- ================= TAILWIND ================= -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['"Barlow Condensed"', 'sans-serif'],
+            sans: ['Plus Jakarta Sans', 'sans-serif']
+          },
+          colors: {
+            primary: '#15803d',
+            primaryHover: '#166534',
+            primaryLight: '#ecfdf5',
+            secondary: '#22c55e',
+            secondaryHover: '#16a34a',
+            accentCoral: '#ea580c',
+            accentRose: '#e11d48',
+            accentAmber: '#d97706',
+            accentViolet: '#7c3aed',
+            brandLight: '#f8fafc',
+            brandDark: '#051b0e'
+          },
+          boxShadow: {
+            bloom: '0 10px 30px -5px rgba(21, 128, 61, 0.28)',
+            'bloom-hover': '0 20px 40px -10px rgba(21, 128, 61, 0.42)'
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+
+    html { scrollbar-width: thin; scrollbar-color: #15803d #dcfce7; }
+    html.dark { scrollbar-color: #22c55e #051b0e; }
+
+    ::-webkit-scrollbar { width: 10px; height: 10px; }
+    ::-webkit-scrollbar-track { background: #dcfce7; }
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, #15803d, #22c55e);
+      border-radius: 9999px;
+      border: 2px solid #dcfce7;
+    }
+    ::-webkit-scrollbar-thumb:hover { background: #166534; }
+    html.dark ::-webkit-scrollbar-track { background: #051b0e; }
+    html.dark ::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, #22c55e, #15803d);
+      border: 2px solid #051b0e;
+    }
+    html.dark ::-webkit-scrollbar-thumb:hover { background: #16a34a; }
+
+    .bloom-scrollbar { scrollbar-width: thin; scrollbar-color: #15803d transparent; }
+    .bloom-scrollbar::-webkit-scrollbar { width: 5px; }
+    .bloom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+    .bloom-scrollbar::-webkit-scrollbar-thumb { background: #15803d; border-radius: 9999px; }
+    .bloom-scrollbar::-webkit-scrollbar-thumb:hover { background: #166534; }
+
+    /* Dark scrollbar used inside the dashboard mockup (student + admin panels) */
+    .dash-scroll { scrollbar-width: thin; scrollbar-color: #22c55e rgba(6, 44, 24, 0.6); }
+    .dash-scroll::-webkit-scrollbar { width: 6px; height: 6px; }
+    .dash-scroll::-webkit-scrollbar-track {
+      background: rgba(6, 44, 24, 0.55);
+      border-radius: 9999px;
+    }
+    .dash-scroll::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, #22c55e, #15803d);
+      border-radius: 9999px;
+    }
+    .dash-scroll::-webkit-scrollbar-thumb:hover { background: #16a34a; }
+    .dash-scroll::-webkit-scrollbar-corner { background: transparent; }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+    }
+  </style>
+</head>
+
+<body id="top" class="bg-brandLight dark:bg-brandDark text-slate-800 dark:text-slate-100 antialiased overflow-x-hidden transition-colors duration-300">
+
+<!-- ================= NAVBAR (self-contained: HTML + CSS + JS) ================= -->
+<nav class="sticky top-0 w-full z-50 bg-white/95 dark:bg-[#051b0e]/95 backdrop-blur-md border-b border-emerald-100 dark:border-emerald-950/70 shadow-sm transition-colors duration-300">
+
+  <!-- Navbar-only styles -->
+  <style>
+    /* Dashboard dropdown scrollbar */
+    .nav-dash-scroll { scrollbar-width: thin; scrollbar-color: #15803d transparent; }
+    .nav-dash-scroll::-webkit-scrollbar { width: 5px; }
+    .nav-dash-scroll::-webkit-scrollbar-track { background: transparent; }
+    .nav-dash-scroll::-webkit-scrollbar-thumb { background: #15803d; border-radius: 9999px; }
+    .nav-dash-scroll::-webkit-scrollbar-thumb:hover { background: #166534; }
+    html.dark .nav-dash-scroll { scrollbar-color: #22c55e transparent; }
+    html.dark .nav-dash-scroll::-webkit-scrollbar-thumb { background: #22c55e; }
+    html.dark .nav-dash-scroll::-webkit-scrollbar-thumb:hover { background: #16a34a; }
+
+    /* RTL icon flip */
+    html[dir="rtl"] .rtl-icon-flip { transform: scaleX(-1); }
+
+    /* Mobile drawer scrollbar */
+    .bloom-scrollbar { scrollbar-width: thin; scrollbar-color: #15803d transparent; }
+    .bloom-scrollbar::-webkit-scrollbar { width: 5px; }
+    .bloom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+    .bloom-scrollbar::-webkit-scrollbar-thumb { background: #15803d; border-radius: 9999px; }
+  </style>
+
+  <div class="max-w-[1400px] mx-auto px-6 lg:px-12 h-20 flex items-center justify-between gap-4">
+
+    <!-- Brand -->
+    <a href="index.html" class="flex items-center gap-3 flex-shrink-0 group" aria-label="IronRoute CDL Academy home">
+      <span class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-primary to-secondary flex items-center justify-center shadow-bloom text-white transition-transform duration-300 group-hover:scale-105">
+        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M2 7h11v10H2z" />
+          <path d="M13 10h5l4 4v3h-9z" />
+          <circle cx="6.5" cy="18.5" r="2" />
+          <circle cx="17.5" cy="18.5" r="2" />
+        </svg>
+      </span>
+      <span class="flex flex-col">
+        <span class="font-display text-2xl font-extrabold tracking-wide uppercase bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent leading-none">
+          IronRoute CDL
+        </span>
+        <span class="text-[9px] uppercase font-bold tracking-widest text-emerald-700 dark:text-emerald-400 mt-1">
+          Driver Training &amp; Placement
+        </span>
+      </span>
+    </a>
+
+    <!-- Desktop Links -->
+    <div class="hidden xl:flex items-center gap-5 2xl:gap-7">
+
+      <!-- Home Dropdown -->
+      <div class="relative group">
+        <button type="button" class="flex items-center gap-1.5 text-[11px] font-bold tracking-[0.14em] uppercase text-primary dark:text-emerald-400 py-6 focus:outline-none">
+          Home
+          <svg class="w-3.5 h-3.5 transition-transform duration-300 group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+        <div class="absolute top-full start-0 w-52 bg-white dark:bg-[#0a2a17] border border-emerald-100 dark:border-emerald-900/40 shadow-bloom rounded-b-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 origin-top -translate-y-2 group-hover:translate-y-0 z-50">
+          <div class="py-2.5">
+            <a href="index.html" class="block px-4 py-2.5 text-[11px] font-bold tracking-[0.14em] uppercase text-primary dark:text-emerald-400 bg-primaryLight/60 dark:bg-emerald-950/40 transition-colors">home-1</a>
+            <a href="home-2.html" class="block px-4 py-2.5 text-[11px] font-bold tracking-[0.14em] uppercase text-slate-700 dark:text-slate-300 hover:bg-primaryLight dark:hover:bg-emerald-950/60 hover:text-primary transition-colors">home-2</a>
+          </div>
+        </div>
+      </div>
+
+      <a href="about.html" class="text-[11px] font-bold tracking-[0.14em] uppercase text-slate-700 dark:text-slate-200 hover:text-primary dark:hover:text-emerald-400 transition-colors">About</a>
+      <a href="programs.html" class="text-[11px] font-bold tracking-[0.14em] uppercase text-slate-700 dark:text-slate-200 hover:text-primary dark:hover:text-emerald-400 transition-colors">Programs</a>
+      <a href="instructors.html" class="text-[11px] font-bold tracking-[0.14em] uppercase text-slate-700 dark:text-slate-200 hover:text-primary dark:hover:text-emerald-400 transition-colors">Instructors</a>
+      <a href="placement.html" class="text-[11px] font-bold tracking-[0.14em] uppercase text-slate-700 dark:text-slate-200 hover:text-primary dark:hover:text-emerald-400 transition-colors">Placement</a>
+      <a href="contact.html" class="text-[11px] font-bold tracking-[0.14em] uppercase text-slate-700 dark:text-slate-200 hover:text-primary dark:hover:text-emerald-400 transition-colors">Contact</a>
+
+      <!-- Dashboard Dropdown -->
+      <div class="relative group">
+        <button type="button" class="flex items-center gap-1.5 text-[11px] font-bold tracking-[0.14em] uppercase text-slate-700 dark:text-slate-200 hover:text-primary dark:hover:text-emerald-400 py-6 focus:outline-none transition-colors">
+          Dashboard
+          <svg class="w-3.5 h-3.5 transition-transform duration-300 group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+
+        <div class="absolute top-full start-0 w-60 bg-white dark:bg-[#0a2a17] border border-emerald-100 dark:border-emerald-900/40 shadow-bloom rounded-b-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 origin-top -translate-y-2 group-hover:translate-y-0 z-50">
+          <div class="nav-dash-scroll max-h-56 overflow-y-auto py-2">
+
+            <!-- Student Dashboard -->
+            <a href="student-dashboard.html" class="flex items-start gap-3 px-4 py-3 hover:bg-primaryLight dark:hover:bg-emerald-950/60 transition-colors group/item">
+              <span class="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-900/60 flex items-center justify-center text-primary dark:text-emerald-400 flex-shrink-0">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+              </span>
+              <span class="flex flex-col">
+                <span class="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-800 dark:text-slate-100 group-hover/item:text-primary dark:group-hover/item:text-emerald-400 transition-colors">Student Dashboard</span>
+                <span class="text-[10px] text-slate-500 dark:text-slate-400 font-medium mt-0.5">Hours · Tests · Enrollment</span>
+              </span>
+            </a>
+
+            <!-- Admin Dashboard -->
+            <a href="admin-dashboard.html" class="flex items-start gap-3 px-4 py-3 hover:bg-primaryLight dark:hover:bg-emerald-950/60 transition-colors group/item">
+              <span class="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-900/60 flex items-center justify-center text-primary dark:text-emerald-400 flex-shrink-0">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 3l8 4v5c0 5-3.4 8.3-8 9-4.6-.7-8-4-8-9V7l8-4z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4" />
+                </svg>
+              </span>
+              <span class="flex flex-col">
+                <span class="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-800 dark:text-slate-100 group-hover/item:text-primary dark:group-hover/item:text-emerald-400 transition-colors">Admin Dashboard</span>
+                <span class="text-[10px] text-slate-500 dark:text-slate-400 font-medium mt-0.5">Students · Cohorts · Placement</span>
+              </span>
+            </a>
+
+            <div class="my-1 border-t border-emerald-100 dark:border-emerald-900/50"></div>
+            <a href="login.html" class="flex items-center gap-2 px-4 py-2.5 text-[11px] font-bold uppercase tracking-[0.14em] text-slate-600 dark:text-slate-300 hover:bg-primaryLight dark:hover:bg-emerald-950/60 hover:text-primary dark:hover:text-emerald-400 transition-colors">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M11 16l4-4-4-4m0 8H3m8-8H3" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 4h4a2 2 0 012 2v12a2 2 0 01-2 2h-4" />
+              </svg>
+              Login Portal
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Desktop Actions -->
+    <div class="hidden xl:flex items-center gap-3">
+
+      <!-- RTL Toggle -->
+      <button id="rtl-btn" type="button" onclick="toggleRTL()" aria-label="Toggle text direction" title="Switch text direction (RTL / LTR)" class="flex items-center gap-1.5 text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-emerald-400 transition-colors px-2.5 py-2 rounded-lg border border-slate-200 dark:border-emerald-900/60 hover:border-emerald-300 dark:hover:border-emerald-700">
+        <svg class="w-4 h-4 transition-transform duration-300 rtl-icon-flip" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M16 4h-6.5a3.5 3.5 0 0 0 0 7h.5" />
+          <path d="M14 4v10" />
+          <path d="M10 4v10" />
+          <path d="M4 18h12" />
+          <path d="M7 15l-3 3 3 3" />
+        </svg>
+        <span id="rtl-label" class="text-[11px] font-bold uppercase tracking-wider">RTL</span>
+      </button>
+
+      <!-- Theme Toggle -->
+      <button type="button" onclick="toggleTheme()" aria-label="Toggle color theme" class="text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-emerald-400 transition-colors p-2 rounded-lg border border-slate-200 dark:border-emerald-900/60 hover:border-emerald-300 dark:hover:border-emerald-700">
+        <svg class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+        </svg>
+        <svg class="w-5 h-5 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+        </svg>
+      </button>
+
+      <!-- Login -->
+      <a href="login.html" class="bg-gradient-to-r from-primary to-secondary hover:from-primaryHover hover:to-secondaryHover text-white text-[11px] font-bold uppercase tracking-[0.14em] px-6 py-3 rounded-lg shadow-bloom hover:shadow-bloom-hover hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2 border border-emerald-400/30">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+        </svg>
+        <span>Login</span>
+      </a>
+    </div>
+
+    <!-- Mobile Hamburger (inline onclick → guaranteed to work) -->
+    <button id="hamburger-btn" type="button" onclick="toggleMobileMenu()" class="xl:hidden text-primary dark:text-emerald-400 p-2 focus:outline-none" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-menu">
+      <svg id="menu-icon" class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- Mobile Drawer -->
+  <div id="mobile-menu" class="hidden flex-col bg-white dark:bg-[#051b0e] border-t border-emerald-100 dark:border-emerald-950/70 w-full shadow-2xl max-h-[85vh] overflow-y-auto bloom-scrollbar">
+    <div class="px-6 py-8 flex flex-col gap-6">
+
+      <div>
+        <span class="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-400 block mb-2">Home</span>
+        <div class="flex flex-col gap-3 ps-3 border-s-2 border-primary">
+          <a href="index.html" class="text-sm font-bold uppercase tracking-[0.14em] text-primary dark:text-emerald-400">home-1</a>
+          <a href="home-2.html" class="text-sm font-bold uppercase tracking-[0.14em] text-slate-700 dark:text-slate-300 hover:text-primary">home-2</a>
+        </div>
+      </div>
+
+      <a href="about.html" class="text-sm font-bold uppercase tracking-[0.14em] text-slate-800 dark:text-slate-100 hover:text-primary">About</a>
+      <a href="programs.html" class="text-sm font-bold uppercase tracking-[0.14em] text-slate-800 dark:text-slate-100 hover:text-primary">Programs</a>
+      <a href="instructors.html" class="text-sm font-bold uppercase tracking-[0.14em] text-slate-800 dark:text-slate-100 hover:text-primary">Instructors</a>
+      <a href="placement.html" class="text-sm font-bold uppercase tracking-[0.14em] text-slate-800 dark:text-slate-100 hover:text-primary">Placement</a>
+      <a href="contact.html" class="text-sm font-bold uppercase tracking-[0.14em] text-slate-800 dark:text-slate-100 hover:text-primary">Contact</a>
+
+      <div>
+        <span class="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-400 block mb-2">Dashboard</span>
+        <div class="flex flex-col gap-3 ps-3 border-s-2 border-primary">
+          <a href="student-dashboard.html" class="text-sm font-bold uppercase tracking-[0.14em] text-slate-700 dark:text-slate-300 hover:text-primary">Student Dashboard</a>
+          <a href="admin-dashboard.html" class="text-sm font-bold uppercase tracking-[0.14em] text-slate-700 dark:text-slate-300 hover:text-primary">Admin Dashboard</a>
+        </div>
+      </div>
+
+      <hr class="border-emerald-100 dark:border-emerald-950/70 my-1" />
+
+      <div class="flex items-center justify-center gap-3">
+        <button id="rtl-btn-mobile" type="button" onclick="toggleRTL()" aria-label="Toggle text direction" title="Switch text direction (RTL / LTR)" class="flex-1 flex items-center justify-center gap-2 text-[11px] font-bold uppercase tracking-[0.14em] text-slate-600 dark:text-slate-300 hover:text-primary border border-emerald-200 dark:border-emerald-900/60 rounded-lg px-4 py-3 transition-colors">
+          <svg class="w-4 h-4 transition-transform duration-300 rtl-icon-flip" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M16 4h-6.5a3.5 3.5 0 0 0 0 7h.5" />
+            <path d="M14 4v10" />
+            <path d="M10 4v10" />
+            <path d="M4 18h12" />
+            <path d="M7 15l-3 3 3 3" />
+          </svg>
+          <span id="rtl-label-mobile">RTL</span>
+        </button>
+        <button type="button" onclick="toggleTheme()" aria-label="Toggle color theme" class="flex-1 flex items-center justify-center gap-2 text-[11px] font-bold uppercase tracking-[0.14em] text-slate-600 dark:text-slate-300 hover:text-primary border border-emerald-200 dark:border-emerald-900/60 rounded-lg px-4 py-3 transition-colors">
+          <svg class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+          <svg class="w-5 h-5 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+          </svg>
+          <span class="hidden dark:inline">Light</span>
+          <span class="inline dark:hidden">Dark</span>
+        </button>
+      </div>
+
+      <a href="login.html" class="text-center bg-gradient-to-r from-primary to-secondary text-white text-sm font-bold uppercase tracking-[0.14em] px-6 py-3.5 rounded-lg shadow-bloom mt-2">Student Login</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ================= NAVBAR SCRIPTS (self-contained) ================= -->
+<script>
+  /* ---------- Mobile menu (explicit add/remove — reliable) ---------- */
+  function toggleMobileMenu() {
+    const menu = document.getElementById('mobile-menu');
+    const btn  = document.getElementById('hamburger-btn');
+    const icon = document.getElementById('menu-icon');
+    if (!menu) return;
+
+    const isHidden = menu.classList.contains('hidden');
+
+    if (isHidden) {
+      menu.classList.remove('hidden');
+      menu.classList.add('flex');
+      menu.style.display = 'flex';
+      if (btn)  btn.setAttribute('aria-expanded', 'true');
+      if (icon) icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />';
+    } else {
+      menu.classList.add('hidden');
+      menu.classList.remove('flex');
+      menu.style.display = 'none';
+      if (btn)  btn.setAttribute('aria-expanded', 'false');
+      if (icon) icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />';
+    }
+  }
+
+  /* ---------- Theme ---------- */
+  function toggleTheme() {
+    const root = document.documentElement;
+    const isDark = root.classList.toggle('dark');
+    try { localStorage.setItem('theme', isDark ? 'dark' : 'light'); } catch (e) {}
+  }
+
+  /* ---------- Direction (RTL / LTR) ---------- */
+  function updateRTLLabels() {
+    const isRtl = document.documentElement.getAttribute('dir') === 'rtl';
+    ['rtl-label', 'rtl-label-mobile'].forEach(function (id) {
+      const el = document.getElementById(id);
+      if (el) el.textContent = isRtl ? 'LTR' : 'RTL';
+    });
+  }
+
+  function toggleRTL() {
+    const root = document.documentElement;
+    const next = root.getAttribute('dir') === 'rtl' ? 'ltr' : 'rtl';
+    root.setAttribute('dir', next);
+    try { localStorage.setItem('dir', next); } catch (e) {}
+    updateRTLLabels();
+  }
+
+  /* ---------- Init ---------- */
+  document.addEventListener('DOMContentLoaded', function () {
+    updateRTLLabels();
+  });
+</script>
+
+  <!-- ================= HERO (SAME FORMAT AS INDEX) ================= -->
+  <header class="relative w-full pt-16 pb-24 lg:pt-28 lg:pb-32 overflow-hidden bg-brandLight dark:bg-brandDark transition-colors duration-300">
+    <div class="absolute top-0 right-0 -me-20 -mt-20 w-[550px] h-[550px] bg-primary/10 rounded-full blur-[130px] dark:bg-primary/25 pointer-events-none"></div>
+    <div class="absolute bottom-0 left-0 -ms-20 -mb-20 w-[450px] h-[450px] bg-secondary/15 rounded-full blur-[110px] dark:bg-secondary/20 pointer-events-none"></div>
+    <div class="absolute top-1/2 left-1/3 -translate-y-1/2 w-72 h-72 bg-accentAmber/10 rounded-full blur-[100px] pointer-events-none"></div>
+
+    <div class="max-w-[1400px] mx-auto px-6 lg:px-12 relative z-10">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+
+        <!-- Content -->
+        <div class="flex flex-col items-start text-start order-2 lg:order-1">
+
+          <div class="inline-flex items-center gap-2.5 bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800/60 rounded-full px-5 py-2 mb-8 shadow-sm">
+            <span class="flex h-2.5 w-2.5 relative">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-primary"></span>
+            </span>
+            <span class="text-[11px] font-bold tracking-[0.14em] uppercase text-emerald-800 dark:text-emerald-300">100% Job Placement Assistance · VA Approved</span>
+          </div>
+
+          <h1 class="font-display text-5xl sm:text-6xl lg:text-7xl leading-[1.05] tracking-tight mb-6 text-slate-900 dark:text-white font-extrabold uppercase">
+            Your Career.
+            <span class="block mt-2 pb-2 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+              In The Driver's Seat.
+            </span>
+          </h1>
+
+          <p class="text-lg sm:text-xl mb-10 text-slate-600 dark:text-slate-300 leading-relaxed max-w-xl">
+            Get your CDL in as little as 4 weeks. Learn from instructors with millions of miles under their belts, 
+            train on late-model equipment, and step into a career that starts at $60k+ with zero student debt.
+          </p>
+
+          <div class="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
+            <a href="enroll.html#apply" class="w-full sm:w-auto inline-flex items-center justify-center px-10 py-4 bg-gradient-to-r from-primary to-secondary hover:from-primaryHover hover:to-secondaryHover text-white text-sm font-bold uppercase tracking-wider rounded-lg hover:-translate-y-0.5 transition-all duration-300 shadow-bloom hover:shadow-bloom-hover border border-emerald-400/30">
+              Start Driving Today
+            </a>
+            <a href="contact.html" class="w-full sm:w-auto inline-flex items-center justify-center px-10 py-4 bg-transparent border-2 border-primary text-primary hover:bg-primary hover:text-white dark:border-emerald-400 dark:text-emerald-400 dark:hover:bg-emerald-400 dark:hover:text-slate-900 text-sm font-bold uppercase tracking-wider rounded-lg transition-all duration-300">
+              Book A Tour
+            </a>
+          </div>
+
+          <!-- Metrics -->
+          <div class="mt-12 flex flex-wrap items-center gap-6 sm:gap-8 pt-8 border-t border-emerald-100 dark:border-emerald-950/70 w-full max-w-lg">
+            <div class="flex flex-col">
+              <span class="font-display text-3xl font-extrabold text-primary dark:text-emerald-400 mb-1">4.9★</span>
+              <span class="text-[11px] text-slate-500 dark:text-slate-400 uppercase tracking-[0.14em] font-semibold">Student Rating</span>
+            </div>
+            <div class="w-px h-12 bg-emerald-200 dark:bg-emerald-900/60"></div>
+            <div class="flex flex-col">
+              <span class="font-display text-3xl font-extrabold text-secondary dark:text-emerald-300 mb-1">4 wks</span>
+              <span class="text-[11px] text-slate-500 dark:text-slate-400 uppercase tracking-[0.14em] font-semibold">Fast-Track</span>
+            </div>
+            <div class="w-px h-12 bg-emerald-200 dark:bg-emerald-900/60"></div>
+            <div class="flex flex-col">
+              <span class="font-display text-3xl font-extrabold text-accentAmber mb-1">100%</span>
+              <span class="text-[11px] text-slate-500 dark:text-slate-400 uppercase tracking-[0.14em] font-semibold">Placement Assist</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Visual -->
+        <div class="relative order-1 lg:order-2 w-full h-[430px] sm:h-[530px] lg:h-[630px]">
+          <div class="absolute end-0 top-0 w-[85%] lg:w-[90%] h-full rounded-[2rem] overflow-hidden shadow-2xl shadow-emerald-950/20 border border-emerald-200/50 dark:border-emerald-900/40">
+            <img src="img/p1.webp" alt="Instructor and student in the cab" class="w-full h-full object-cover transition-transform duration-1000 hover:scale-105" />
+            <div class="absolute inset-0 bg-gradient-to-t from-primary/70 via-transparent to-transparent"></div>
+          </div>
+
+          <div class="absolute start-0 bottom-8 sm:bottom-12 w-[72%] lg:w-[64%] rounded-2xl overflow-hidden shadow-2xl shadow-emerald-950/30 border-4 border-white dark:border-[#0a2a17] transition-transform duration-500 hover:-translate-y-2 z-20 bg-white dark:bg-[#0a2a17]">
+            <img src="img/p2.webp" alt="Semi truck on the highway" class="w-full h-36 sm:h-44 object-cover" />
+            <div class="p-4 flex items-center justify-between gap-3">
+              <div>
+                <span class="inline-block bg-accentAmber/20 text-accentAmber text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded mb-1">Orientation</span>
+                <p class="font-bold text-xs uppercase tracking-wider text-slate-800 dark:text-white">Next Class Starts Monday</p>
+                <p class="text-xs text-primary dark:text-emerald-400 font-semibold">Only 3 seats remaining</p>
+              </div>
+              <div class="w-9 h-9 rounded-full bg-emerald-100 dark:bg-emerald-900/40 flex items-center justify-center text-primary dark:text-emerald-400 flex-shrink-0">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="absolute -top-6 lg:-top-10 -end-6 lg:-end-10 w-24 h-24 lg:w-32 lg:h-32 bg-[radial-gradient(circle,theme(colors.primary/0.4)_2.5px,transparent_2.5px)] bg-[length:16px_16px] z-0 hidden sm:block"></div>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= SECTION 1: WHY CHOOSE US (ZIG-ZAG) ================= -->
+  <section class="relative w-full py-20 lg:py-28 bg-white dark:bg-[#071f11] border-y border-emerald-100 dark:border-emerald-950/70 transition-colors duration-300 overflow-hidden">
+    <div class="absolute -top-24 end-0 w-[420px] h-[420px] bg-primary/5 dark:bg-primary/10 rounded-full blur-[120px] pointer-events-none"></div>
+
+    <div class="max-w-[1400px] mx-auto px-6 lg:px-12 relative z-10">
+
+      <div class="max-w-3xl mb-14 lg:mb-20">
+        <span class="inline-flex items-center gap-2 bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800/60 rounded-full px-4 py-1.5 mb-5">
+          <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+          <span class="text-[11px] font-bold tracking-[0.14em] uppercase text-emerald-800 dark:text-emerald-300">Why IronRoute</span>
+        </span>
+        <h2 class="font-display text-4xl sm:text-5xl leading-[1.1] font-extrabold uppercase text-slate-900 dark:text-white mb-5">
+          Not just a school.
+          <span class="block mt-1 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">A launchpad.</span>
+        </h2>
+        <p class="text-base sm:text-lg text-slate-600 dark:text-slate-300 leading-relaxed">
+          We built IronRoute to be the school we wish we had when we started driving. Every decision is based on one
+          question: will this make our graduates better drivers?
+        </p>
+      </div>
+
+      <div class="flex flex-col gap-16 lg:gap-24">
+        
+        <!-- Row 1 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+          <div class="order-2 lg:order-1">
+            <span class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-emerald-100 dark:bg-emerald-950/60 text-primary dark:text-emerald-400 mb-6">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
+            </span>
+            <h3 class="font-display text-3xl sm:text-4xl font-extrabold uppercase text-slate-900 dark:text-white mb-4">Real Miles. Real Equipment.</h3>
+            <p class="text-base text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
+              You can't learn to drive a 10-speed from a textbook. We put you behind the wheel of late-model
+              automatic and manual tractors. Our range has 14 acres of backing lanes, offset alleys, and city mockups.
+            </p>
+            <ul class="flex flex-col gap-3">
+              <li class="flex items-start gap-3 text-sm text-slate-700 dark:text-slate-300 font-medium">
+                <svg class="w-5 h-5 text-primary dark:text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                40+ hours behind the wheel
+              </li>
+              <li class="flex items-start gap-3 text-sm text-slate-700 dark:text-slate-300 font-medium">
+                <svg class="w-5 h-5 text-primary dark:text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                Dedicated night driving modules
+              </li>
+              <li class="flex items-start gap-3 text-sm text-slate-700 dark:text-slate-300 font-medium">
+                <svg class="w-5 h-5 text-primary dark:text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                On-site DOT inspection bays
+              </li>
+            </ul>
+          </div>
+          <div class="order-1 lg:order-2 rounded-3xl overflow-hidden shadow-2xl border border-emerald-200/50 dark:border-emerald-900/40 h-[300px] sm:h-[400px]">
+            <img src="img/p3.webp" alt="Training trucks parked" class="w-full h-full object-cover" />
+          </div>
+        </div>
+
+        <!-- Row 2 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+          <div class="rounded-3xl overflow-hidden shadow-2xl border border-emerald-200/50 dark:border-emerald-900/40 h-[300px] sm:h-[400px]">
+            <img src="img/p4.webp" alt="Instructor teaching" class="w-full h-full object-cover" />
+          </div>
+          <div>
+            <span class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-emerald-100 dark:bg-emerald-950/60 text-primary dark:text-emerald-400 mb-6">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87M16 7a4 4 0 11-8 0 4 4 0 018 0zM20 8a3 3 0 11-6 0 3 3 0 016 0zM10 8a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            </span>
+            <h3 class="font-display text-3xl sm:text-4xl font-extrabold uppercase text-slate-900 dark:text-white mb-4">Small Classes. Big Attention.</h3>
+            <p class="text-base text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
+              We maintain a strict 2:1 student-to-truck ratio. That means less waiting around and more one-on-one
+              coaching. If you're struggling with a backing maneuver, your instructor is right there to help you
+              correct it before it becomes a bad habit.
+            </p>
+            <ul class="flex flex-col gap-3">
+              <li class="flex items-start gap-3 text-sm text-slate-700 dark:text-slate-300 font-medium">
+                <svg class="w-5 h-5 text-primary dark:text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                No crowded cabs
+              </li>
+              <li class="flex items-start gap-3 text-sm text-slate-700 dark:text-slate-300 font-medium">
+                <svg class="w-5 h-5 text-primary dark:text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                Instructors with 10+ years OTR
+              </li>
+              <li class="flex items-start gap-3 text-sm text-slate-700 dark:text-slate-300 font-medium">
+                <svg class="w-5 h-5 text-primary dark:text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                Patient, step-by-step coaching
+              </li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 2: FACILITIES (BENTO GRID) ================= -->
+  <section class="relative w-full py-20 lg:py-28 bg-brandLight dark:bg-brandDark transition-colors duration-300 overflow-hidden">
+    <div class="max-w-[1400px] mx-auto px-6 lg:px-12 relative z-10">
+      
+      <div class="max-w-3xl mb-14 lg:mb-16">
+        <span class="inline-flex items-center gap-2 bg-white dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800/60 rounded-full px-4 py-1.5 mb-5 shadow-sm">
+          <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+          <span class="text-[11px] font-bold tracking-[0.14em] uppercase text-emerald-800 dark:text-emerald-300">Our Campus</span>
+        </span>
+        <h2 class="font-display text-4xl sm:text-5xl leading-[1.1] font-extrabold uppercase text-slate-900 dark:text-white mb-5">
+          A facility built
+          <span class="block mt-1 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">for the road.</span>
+        </h2>
+        <p class="text-base sm:text-lg text-slate-600 dark:text-slate-300 leading-relaxed">
+          We don't train in a parking lot. Our 14-acre facility is designed to simulate real-world scenarios
+          so you're ready for anything when you hit the highway.
+        </p>
+      </div>
+
+      <!-- Bento Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4 sm:gap-6 auto-rows-[240px]">
+        
+        <!-- Large Item -->
+        <div class="md:col-span-2 md:row-span-2 relative group rounded-3xl overflow-hidden shadow-lg border border-emerald-100 dark:border-emerald-900/40">
+          <img src="https://images.unsplash.com/photo-1519003722824-194d4455a60c?auto=format&fit=crop&w=1000&q=80" alt="Large training yard" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+          <div class="absolute inset-0 bg-gradient-to-t from-[#03130a]/90 via-[#03130a]/20 to-transparent"></div>
+          <div class="absolute bottom-0 start-0 end-0 p-6 sm:p-8">
+            <span class="inline-flex bg-primary text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full mb-3">14 Acres</span>
+            <h3 class="font-display text-2xl font-bold uppercase text-white mb-1">The Training Yard</h3>
+            <p class="text-sm text-emerald-100/80">Paved backing lanes, alley docks, and city street mockups.</p>
+          </div>
+        </div>
+
+        <!-- Small Item 1 -->
+        <div class="relative group rounded-3xl overflow-hidden shadow-sm border border-emerald-100 dark:border-emerald-900/40">
+          <img src="https://images.unsplash.com/photo-1542362567-b07e54358753?auto=format&fit=crop&w=600&q=80" alt="Classroom" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+          <div class="absolute inset-0 bg-[#03130a]/60"></div>
+          <div class="absolute inset-0 p-6 flex flex-col justify-end">
+            <h3 class="font-display text-xl font-bold uppercase text-white mb-1">ELDT Classroom</h3>
+            <p class="text-xs text-emerald-100/80">Modern theory lab.</p>
+          </div>
+        </div>
+
+        <!-- Small Item 2 -->
+        <div class="relative group rounded-3xl overflow-hidden shadow-sm border border-emerald-100 dark:border-emerald-900/40">
+          <img src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=600&q=80" alt="Trucks" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+          <div class="absolute inset-0 bg-[#03130a]/60"></div>
+          <div class="absolute inset-0 p-6 flex flex-col justify-end">
+            <h3 class="font-display text-xl font-bold uppercase text-white mb-1">Modern Fleet</h3>
+            <p class="text-xs text-emerald-100/80">Automatic & manual.</p>
+          </div>
+        </div>
+
+        <!-- Wide Item -->
+        <div class="md:col-span-2 relative group rounded-3xl overflow-hidden shadow-sm border border-emerald-100 dark:border-emerald-900/40">
+          <img src="img/p5.webp" alt="Maintenance bay" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+          <div class="absolute inset-0 bg-gradient-to-r from-[#03130a]/90 via-[#03130a]/40 to-transparent"></div>
+          <div class="absolute inset-0 p-6 flex flex-col justify-center max-w-sm">
+            <h3 class="font-display text-2xl font-bold uppercase text-white mb-2">On-Site Maintenance Bays</h3>
+            <p class="text-sm text-emerald-100/80">Learn basic diagnostics and pre-trip inspections where the trucks are actually serviced.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 3: ENROLLMENT STEPS (HORIZONTAL) ================= -->
+  <section class="relative w-full py-20 lg:py-28 bg-white dark:bg-[#071f11] border-y border-emerald-100 dark:border-emerald-950/70 transition-colors duration-300 overflow-hidden">
+    <div class="absolute -bottom-24 start-1/4 w-[420px] h-[420px] bg-primary/5 dark:bg-primary/10 rounded-full blur-[120px] pointer-events-none"></div>
+
+    <div class="max-w-[1400px] mx-auto px-6 lg:px-12 relative z-10">
+      
+      <div class="max-w-3xl mx-auto text-center mb-14 lg:mb-20">
+        <span class="inline-flex items-center gap-2 bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800/60 rounded-full px-4 py-1.5 mb-5">
+          <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+          <span class="text-[11px] font-bold tracking-[0.14em] uppercase text-emerald-800 dark:text-emerald-300">Enrollment Process</span>
+        </span>
+        <h2 class="font-display text-4xl sm:text-5xl leading-[1.1] font-extrabold uppercase text-slate-900 dark:text-white mb-5">
+          Four steps to
+          <span class="block mt-1 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">your new career.</span>
+        </h2>
+        <p class="text-base sm:text-lg text-slate-600 dark:text-slate-300 leading-relaxed">
+          We keep the process simple. No endless paperwork, no hidden hurdles — just a clear path to your CDL.
+        </p>
+      </div>
+
+      <div class="relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+        
+        <!-- Connecting Line (Desktop) -->
+        <div class="hidden lg:block absolute top-[44px] start-[10%] end-[10%] h-0.5 bg-gradient-to-r from-emerald-100 via-emerald-300 to-emerald-100 dark:from-emerald-900 dark:via-emerald-700 dark:to-emerald-900 z-0"></div>
+
+        <!-- Step 1 -->
+        <div class="relative z-10 flex flex-col items-center text-center group">
+          <div class="w-20 h-20 rounded-full bg-white dark:bg-[#0a2a17] border-4 border-brandLight dark:border-brandDark flex items-center justify-center shadow-bloom group-hover:-translate-y-2 transition-transform duration-300 mb-6">
+            <span class="w-14 h-14 rounded-full bg-gradient-to-tr from-primary to-secondary text-white font-display text-2xl font-extrabold flex items-center justify-center">1</span>
+          </div>
+          <h3 class="font-display text-xl font-bold uppercase text-slate-900 dark:text-white mb-3">Apply Online</h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Fill out our simple application. It takes 5 minutes and costs nothing.</p>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="relative z-10 flex flex-col items-center text-center group">
+          <div class="w-20 h-20 rounded-full bg-white dark:bg-[#0a2a17] border-4 border-brandLight dark:border-brandDark flex items-center justify-center shadow-bloom group-hover:-translate-y-2 transition-transform duration-300 mb-6">
+            <span class="w-14 h-14 rounded-full bg-gradient-to-tr from-primary to-secondary text-white font-display text-2xl font-extrabold flex items-center justify-center">2</span>
+          </div>
+          <h3 class="font-display text-xl font-bold uppercase text-slate-900 dark:text-white mb-3">Get Your Permit</h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Pass your DOT physical and written CLP exam. We provide all the study material.</p>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="relative z-10 flex flex-col items-center text-center group">
+          <div class="w-20 h-20 rounded-full bg-white dark:bg-[#0a2a17] border-4 border-brandLight dark:border-brandDark flex items-center justify-center shadow-bloom group-hover:-translate-y-2 transition-transform duration-300 mb-6">
+            <span class="w-14 h-14 rounded-full bg-gradient-to-tr from-primary to-secondary text-white font-display text-2xl font-extrabold flex items-center justify-center">3</span>
+          </div>
+          <h3 class="font-display text-xl font-bold uppercase text-slate-900 dark:text-white mb-3">Train Hard</h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Hit the range and the highway with your instructor. Master pre-trips and backing.</p>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="relative z-10 flex flex-col items-center text-center group">
+          <div class="w-20 h-20 rounded-full bg-white dark:bg-[#0a2a17] border-4 border-brandLight dark:border-brandDark flex items-center justify-center shadow-bloom group-hover:-translate-y-2 transition-transform duration-300 mb-6">
+            <span class="w-14 h-14 rounded-full bg-gradient-to-tr from-primary to-secondary text-white font-display text-2xl font-extrabold flex items-center justify-center">4</span>
+          </div>
+          <h3 class="font-display text-xl font-bold uppercase text-slate-900 dark:text-white mb-3">Get Hired</h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Pass the state skills test and meet with our carrier partners to start earning.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 4: TUITION & FUNDING (DARK SPLIT) ================= -->
+  <section class="relative w-full py-20 lg:py-28 bg-brandLight dark:bg-brandDark transition-colors duration-300 overflow-hidden">
+    <div class="max-w-[1400px] mx-auto px-6 lg:px-12 relative z-10">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-0 rounded-3xl overflow-hidden shadow-2xl border border-emerald-100 dark:border-emerald-900/40">
+        
+        <!-- Left Content -->
+        <div class="lg:col-span-7 bg-white dark:bg-[#0a2a17] p-8 sm:p-12 lg:p-16 flex flex-col justify-center">
+          <span class="inline-flex items-center gap-2 bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800/60 rounded-full px-4 py-1.5 mb-6 self-start">
+            <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+            <span class="text-[11px] font-bold tracking-[0.14em] uppercase text-emerald-800 dark:text-emerald-300">Funding Your Education</span>
+          </span>
+          <h2 class="font-display text-4xl sm:text-5xl leading-[1.1] font-extrabold uppercase text-slate-900 dark:text-white mb-5">
+            Don't let cost
+            <span class="block mt-1 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">stop your engine.</span>
+          </h2>
+          <p class="text-base text-slate-600 dark:text-slate-400 leading-relaxed mb-8">
+            A CDL is an investment in yourself, and we have multiple ways to make it affordable. We'll work with
+            you to find the funding path that fits your financial situation.
+          </p>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div class="flex items-start gap-3">
+              <span class="w-10 h-10 rounded-xl bg-emerald-100 dark:bg-emerald-950/60 flex items-center justify-center text-primary dark:text-emerald-400 flex-shrink-0">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-2.2 0-4 1.8-4 4s1.8 4 4 4 4-1.8 4-4-1.8-4-4-4z"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2"/></svg>
+              </span>
+              <div>
+                <h4 class="text-sm font-bold text-slate-900 dark:text-white mb-1">Payment Plans</h4>
+                <p class="text-xs text-slate-500 dark:text-slate-400">In-house plans starting at $325/mo.</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <span class="w-10 h-10 rounded-xl bg-emerald-100 dark:bg-emerald-950/60 flex items-center justify-center text-primary dark:text-emerald-400 flex-shrink-0">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h3m4 0h3M5 5h14a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2z"/></svg>
+              </span>
+              <div>
+                <h4 class="text-sm font-bold text-slate-900 dark:text-white mb-1">VA Benefits</h4>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Approved for GI Bill® funding.</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <span class="w-10 h-10 rounded-xl bg-emerald-100 dark:bg-emerald-950/60 flex items-center justify-center text-primary dark:text-emerald-400 flex-shrink-0">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-9 9-4-4"/><path d="M3 21h18"/></svg>
+              </span>
+              <div>
+                <h4 class="text-sm font-bold text-slate-900 dark:text-white mb-1">Carrier Sponsorship</h4>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Get tuition reimbursed after 90 days.</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <span class="w-10 h-10 rounded-xl bg-emerald-100 dark:bg-emerald-950/60 flex items-center justify-center text-primary dark:text-emerald-400 flex-shrink-0">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4"/></svg>
+              </span>
+              <div>
+                <h4 class="text-sm font-bold text-slate-900 dark:text-white mb-1">Workforce Grants</h4>
+                <p class="text-xs text-slate-500 dark:text-slate-400">State funding for career changers.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Graphic -->
+        <div class="lg:col-span-5 bg-gradient-to-br from-primary via-primary to-primaryHover p-8 sm:p-12 flex flex-col items-center justify-center text-center relative overflow-hidden">
+          <div class="absolute -top-16 -end-16 w-56 h-56 bg-white/10 rounded-full blur-[80px] pointer-events-none"></div>
+          <div class="absolute -bottom-16 -start-16 w-56 h-56 bg-secondary/20 rounded-full blur-[80px] pointer-events-none"></div>
+          
+          <div class="relative z-10">
+            <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-emerald-200 mb-2">Class A Tuition</p>
+            <p class="font-display text-6xl sm:text-7xl font-extrabold text-white leading-none mb-2">$6,450</p>
+            <p class="text-sm text-emerald-100/80 mb-8">Includes all books, fees, and the state skills-test truck.</p>
+            
+            <ul class="text-sm text-white font-medium flex flex-col gap-3 mb-8 text-start inline-block">
+              <li class="flex items-center gap-3">
+                <svg class="w-5 h-5 text-emerald-300" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                160 hours of training
+              </li>
+              <li class="flex items-center gap-3">
+                <svg class="w-5 h-5 text-emerald-300" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                40+ hours of road time
+              </li>
+              <li class="flex items-center gap-3">
+                <svg class="w-5 h-5 text-emerald-300" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                Job placement assistance
+              </li>
+            </ul>
+            
+            <a href="enroll.html#apply" class="inline-flex items-center justify-center w-full px-6 py-4 rounded-lg bg-white text-primary hover:bg-emerald-50 text-[11px] font-bold uppercase tracking-[0.14em] transition-all duration-300 shadow-lg">
+              Apply Now
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 5: ALUMNI & JOB BOARD ================= -->
+  <section class="relative w-full py-20 lg:py-28 bg-white dark:bg-[#071f11] border-y border-emerald-100 dark:border-emerald-950/70 transition-colors duration-300 overflow-hidden">
+    <div class="absolute top-0 end-1/3 w-[400px] h-[400px] bg-accentAmber/5 dark:bg-accentAmber/10 rounded-full blur-[130px] pointer-events-none"></div>
+
+    <div class="max-w-[1400px] mx-auto px-6 lg:px-12 relative z-10">
+      
+      <div class="max-w-3xl mb-14 lg:mb-16">
+        <span class="inline-flex items-center gap-2 bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800/60 rounded-full px-4 py-1.5 mb-5">
+          <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+          <span class="text-[11px] font-bold tracking-[0.14em] uppercase text-emerald-800 dark:text-emerald-300">Alumni Network</span>
+        </span>
+        <h2 class="font-display text-4xl sm:text-5xl leading-[1.1] font-extrabold uppercase text-slate-900 dark:text-white mb-5">
+          The job hunt
+          <span class="block mt-1 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">ends before you graduate.</span>
+        </h2>
+        <p class="text-base sm:text-lg text-slate-600 dark:text-slate-300 leading-relaxed">
+          We work directly with 40+ carriers to connect our graduates with real jobs. Here's a snapshot of recent
+          postings exclusively for IronRoute grads.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+        
+        <!-- Left: Stats -->
+        <div class="lg:col-span-4 flex flex-col gap-4">
+          <div class="bg-brandLight dark:bg-[#0a2a17] border border-emerald-100 dark:border-emerald-900/40 rounded-2xl p-6 shadow-sm">
+            <p class="font-display text-4xl font-extrabold text-primary dark:text-emerald-400 mb-1">5,200+</p>
+            <p class="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Active Alumni Network</p>
+          </div>
+          <div class="bg-brandLight dark:bg-[#0a2a17] border border-emerald-100 dark:border-emerald-900/40 rounded-2xl p-6 shadow-sm">
+            <p class="font-display text-4xl font-extrabold text-secondary dark:text-emerald-300 mb-1">$62,000</p>
+            <p class="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Median First-Year Pay</p>
+          </div>
+          <div class="bg-brandLight dark:bg-[#0a2a17] border border-emerald-100 dark:border-emerald-900/40 rounded-2xl p-6 shadow-sm">
+            <p class="font-display text-4xl font-extrabold text-accentAmber mb-1">14 Days</p>
+            <p class="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Avg Time to First Offer</p>
+          </div>
+        </div>
+
+        <!-- Right: Mock Job Board -->
+        <div class="lg:col-span-8 bg-brandLight dark:bg-[#0a2a17] border border-emerald-100 dark:border-emerald-900/40 rounded-3xl p-6 sm:p-8 shadow-sm">
+          <div class="flex items-center justify-between mb-6 pb-4 border-b border-emerald-100 dark:border-emerald-900/50">
+            <h3 class="font-display text-xl font-bold uppercase text-slate-900 dark:text-white">Recent Carrier Postings</h3>
+            <span class="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-primary dark:text-emerald-400">
+              <span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span> Live Updates
+            </span>
+          </div>
+          
+          <div class="flex flex-col gap-4">
+            
+            <!-- Job 1 -->
+            <div class="group flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-xl hover:bg-white dark:hover:bg-[#051b0e] border border-transparent hover:border-emerald-100 dark:hover:border-emerald-900/50 transition-all duration-300">
+              <div class="flex items-center gap-4">
+                <span class="w-12 h-12 rounded-lg bg-emerald-100 dark:bg-emerald-950/60 flex items-center justify-center text-primary dark:text-emerald-400 flex-shrink-0">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M2 7h11v10H2z"/><path d="M13 10h5l4 4v3h-9z"/><circle cx="6.5" cy="18.5" r="2"/><circle cx="17.5" cy="18.5" r="2"/></svg>
+                </span>
+                <div>
+                  <h4 class="text-sm font-bold text-slate-900 dark:text-white">OTR Dry Van Driver</h4>
+                  <p class="text-xs text-slate-500 dark:text-slate-400">Swift Logistics · Nationwide</p>
+                </div>
+              </div>
+              <div class="text-start sm:text-end flex-shrink-0">
+                <p class="text-sm font-bold text-primary dark:text-emerald-400">$65k - $75k / yr</p>
+                <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Home 2x/mo</p>
+              </div>
+            </div>
+
+            <!-- Job 2 -->
+            <div class="group flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-xl hover:bg-white dark:hover:bg-[#051b0e] border border-transparent hover:border-emerald-100 dark:hover:border-emerald-900/50 transition-all duration-300">
+              <div class="flex items-center gap-4">
+                <span class="w-12 h-12 rounded-lg bg-amber-100 dark:bg-amber-950/60 flex items-center justify-center text-accentAmber flex-shrink-0">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M2 6h13v12H2z"/><path d="M15 11h4l3 3v4h-7z"/><circle cx="6" cy="19" r="2"/><circle cx="17" cy="19" r="2"/></svg>
+                </span>
+                <div>
+                  <h4 class="text-sm font-bold text-slate-900 dark:text-white">Local Food Service</h4>
+                  <p class="text-xs text-slate-500 dark:text-slate-400">Sysco · Chicago, IL</p>
+                </div>
+              </div>
+              <div class="text-start sm:text-end flex-shrink-0">
+                <p class="text-sm font-bold text-primary dark:text-emerald-400">$58k - $68k / yr</p>
+                <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Home Daily</p>
+              </div>
+            </div>
+
+            <!-- Job 3 -->
+            <div class="group flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-xl hover:bg-white dark:hover:bg-[#051b0e] border border-transparent hover:border-emerald-100 dark:hover:border-emerald-900/50 transition-all duration-300">
+              <div class="flex items-center gap-4">
+                <span class="w-12 h-12 rounded-lg bg-violet-100 dark:bg-violet-950/60 flex items-center justify-center text-accentViolet flex-shrink-0">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M3 10h11v7H3z"/><path d="M14 12h4l3 3v2h-7z"/><circle cx="7" cy="18" r="2"/><circle cx="18" cy="18" r="2"/><path d="M4 6h8"/></svg>
+                </span>
+                <div>
+                  <h4 class="text-sm font-bold text-slate-900 dark:text-white">Tanker Driver (HazMat)</h4>
+                  <p class="text-xs text-slate-500 dark:text-slate-400">Schneider · Houston, TX</p>
+                </div>
+              </div>
+              <div class="text-start sm:text-end flex-shrink-0">
+                <p class="text-sm font-bold text-primary dark:text-emerald-400">$75k - $90k / yr</p>
+                <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Regional</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 6: FREE GUIDE / LEAD MAGNET ================= -->
+  <section class="relative w-full py-20 lg:py-28 bg-brandLight dark:bg-brandDark transition-colors duration-300 overflow-hidden">
+    <div class="max-w-[1400px] mx-auto px-6 lg:px-12 relative z-10">
+      <div class="relative overflow-hidden rounded-3xl bg-[#03130a] text-white p-8 sm:p-12 lg:p-16 shadow-2xl border border-emerald-900/50">
+        
+        <!-- Background Grid Pattern -->
+        <div class="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none"></div>
+        
+        <div class="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          
+          <div>
+            <span class="inline-flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 rounded-full px-4 py-1.5 mb-6">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+              <span class="text-[10px] font-bold uppercase tracking-[0.14em] text-emerald-400">Free Download</span>
+            </span>
+            <h2 class="font-display text-4xl sm:text-5xl leading-[1.05] font-extrabold uppercase mb-4">
+              Not ready to enroll?
+              <span class="block mt-1 text-emerald-400">Get the guide first.</span>
+            </h2>
+            <p class="text-base text-emerald-100/70 leading-relaxed mb-8 max-w-lg">
+              Download our free 20-page "CDL Career Guide." Learn exactly what it takes to get your license, 
+              how to choose the right endorsements, and what carriers are really looking for.
+            </p>
+            <ul class="flex flex-col gap-3 mb-8">
+              <li class="flex items-center gap-3 text-sm text-white">
+                <svg class="w-5 h-5 text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                Step-by-step state requirements
+              </li>
+              <li class="flex items-center gap-3 text-sm text-white">
+                <svg class="w-5 h-5 text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                Salary breakdown by route type
+              </li>
+              <li class="flex items-center gap-3 text-sm text-white">
+                <svg class="w-5 h-5 text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                Interview questions to prepare for
+              </li>
+            </ul>
+          </div>
+
+          <!-- Form Card -->
+          <div class="relative w-full max-w-md mx-auto lg:ml-auto bg-[#0a2a17] border border-emerald-900/60 rounded-2xl p-6 sm:p-8 shadow-xl">
+            <h3 class="font-display text-2xl font-bold uppercase text-white mb-2">Where should we send it?</h3>
+            <p class="text-xs text-slate-400 mb-6">We'll email you the PDF instantly. No spam, ever.</p>
+            
+            <form action="#" method="POST" class="flex flex-col gap-4">
+              <div>
+                <label for="guide-name" class="sr-only">Full Name</label>
+                <input type="text" id="guide-name" placeholder="Full Name" required class="w-full px-4 py-3 rounded-lg bg-[#051b0e] border border-emerald-900/60 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-sm" />
+              </div>
+              <div>
+                <label for="guide-email" class="sr-only">Email Address</label>
+                <input type="email" id="guide-email" placeholder="Email Address" required class="w-full px-4 py-3 rounded-lg bg-[#051b0e] border border-emerald-900/60 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-sm" />
+              </div>
+              <button type="submit" class="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-[#03130a] text-sm font-bold uppercase tracking-wider transition-all duration-300 shadow-[0_0_20px_rgba(16,185,129,0.3)] mt-2">
+                Download Free PDF
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+              </button>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+<!-- ================= DARK FOOTER ================= -->
+<footer class="relative w-full bg-[#03130a] text-slate-300 overflow-hidden">
+
+  <div class="pointer-events-none absolute -top-32 start-1/4 w-[480px] h-[480px] bg-primary/20 rounded-full blur-[140px]"></div>
+  <div class="pointer-events-none absolute -bottom-40 end-0 w-[460px] h-[460px] bg-secondary/10 rounded-full blur-[140px]"></div>
+
+  <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-500/40 to-transparent"></div>
+
+  <div class="relative max-w-[1400px] mx-auto px-6 lg:px-12">
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8 py-16 lg:py-20">
+
+      <!-- Brand -->
+      <div class="lg:col-span-4">
+        <a href="index.html" class="group inline-flex items-center gap-3 mb-6" aria-label="IronRoute CDL Academy home">
+          <span class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-primary to-secondary flex items-center justify-center shadow-lg shadow-emerald-900/40 text-white transition-transform duration-300 group-hover:scale-105">
+            <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M2 7h11v10H2z" />
+              <path d="M13 10h5l4 4v3h-9z" />
+              <circle cx="6.5" cy="18.5" r="2" />
+              <circle cx="17.5" cy="18.5" r="2" />
+            </svg>
+          </span>
+          <span class="flex flex-col">
+            <span class="font-display text-2xl font-extrabold tracking-wide uppercase bg-gradient-to-r from-emerald-300 via-secondary to-emerald-200 bg-clip-text text-transparent leading-none">
+              IronRoute CDL
+            </span>
+            <span class="text-[9px] uppercase font-bold tracking-[0.18em] text-emerald-400/80 mt-1.5">
+              Driver Training &amp; Placement
+            </span>
+          </span>
+        </a>
+
+        <p class="text-sm text-emerald-100/60 leading-relaxed max-w-sm mb-7">
+          An FMCSA-registered ELDT truck driving school training Class A, B and C drivers since 2009 —
+          real highway miles, certified instructors, and a placement team behind every graduate.
+        </p>
+
+        <div class="flex items-center gap-2.5">
+          <a href="#" aria-label="Facebook" class="w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-emerald-100/60 hover:text-white hover:bg-primary hover:border-primary transition-all duration-300">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12a10 10 0 10-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.4h-1.2c-1.2 0-1.6.8-1.6 1.6V12h2.7l-.4 2.9h-2.3v7A10 10 0 0022 12z"/></svg>
+          </a>
+          <a href="#" aria-label="Instagram" class="w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-emerald-100/60 hover:text-white hover:bg-primary hover:border-primary transition-all duration-300">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.2c3.2 0 3.6 0 4.9.1 1.2.1 1.8.3 2.2.4.6.2 1 .5 1.4.9.4.4.7.8.9 1.4.2.4.3 1 .4 2.2.1 1.3.1 1.7.1 4.9s0 3.6-.1 4.9c-.1 1.2-.3 1.8-.4 2.2-.2.6-.5 1-.9 1.4-.4.4-.8.7-1.4.9-.4.2-1 .3-2.2.4-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-1.2-.1-1.8-.3-2.2-.4-.6-.2-1-.5-1.4-.9-.4-.4-.7-.8-.9-1.4-.2-.4-.3-1-.4-2.2C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.9c.1-1.2.3-1.8.4-2.2.2-.6.5-1 .9-1.4.4-.4.8-.7 1.4-.9.4-.2 1-.3 2.2-.4 1.3-.1 1.7-.1 4.8-.1zm0 3.2A6.6 6.6 0 1012 18.6 6.6 6.6 0 0012 5.4zm0 10.9a4.3 4.3 0 110-8.6 4.3 4.3 0 010 8.6zm6.9-11.1a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z"/></svg>
+          </a>
+          <a href="#" aria-label="LinkedIn" class="w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-emerald-100/60 hover:text-white hover:bg-primary hover:border-primary transition-all duration-300">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 11-.02 5 2.5 2.5 0 01.02-5zM3 9h4v12H3zM10 9h3.8v1.7h.1c.5-1 1.8-2 3.7-2 4 0 4.7 2.5 4.7 5.8V21h-4v-5.6c0-1.3 0-3-1.9-3s-2.2 1.4-2.2 2.9V21h-4z"/></svg>
+          </a>
+          <a href="#" aria-label="YouTube" class="w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-emerald-100/60 hover:text-white hover:bg-primary hover:border-primary transition-all duration-300">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M23.5 6.5a3 3 0 00-2.1-2.1C19.5 4 12 4 12 4s-7.5 0-9.4.4A3 3 0 00.5 6.5C.1 8.4.1 12 .1 12s0 3.6.4 5.5a3 3 0 002.1 2.1C4.5 20 12 20 12 20s7.5 0 9.4-.4a3 3 0 002.1-2.1c.4-1.9.4-5.5.4-5.5s0-3.6-.4-5.5zM9.8 15.6V8.4l6.2 3.6-6.2 3.6z"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Programs -->
+      <div class="lg:col-span-2">
+        <h4 class="text-[11px] font-bold uppercase tracking-[0.18em] text-white mb-5">Programs</h4>
+        <ul class="flex flex-col gap-3">
+          <li><a href="programs.html#class-a" class="text-sm text-emerald-100/60 hover:text-emerald-400 transition-colors">Class A · Tractor-Trailer</a></li>
+          <li><a href="programs.html#class-b" class="text-sm text-emerald-100/60 hover:text-emerald-400 transition-colors">Class B · Straight Truck</a></li>
+          <li><a href="programs.html#class-c" class="text-sm text-emerald-100/60 hover:text-emerald-400 transition-colors">Class C · Delivery</a></li>
+          <li><a href="programs.html#endorsements" class="text-sm text-emerald-100/60 hover:text-emerald-400 transition-colors">Endorsements</a></li>
+          <li><a href="programs.html#refresher" class="text-sm text-emerald-100/60 hover:text-emerald-400 transition-colors">Refresher Course</a></li>
+        </ul>
+      </div>
+
+      <!-- Company -->
+      <div class="lg:col-span-2">
+        <h4 class="text-[11px] font-bold uppercase tracking-[0.18em] text-white mb-5">Company</h4>
+        <ul class="flex flex-col gap-3">
+          <li><a href="about.html" class="text-sm text-emerald-100/60 hover:text-emerald-400 transition-colors">About Us</a></li>
+          <li><a href="instructors.html" class="text-sm text-emerald-100/60 hover:text-emerald-400 transition-colors">Instructors</a></li>
+          <li><a href="placement.html" class="text-sm text-emerald-100/60 hover:text-emerald-400 transition-colors">Job Placement</a></li>
+          <li><a href="contact.html" class="text-sm text-emerald-100/60 hover:text-emerald-400 transition-colors">Contact</a></li>
+          <li><a href="login.html" class="text-sm text-emerald-100/60 hover:text-emerald-400 transition-colors">Student Login</a></li>
+        </ul>
+      </div>
+
+      <!-- Contact -->
+      <div class="lg:col-span-4">
+        <h4 class="text-[11px] font-bold uppercase tracking-[0.18em] text-white mb-5">Get In Touch</h4>
+
+        <ul class="flex flex-col gap-4 mb-7">
+          <li class="flex items-start gap-3">
+            <span class="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 flex-shrink-0">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a2 2 0 01-2.828 0l-4.243-4.243a8 8 0 1111.314 0z"/><circle cx="12" cy="11" r="3"/></svg>
+            </span>
+            <span class="text-sm text-emerald-100/60 leading-relaxed">4820 Industrial Parkway<br />Building C, Gate 4</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <span class="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 flex-shrink-0">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3l2 5-2.5 1.5a11 11 0 005 5L14 12l5 2v3a2 2 0 01-2 2A15 15 0 013 5z"/></svg>
+            </span>
+            <a href="tel:+15550142200" class="text-sm text-emerald-100/60 hover:text-emerald-400 transition-colors leading-relaxed">(555) 014-2200</a>
+          </li>
+          <li class="flex items-start gap-3">
+            <span class="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 flex-shrink-0">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l9 6 9-6M3 6h18v12H3z"/></svg>
+            </span>
+            <a href="mailto:admissions@ironroutecdl.com" class="text-sm text-emerald-100/60 hover:text-emerald-400 transition-colors leading-relaxed break-all">admissions@ironroutecdl.com</a>
+          </li>
+        </ul>
+
+        <a href="enroll.html#apply" class="inline-flex items-center justify-center gap-2 w-full px-6 py-3.5 rounded-lg bg-gradient-to-r from-primary to-secondary hover:from-primaryHover hover:to-secondaryHover text-white text-[11px] font-bold uppercase tracking-[0.16em] shadow-lg shadow-emerald-900/40 hover:-translate-y-0.5 transition-all duration-300 border border-emerald-400/30">
+          Start Enrollment
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+        </a>
+      </div>
+
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="border-t border-white/10 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <p class="text-[11px] font-semibold uppercase tracking-[0.14em] text-emerald-100/50 text-center sm:text-start">
+        © <span id="footer-year">2026</span> IronRoute CDL Academy. All rights reserved.
+      </p>
+
+      <ul class="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
+        <li><a href="#" class="text-[11px] font-semibold uppercase tracking-[0.14em] text-emerald-100/50 hover:text-emerald-400 transition-colors">Privacy Policy</a></li>
+        <li><a href="#" class="text-[11px] font-semibold uppercase tracking-[0.14em] text-emerald-100/50 hover:text-emerald-400 transition-colors">Terms</a></li>
+        <li><a href="#" class="text-[11px] font-semibold uppercase tracking-[0.14em] text-emerald-100/50 hover:text-emerald-400 transition-colors">Accessibility</a></li>
+      </ul>
+    </div>
+
+  </div>
+</footer>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const y = document.getElementById('footer-year');
+    if (y) y.textContent = new Date().getFullYear();
+  });
+</script>
+
+</body>
+</html>

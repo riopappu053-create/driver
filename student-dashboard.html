@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="light">
+<head>
+  <script>
+    (function () {
+      try {
+        const savedDir = localStorage.getItem('dir');
+        if (savedDir === 'rtl') document.documentElement.setAttribute('dir', 'rtl');
+        else document.documentElement.setAttribute('dir', 'ltr');
+
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (savedTheme === 'dark' || (!savedTheme && prefersDark)) document.documentElement.classList.add('dark');
+        else document.documentElement.classList.remove('dark');
+      } catch (e) {}
+    })();
+  </script>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Portal &amp; Dashboard — IronRoute CDL Academy</title>
+  <meta name="description" content="FMCSA-registered ELDT Student Portal for IronRoute CDL Academy. Dedicated views for Overview, Program Enrollment, Driving Hours Log, Test Results, Carrier Job Offers, and DOT Compliance." />
+
+  <!-- ================= FAVICON (Semi Truck) ================= -->
+  <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%2315803d'/%3E%3Cpath d='M5 10h13v11H5z' fill='none' stroke='%23ffffff' stroke-width='1.8' stroke-linejoin='round'/%3E%3Cpath d='M18 14h5l4 4v3h-9z' fill='none' stroke='%23ffffff' stroke-width='1.8' stroke-linejoin='round'/%3E%3Ccircle cx='10' cy='23' r='2.4' fill='none' stroke='%23bbf7d0' stroke-width='1.8'/%3E%3Ccircle cx='22' cy='23' r='2.4' fill='none' stroke='%23bbf7d0' stroke-width='1.8'/%3E%3C/svg%3E" />
+
+  <!-- ================= FONTS ================= -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- ================= TAILWIND ================= -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['"Barlow Condensed"', 'sans-serif'],
+            sans: ['Plus Jakarta Sans', 'sans-serif']
+          },
+          colors: {
+            primary: '#15803d',
+            primaryHover: '#166534',
+            primaryLight: '#ecfdf5',
+            secondary: '#22c55e',
+            secondaryHover: '#16a34a',
+            accentCoral: '#ea580c',
+            accentAmber: '#d97706',
+            accentViolet: '#7c3aed',
+            brandLight: '#f8fafc',
+            brandDark: '#051b0e'
+          },
+          boxShadow: {
+            bloom: '0 10px 30px -5px rgba(21, 128, 61, 0.25)',
+            'bloom-hover': '0 20px 40px -10px rgba(21, 128, 61, 0.38)',
+            card: '0 2px 12px -2px rgba(15, 23, 42, 0.05)'
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+
+    .sidebar-scroll { scrollbar-width: thin; scrollbar-color: #cbd5e1 transparent; }
+    .sidebar-scroll::-webkit-scrollbar { width: 5px; }
+    .sidebar-scroll::-webkit-scrollbar-track { background: transparent; }
+    .sidebar-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+    html.dark .sidebar-scroll { scrollbar-color: #14532d transparent; }
+    html.dark .sidebar-scroll::-webkit-scrollbar-thumb { background: #14532d; }
+
+    .table-scroll { scrollbar-width: thin; scrollbar-color: #15803d transparent; }
+    .table-scroll::-webkit-scrollbar { height: 6px; }
+    .table-scroll::-webkit-scrollbar-track { background: transparent; }
+    .table-scroll::-webkit-scrollbar-thumb { background: #15803d; border-radius: 9999px; }
+
+    .dash-page-view {
+      animation: fadeSlideIn 0.24s ease-out;
+    }
+    @keyframes fadeSlideIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    html[dir="rtl"] .rtl-icon-flip {
+      transform: scaleX(-1);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+    }
+  </style>
+</head>
+
+<body class="bg-brandLight dark:bg-brandDark text-slate-800 dark:text-slate-100 antialiased overflow-x-hidden transition-colors duration-300">
+
+  <!-- Mobile Sidebar Backdrop -->
+  <div id="sidebar-backdrop" onclick="toggleMobileSidebar(false)" class="fixed inset-0 z-40 bg-slate-950/60 backdrop-blur-xs hidden lg:hidden transition-opacity"></div>
+
+  <!-- ===================================================================== -->
+  <!-- APP SHELL: FIXED SIDEBAR + TOP HEADER + MULTI-PAGE VIEWS              -->
+  <!-- ===================================================================== -->
+  <div class="min-h-screen flex">
+
+    <!-- ================= LEFT SIDEBAR ================= -->
+    <aside id="app-sidebar" class="fixed lg:sticky top-0 start-0 z-50 h-screen w-72 bg-white dark:bg-[#071f11] border-e border-slate-200/80 dark:border-emerald-950/80 flex flex-col justify-between transition-transform duration-300 -translate-x-full rtl:translate-x-full lg:translate-x-0 rtl:lg:translate-x-0 flex-shrink-0">
+
+      <!-- Top Brand + Navigation -->
+      <div class="flex flex-col min-h-0 flex-1">
+        <!-- Brand Header -->
+        <div class="h-20 px-6 flex items-center justify-between border-b border-slate-100 dark:border-emerald-950/70 flex-shrink-0">
+          <a href="index.html" class="flex items-center gap-3 group" aria-label="IronRoute CDL Home">
+            <span class="w-10 h-10 rounded-xl bg-gradient-to-tr from-primary to-secondary flex items-center justify-center shadow-bloom text-white transition-transform duration-300 group-hover:scale-105">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2 7h11v10H2z" />
+                <path d="M13 10h5l4 4v3h-9z" />
+                <circle cx="6.5" cy="18.5" r="2" />
+                <circle cx="17.5" cy="18.5" r="2" />
+              </svg>
+            </span>
+            <span class="flex flex-col">
+              <span class="font-display text-xl font-extrabold tracking-wide uppercase text-slate-900 dark:text-white leading-none">
+                IronRoute CDL
+              </span>
+              <span class="text-[9px] uppercase font-bold tracking-[0.18em] text-slate-400 dark:text-emerald-400 mt-1">
+                Student Portal
+              </span>
+            </span>
+          </a>
+
+          <button type="button" onclick="toggleMobileSidebar(false)" aria-label="Close sidebar" class="lg:hidden p-1.5 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-emerald-950">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+          </button>
+        </div>
+
+        <!-- Sidebar Navigation Links -->
+        <div class="flex-1 overflow-y-auto sidebar-scroll px-4 py-6 space-y-6">
+
+          <div>
+            <p class="px-3 text-[10px] font-bold uppercase tracking-[0.16em] text-slate-400 dark:text-slate-500 mb-2.5">
+              Main Navigation
+            </p>
+            <nav class="space-y-1.5" aria-label="Student portal pages">
+              <button type="button" data-page="overview" onclick="openDashboardPage('overview')" class="nav-pill active w-full flex items-center gap-3 px-3.5 py-3 rounded-xl text-sm font-bold transition-all duration-200 bg-gradient-to-r from-primary to-secondary text-white shadow-bloom">
+                <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
+                <span>Overview</span>
+              </button>
+
+              <button type="button" data-page="enrollment" onclick="openDashboardPage('enrollment')" class="nav-pill w-full flex items-center gap-3 px-3.5 py-3 rounded-xl text-sm font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-emerald-950/60 transition-all duration-200">
+                <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                <span>My Program Enrollment</span>
+              </button>
+
+              <button type="button" data-page="hours" onclick="openDashboardPage('hours')" class="nav-pill w-full flex items-center gap-3 px-3.5 py-3 rounded-xl text-sm font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-emerald-950/60 transition-all duration-200">
+                <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <span>Driving Hours Log</span>
+              </button>
+
+              <button type="button" data-page="results" onclick="openDashboardPage('results')" class="nav-pill w-full flex items-center gap-3 px-3.5 py-3 rounded-xl text-sm font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-emerald-950/60 transition-all duration-200">
+                <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <span>Exam &amp; Test Results</span>
+              </button>
+
+              <button type="button" data-page="placement" onclick="openDashboardPage('placement')" class="nav-pill w-full flex items-center gap-3 px-3.5 py-3 rounded-xl text-sm font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-emerald-950/60 transition-all duration-200">
+                <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                <span>Carrier Job Offers</span>
+              </button>
+            </nav>
+          </div>
+
+          <div>
+            <p class="px-3 text-[10px] font-bold uppercase tracking-[0.16em] text-slate-400 dark:text-slate-500 mb-2.5">
+              Driver Account
+            </p>
+            <nav class="space-y-1.5">
+              <button type="button" data-page="compliance" onclick="openDashboardPage('compliance')" class="nav-pill w-full flex items-center gap-3 px-3.5 py-3 rounded-xl text-sm font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-emerald-950/60 transition-all duration-200">
+                <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                <span class="truncate">DOT Medical &amp; CLP Check</span>
+              </button>
+            </nav>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar Bottom Controls: Replaced with clean RTL + Dark/Light Mode Icon Buttons -->
+      <div class="p-4 border-t border-slate-100 dark:border-emerald-950/70 bg-slate-50/70 dark:bg-[#051b0e]/60 flex-shrink-0">
+        <div class="flex items-center gap-2.5">
+          <!-- RTL / LTR Toggle Button -->
+          <button id="sidebar-rtl-btn" type="button" onclick="toggleRTL()" aria-label="Toggle text direction" title="Switch text direction (RTL / LTR)" class="flex-1 flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl bg-white dark:bg-[#0a2a17] border border-slate-200 dark:border-emerald-900/60 text-xs font-bold text-slate-700 dark:text-slate-200 hover:border-primary hover:text-primary dark:hover:text-emerald-400 transition-colors">
+            <svg class="w-4 h-4 transition-transform duration-300 rtl-icon-flip" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M16 4h-6.5a3.5 3.5 0 0 0 0 7h.5" />
+              <path d="M14 4v10" />
+              <path d="M10 4v10" />
+              <path d="M4 18h12" />
+              <path d="M7 15l-3 3 3 3" />
+            </svg>
+            <span id="sidebar-rtl-label" class="uppercase tracking-wider">RTL</span>
+          </button>
+
+          <!-- Dark / Light Mode Icon Toggle Button -->
+          <button type="button" onclick="toggleTheme()" aria-label="Toggle dark or light theme" title="Switch color theme" class="flex-1 flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl bg-white dark:bg-[#0a2a17] border border-slate-200 dark:border-emerald-900/60 text-xs font-bold text-slate-700 dark:text-slate-200 hover:border-primary hover:text-primary dark:hover:text-emerald-400 transition-colors">
+            <!-- Sun Icon (shown in dark mode) -->
+            <svg class="w-4 h-4 hidden dark:block text-amber-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+            </svg>
+            <!-- Moon Icon (shown in light mode) -->
+            <svg class="w-4 h-4 block dark:hidden text-primary" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+            </svg>
+            <span class="hidden dark:inline uppercase tracking-wider">Light</span>
+            <span class="inline dark:hidden uppercase tracking-wider">Dark</span>
+          </button>
+        </div>
+      </div>
+
+    </aside>
+
+    <!-- ================= MAIN WORKSPACE AREA ================= -->
+    <div class="flex-1 flex flex-col min-w-0">
+
+      <!-- TOP UTILITY BAR -->
+      <header class="sticky top-0 z-30 h-20 bg-white/90 dark:bg-[#051b0e]/90 backdrop-blur-md border-b border-slate-200/80 dark:border-emerald-950/70 px-4 sm:px-8 flex items-center justify-between gap-4">
+
+        <div class="flex items-center gap-3 min-w-0">
+          <button type="button" onclick="toggleMobileSidebar(true)" aria-label="Open navigation menu" class="lg:hidden p-2 rounded-xl border border-slate-200 dark:border-emerald-900 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-emerald-950">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
+          </button>
+
+          <div class="inline-flex items-center gap-2 bg-emerald-50 dark:bg-emerald-950/80 border border-emerald-200/80 dark:border-emerald-800/60 rounded-full px-3.5 py-1.5 max-w-full">
+            <span class="w-2 h-2 rounded-full bg-secondary animate-pulse flex-shrink-0"></span>
+            <span class="text-[11px] font-bold text-primary dark:text-emerald-300 truncate">
+              Range Yard Bay #4: Open · Skid Pad Dry · ELDT Status: ACTIVE
+            </span>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2.5 flex-shrink-0">
+         
+
+          <!-- Notification Bell -->
+          <button type="button" onclick="openDashboardPage('results')" aria-label="View exam notifications" class="relative w-10 h-10 rounded-xl border border-slate-200 dark:border-emerald-900/70 bg-white dark:bg-[#0a2a17] text-slate-600 dark:text-slate-300 hover:border-primary flex items-center justify-center transition-colors">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+            <span class="absolute top-2 end-2 w-2 h-2 rounded-full bg-accentCoral"></span>
+          </button>
+
+          <!-- Primary CTA Button -->
+          <button type="button" onclick="openLogModal()" class="inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl bg-gradient-to-r from-primary to-secondary hover:from-primaryHover hover:to-secondaryHover text-white text-xs font-bold shadow-bloom hover:shadow-bloom-hover transition-all">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+            <span class="hidden sm:inline">Log Driving Hours</span>
+            <span class="sm:hidden">Log Hrs</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- =================================================================== -->
+      <!-- DEDICATED SINGLE-VIEW PAGES                                         -->
+      <!-- =================================================================== -->
+      <main class="flex-1 px-4 sm:px-8 py-8 max-w-[1380px] w-full mx-auto">
+
+        <!-- =============================================================== -->
+        <!-- PAGE 1: OVERVIEW                                                -->
+        <!-- =============================================================== -->
+        <div id="page-overview" class="dash-page-view space-y-8">
+          <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div>
+              <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+                Hello, Jamal! 👋
+              </h1>
+              <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
+                Your Class A Tractor-Trailer highway road evaluation is scheduled with Ray Callahan this Friday.
+              </p>
+            </div>
+
+            <div class="inline-flex items-center gap-2 self-start md:self-auto bg-white dark:bg-[#0a2a17] border border-slate-200 dark:border-emerald-900/60 px-4 py-2.5 rounded-xl shadow-card text-xs font-semibold text-slate-600 dark:text-slate-300">
+              <span>State Road Exam in:</span>
+              <strong class="text-slate-900 dark:text-white font-extrabold">11 Days, 14 Hrs</strong>
+            </div>
+          </div>
+
+          <!-- 4 KPI Cards -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
+            <div onclick="openDashboardPage('enrollment')" class="cursor-pointer bg-white dark:bg-[#0a2a17] border border-slate-200/80 dark:border-emerald-900/50 rounded-2xl p-6 shadow-card hover:shadow-bloom hover:border-primary/40 transition-all">
+              <div class="flex items-center justify-between mb-5">
+                <span class="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-950 text-primary dark:text-emerald-400 flex items-center justify-center">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2 7h11v10H2zM13 10h5l4 4v3h-9z"/></svg>
+                </span>
+                <span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-100 dark:bg-emerald-950/90 text-primary dark:text-emerald-400">Enrolled</span>
+              </div>
+              <p class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">Class A CDL</p>
+              <p class="text-xs font-medium text-slate-500 dark:text-slate-400 mt-1">160-Hr Tractor-Trailer Track →</p>
+            </div>
+
+            <div onclick="openDashboardPage('hours')" class="cursor-pointer bg-white dark:bg-[#0a2a17] border border-slate-200/80 dark:border-emerald-900/50 rounded-2xl p-6 shadow-card hover:shadow-bloom hover:border-primary/40 transition-all">
+              <div class="flex items-center justify-between mb-5">
+                <span class="w-10 h-10 rounded-xl bg-sky-50 dark:bg-sky-950/60 text-sky-600 dark:text-sky-400 flex items-center justify-center">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                </span>
+                <span id="overview-sessions-badge" class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-sky-100 dark:bg-sky-950/80 text-sky-700 dark:text-sky-300">18 Sessions</span>
+              </div>
+              <p class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+                <span id="overview-total-hours">124.5</span> Hrs
+              </p>
+              <p class="text-xs font-medium text-slate-500 dark:text-slate-400 mt-1">View Driving Hours Log →</p>
+            </div>
+
+            <div onclick="openDashboardPage('results')" class="cursor-pointer bg-white dark:bg-[#0a2a17] border border-slate-200/80 dark:border-emerald-900/50 rounded-2xl p-6 shadow-card hover:shadow-bloom hover:border-primary/40 transition-all">
+              <div class="flex items-center justify-between mb-5">
+                <span class="w-10 h-10 rounded-xl bg-amber-50 dark:bg-amber-950/60 text-accentAmber flex items-center justify-center">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>
+                </span>
+                <span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-amber-100 dark:bg-amber-950/80 text-amber-800 dark:text-amber-300">+13% Above Min</span>
+              </div>
+              <p class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">93.0%</p>
+              <p class="text-xs font-medium text-slate-500 dark:text-slate-400 mt-1">Inspect Exam &amp; Test Results →</p>
+            </div>
+
+            <div onclick="openDashboardPage('placement')" class="cursor-pointer bg-white dark:bg-[#0a2a17] border border-slate-200/80 dark:border-emerald-900/50 rounded-2xl p-6 shadow-card hover:shadow-bloom hover:border-primary/40 transition-all">
+              <div class="flex items-center justify-between mb-5">
+                <span class="w-10 h-10 rounded-xl bg-violet-50 dark:bg-violet-950/60 text-accentViolet dark:text-violet-300 flex items-center justify-center">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                </span>
+                <span id="overview-endorsement-badge" class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-violet-100 dark:bg-violet-950/80 text-accentViolet dark:text-violet-300">2 Endorsements</span>
+              </div>
+              <p class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">3 Offers</p>
+              <p class="text-xs font-medium text-slate-500 dark:text-slate-400 mt-1">Review Carrier Job Offers →</p>
+            </div>
+          </div>
+
+          <!-- Recent Driving Activity Summary Table -->
+          <div class="space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+              <div class="flex items-center gap-2.5">
+                <span class="w-5 h-5 rounded-md border-2 border-accentCoral flex items-center justify-center text-accentCoral text-xs font-bold">≡</span>
+                <h2 class="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white">
+                  Recent Driving Activity &amp; ELDT Records
+                </h2>
+              </div>
+              <button type="button" onclick="openDashboardPage('hours')" class="self-start sm:self-auto px-4 py-2 rounded-xl bg-white dark:bg-[#0a2a17] border border-slate-200 dark:border-emerald-900/70 text-xs font-bold text-primary dark:text-emerald-400 hover:border-primary shadow-card transition-colors">
+                Open Full Hours Log →
+              </button>
+            </div>
+
+            <div class="bg-white dark:bg-[#0a2a17] border border-slate-200/80 dark:border-emerald-900/50 rounded-2xl shadow-card overflow-hidden">
+              <div class="overflow-x-auto table-scroll">
+                <table class="w-full min-w-[640px] text-start border-collapse">
+                  <thead>
+                    <tr class="border-b border-slate-100 dark:border-emerald-950 bg-slate-50/70 dark:bg-[#051b0e]/50 text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                      <th class="py-3.5 px-6 text-start">Date</th>
+                      <th class="py-3.5 px-4 text-start">Training Module</th>
+                      <th class="py-3.5 px-4 text-start">Instructor</th>
+                      <th class="py-3.5 px-4 text-start">Hours</th>
+                      <th class="py-3.5 px-6 text-end">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-100 dark:divide-emerald-950/70 text-sm">
+                    <tr>
+                      <td class="py-4 px-6 font-semibold whitespace-nowrap text-slate-900 dark:text-white">Nov 15, 2026</td>
+                      <td class="py-4 px-4 font-bold text-slate-800 dark:text-slate-100">Interstate Highway &amp; Night Merge</td>
+                      <td class="py-4 px-4 text-slate-600 dark:text-slate-300">Ray Callahan</td>
+                      <td class="py-4 px-4 font-extrabold text-primary dark:text-emerald-400">5.5 Hrs</td>
+                      <td class="py-4 px-6 text-end"><span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-100 dark:bg-emerald-950 text-primary dark:text-emerald-400">Signed Off</span></td>
+                    </tr>
+                    <tr>
+                      <td class="py-4 px-6 font-semibold whitespace-nowrap text-slate-900 dark:text-white">Nov 13, 2026</td>
+                      <td class="py-4 px-4 font-bold text-slate-800 dark:text-slate-100">90° Alley Dock &amp; Offset Backing</td>
+                      <td class="py-4 px-4 text-slate-600 dark:text-slate-300">Denise Okafor</td>
+                      <td class="py-4 px-4 font-extrabold text-primary dark:text-emerald-400">6.0 Hrs</td>
+                      <td class="py-4 px-6 text-end"><span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-100 dark:bg-emerald-950 text-primary dark:text-emerald-400">Signed Off</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- =============================================================== -->
+        <!-- PAGE 2: MY PROGRAM ENROLLMENT                                   -->
+        <!-- =============================================================== -->
+        <div id="page-enrollment" class="dash-page-view hidden space-y-8">
+          <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-slate-200 dark:border-emerald-950 pb-6">
+            <div>
+              <span class="text-[11px] font-bold uppercase tracking-widest text-primary dark:text-emerald-400">FMCSA ELDT Registration</span>
+              <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mt-1">My Program Enrollment</h1>
+              <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Manage your active CDL license class track, cohort schedule, and add-on federal endorsements.</p>
+            </div>
+            <button type="button" onclick="openDashboardPage('overview')" class="self-start md:self-auto px-4 py-2.5 rounded-xl bg-white dark:bg-[#0a2a17] border border-slate-200 dark:border-emerald-900 text-xs font-bold text-slate-700 dark:text-slate-200 hover:border-primary">
+              ← Back to Overview
+            </button>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <div class="lg:col-span-7 bg-white dark:bg-[#0a2a17] border border-slate-200/80 dark:border-emerald-900/50 rounded-2xl p-6 sm:p-8 shadow-card space-y-5">
+              <div class="flex items-center justify-between">
+                <h2 class="text-lg font-extrabold text-slate-900 dark:text-white">Active Courses &amp; Endorsements</h2>
+                <span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 dark:bg-emerald-950 text-primary dark:text-emerald-400">Cohort #18</span>
+              </div>
+
+              <ul id="enrolled-courses-list" class="space-y-4">
+                <li class="p-5 rounded-2xl bg-emerald-50/70 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800/70 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div>
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-primary dark:text-emerald-400">Primary License Track</span>
+                    <h3 class="text-base font-extrabold text-slate-900 dark:text-white mt-0.5">Class A · Tractor-Trailer (160 Hours)</h3>
+                    <p class="text-xs text-slate-600 dark:text-slate-300 mt-1">Mon–Fri Day Track (07:30 AM – 04:00 PM) · 10-Speed Manual &amp; Automatic</p>
+                  </div>
+                  <span class="self-start sm:self-center px-3 py-1 rounded-full text-xs font-bold bg-primary text-white">Active</span>
+                </li>
+
+                <li class="p-5 rounded-2xl bg-slate-50 dark:bg-[#051b0e] border border-slate-200 dark:border-emerald-900/50 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div>
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500">Core System Module</span>
+                    <h3 class="text-base font-extrabold text-slate-900 dark:text-white mt-0.5">Air Brakes &amp; Combination Vehicles</h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">ELDT Theory &amp; Pneumatic Brake Lab · Completed Nov 05, 2026</p>
+                  </div>
+                  <span class="self-start sm:self-center px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 dark:bg-emerald-950 text-primary dark:text-emerald-400">Completed</span>
+                </li>
+              </ul>
+            </div>
+
+            <div class="lg:col-span-5 bg-white dark:bg-[#0a2a17] border border-slate-200/80 dark:border-emerald-900/50 rounded-2xl p-6 sm:p-8 shadow-card">
+              <h2 class="text-lg font-extrabold text-slate-900 dark:text-white mb-2">Enroll in License or Endorsement</h2>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mb-6">
+                Add specialized commercial endorsements to qualify for higher-paying tanker, hazmat, and LTL freight fleets.
+              </p>
+
+              <form id="enroll-form" class="space-y-4">
+                <div>
+                  <label for="enroll-select" class="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-2">Select Program / Endorsement</label>
+                  <select id="enroll-select" class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-[#051b0e] border border-slate-200 dark:border-emerald-900/70 text-sm font-semibold text-slate-900 dark:text-white focus:outline-none focus:border-primary">
+                    <option value="HazMat Endorsement (H) · ELDT Theory">HazMat Endorsement (H) · ELDT Theory (+$450)</option>
+                    <option value="Tanker Endorsement (N) · Liquid Surge">Tanker Endorsement (N) · Liquid Surge (+$350)</option>
+                    <option value="Doubles & Triples (T) · Range Coupling">Doubles &amp; Triples (T) · Range Coupling (+$450)</option>
+                    <option value="Passenger Transport (P) · Class B/C">Passenger Transport (P) · Class B/C (+$400)</option>
+                    <option value="Refresher & 10-Speed Manual Course">Refresher &amp; 10-Speed Manual Course (+$650)</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label for="enroll-schedule" class="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-2">Preferred Training Schedule</label>
+                  <select id="enroll-schedule" class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-[#051b0e] border border-slate-200 dark:border-emerald-900/70 text-sm text-slate-900 dark:text-white focus:outline-none focus:border-primary">
+                    <option value="Weekday Add-On (Mon–Fri)">Weekday Add-On (Mon–Fri)</option>
+                    <option value="Weekend Intensive (Sat–Sun)">Weekend Intensive (Sat–Sun)</option>
+                    <option value="Self-Paced Online ELDT + Range Day">Self-Paced Online ELDT + Range Day</option>
+                  </select>
+                </div>
+
+                <div id="enroll-toast" class="hidden p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950 border border-emerald-200 dark:border-emerald-800 text-xs font-bold text-primary dark:text-emerald-400">
+                  ✓ Enrollment added to your active training plan.
+                </div>
+
+                <button type="submit" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-primary to-secondary hover:from-primaryHover hover:to-secondaryHover text-white text-xs font-bold uppercase tracking-wider shadow-bloom transition-all">
+                  + Confirm Course Enrollment
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- =============================================================== -->
+        <!-- PAGE 3: DRIVING HOURS LOG                                       -->
+        <!-- =============================================================== -->
+        <div id="page-hours" class="dash-page-view hidden space-y-8">
+          <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-slate-200 dark:border-emerald-950 pb-6">
+            <div>
+              <span class="text-[11px] font-bold uppercase tracking-widest text-primary dark:text-emerald-400">FMCSA ELDT Logbook</span>
+              <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mt-1">Behind-the-Wheel Driving Hours Log</h1>
+              <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Submit new cab sessions and track verified range, highway, night, and pre-trip hours.</p>
+            </div>
+            <div class="flex flex-wrap items-center gap-3">
+              <button type="button" onclick="openLogModal()" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-primary to-secondary text-white text-xs font-bold uppercase tracking-wider shadow-bloom">
+                + Log Driving Hours
+              </button>
+              <button type="button" onclick="openDashboardPage('overview')" class="px-4 py-2.5 rounded-xl bg-white dark:bg-[#0a2a17] border border-slate-200 dark:border-emerald-900 text-xs font-bold text-slate-700 dark:text-slate-200 hover:border-primary">
+                ← Overview
+              </button>
+            </div>
+          </div>
+
+          <div class="bg-white dark:bg-[#0a2a17] border border-slate-200/80 dark:border-emerald-900/50 rounded-2xl p-6 shadow-card">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+              <span class="text-sm font-extrabold text-slate-900 dark:text-white">Class A 160-Hour ELDT Requirement Progress</span>
+              <span class="text-sm font-extrabold text-primary dark:text-emerald-400"><span id="hours-page-total">124.5</span> / 160.0 Hrs (<span id="hours-page-pct">78</span>%)</span>
+            </div>
+            <div class="w-full h-3 rounded-full bg-slate-100 dark:bg-emerald-950 overflow-hidden">
+              <div id="hours-page-bar" class="h-full rounded-full bg-gradient-to-r from-primary to-secondary transition-all duration-500" style="width: 78%;"></div>
+            </div>
+          </div>
+
+          <div class="bg-white dark:bg-[#0a2a17] border border-slate-200/80 dark:border-emerald-900/50 rounded-2xl shadow-card overflow-hidden">
+            <div class="overflow-x-auto table-scroll">
+              <table class="w-full min-w-[680px] text-start border-collapse">
+                <thead>
+                  <tr class="border-b border-slate-100 dark:border-emerald-950 bg-slate-50/70 dark:bg-[#051b0e]/50 text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                    <th class="py-3.5 px-6 text-start">Date</th>
+                    <th class="py-3.5 px-4 text-start">Training Module &amp; Equipment</th>
+                    <th class="py-3.5 px-4 text-start">Instructor</th>
+                    <th class="py-3.5 px-4 text-start">Hours</th>
+                    <th class="py-3.5 px-6 text-end">Verification</th>
+                  </tr>
+                </thead>
+                <tbody id="driving-records-body" class="divide-y divide-slate-100 dark:divide-emerald-950/70 text-sm">
+                  <tr class="hover:bg-slate-50/70 dark:hover:bg-emerald-950/30 transition-colors">
+                    <td class="py-4 px-6 font-semibold whitespace-nowrap text-slate-900 dark:text-white">Nov 15, 2026</td>
+                    <td class="py-4 px-4">
+                      <p class="font-bold text-slate-900 dark:text-white">Interstate Highway &amp; Night Merge</p>
+                      <p class="text-xs text-slate-500 dark:text-slate-400">Freightliner Cascadia · 53' Dry Van</p>
+                    </td>
+                    <td class="py-4 px-4 text-slate-600 dark:text-slate-300 whitespace-nowrap">Ray Callahan</td>
+                    <td class="py-4 px-4 font-extrabold text-primary dark:text-emerald-400 whitespace-nowrap">5.5 Hrs</td>
+                    <td class="py-4 px-6 text-end whitespace-nowrap"><span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-100 dark:bg-emerald-950 text-primary dark:text-emerald-400">Signed Off</span></td>
+                  </tr>
+                  <tr class="hover:bg-slate-50/70 dark:hover:bg-emerald-950/30 transition-colors">
+                    <td class="py-4 px-6 font-semibold whitespace-nowrap text-slate-900 dark:text-white">Nov 13, 2026</td>
+                    <td class="py-4 px-4">
+                      <p class="font-bold text-slate-900 dark:text-white">90° Alley Dock &amp; Offset Backing</p>
+                      <p class="text-xs text-slate-500 dark:text-slate-400">Training Yard Bay #2 · Range Drills</p>
+                    </td>
+                    <td class="py-4 px-4 text-slate-600 dark:text-slate-300 whitespace-nowrap">Denise Okafor</td>
+                    <td class="py-4 px-4 font-extrabold text-primary dark:text-emerald-400 whitespace-nowrap">6.0 Hrs</td>
+                    <td class="py-4 px-6 text-end whitespace-nowrap"><span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-100 dark:bg-emerald-950 text-primary dark:text-emerald-400">Signed Off</span></td>
+                  </tr>
+                  <tr class="hover:bg-slate-50/70 dark:hover:bg-emerald-950/30 transition-colors">
+                    <td class="py-4 px-6 font-semibold whitespace-nowrap text-slate-900 dark:text-white">Nov 11, 2026</td>
+                    <td class="py-4 px-4">
+                      <p class="font-bold text-slate-900 dark:text-white">10-Speed Manual Double-Clutching</p>
+                      <p class="text-xs text-slate-500 dark:text-slate-400">Kenworth T680 · Mountain Grade Control</p>
+                    </td>
+                    <td class="py-4 px-4 text-slate-600 dark:text-slate-300 whitespace-nowrap">Marcus Biel</td>
+                    <td class="py-4 px-4 font-extrabold text-primary dark:text-emerald-400 whitespace-nowrap">4.5 Hrs</td>
+                    <td class="py-4 px-6 text-end whitespace-nowrap"><span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-100 dark:bg-emerald-950 text-primary dark:text-emerald-400">Signed Off</span></td>
+                  </tr>
+                  <tr class="hover:bg-slate-50/70 dark:hover:bg-emerald-950/30 transition-colors">
+                    <td class="py-4 px-6 font-semibold whitespace-nowrap text-slate-900 dark:text-white">Nov 08, 2026</td>
+                    <td class="py-4 px-4">
+                      <p class="font-bold text-slate-900 dark:text-white">108-Point Pre-Trip &amp; Air Brake Lab</p>
+                      <p class="text-xs text-slate-500 dark:text-slate-400">Engine Compartment, Coupling &amp; Cab Check</p>
+                    </td>
+                    <td class="py-4 px-4 text-slate-600 dark:text-slate-300 whitespace-nowrap">Denise Okafor</td>
+                    <td class="py-4 px-4 font-extrabold text-primary dark:text-emerald-400 whitespace-nowrap">8.0 Hrs</td>
+                    <td class="py-4 px-6 text-end whitespace-nowrap"><span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-100 dark:bg-emerald-950 text-primary dark:text-emerald-400">Signed Off</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- =============================================================== -->
+        <!-- PAGE 4: EXAM & TEST RESULTS                                     -->
+        <!-- =============================================================== -->
+        <div id="page-results" class="dash-page-view hidden space-y-8">
+          <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-slate-200 dark:border-emerald-950 pb-6">
+            <div>
+              <span class="text-[11px] font-bold uppercase tracking-widest text-primary dark:text-emerald-400">Assessments &amp; State Skills</span>
+              <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mt-1">Exam &amp; Road Test Results</h1>
+              <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Official ELDT written exam scores (80% minimum required) and range practical evaluations.</p>
+            </div>
+            <button type="button" onclick="openDashboardPage('overview')" class="self-start md:self-auto px-4 py-2.5 rounded-xl bg-white dark:bg-[#0a2a17] border border-slate-200 dark:border-emerald-900 text-xs font-bold text-slate-700 dark:text-slate-200 hover:border-primary">
+              ← Back to Overview
+            </button>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="p-6 rounded-2xl bg-white dark:bg-[#0a2a17] border border-slate-200/80 dark:border-emerald-900/50 shadow-card flex items-start justify-between gap-4">
+              <div>
+                <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Written Knowledge Exam</span>
+                <h3 class="text-lg font-extrabold text-slate-900 dark:text-white mt-1">FMCSA ELDT General Knowledge</h3>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Completed Nov 03, 2026 · Proctor: Alina Petrov</p>
+                <p class="text-xs text-primary dark:text-emerald-400 font-semibold mt-3">48 / 50 Questions Correct</p>
+              </div>
+              <span class="px-3.5 py-1.5 rounded-xl bg-emerald-100 dark:bg-emerald-950 text-primary dark:text-emerald-400 text-sm font-extrabold">96% PASS</span>
+            </div>
+
+            <div class="p-6 rounded-2xl bg-white dark:bg-[#0a2a17] border border-slate-200/80 dark:border-emerald-900/50 shadow-card flex items-start justify-between gap-4">
+              <div>
+                <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">CLP Endorsement Exam</span>
+                <h3 class="text-lg font-extrabold text-slate-900 dark:text-white mt-1">Air Brakes &amp; Combination Vehicles</h3>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Completed Nov 05, 2026 · State DMV Testing Center</p>
+                <p class="text-xs text-primary dark:text-emerald-400 font-semibold mt-3">23 / 25 Questions Correct</p>
+              </div>
+              <span class="px-3.5 py-1.5 rounded-xl bg-emerald-100 dark:bg-emerald-950 text-primary dark:text-emerald-400 text-sm font-extrabold">92% PASS</span>
+            </div>
+
+            <div class="p-6 rounded-2xl bg-white dark:bg-[#0a2a17] border border-slate-200/80 dark:border-emerald-900/50 shadow-card flex items-start justify-between gap-4">
+              <div>
+                <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Range Practical Evaluation</span>
+                <h3 class="text-lg font-extrabold text-slate-900 dark:text-white mt-1">108-Point Pre-Trip Vehicle Inspection</h3>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Evaluated Nov 10, 2026 · Examiner: Denise Okafor</p>
+                <p class="text-xs text-primary dark:text-emerald-400 font-semibold mt-3">Zero Critical Safety Omissions</p>
+              </div>
+              <span class="px-3.5 py-1.5 rounded-xl bg-emerald-100 dark:bg-emerald-950 text-primary dark:text-emerald-400 text-sm font-extrabold">90% PASS</span>
+            </div>
+
+            <div class="p-6 rounded-2xl bg-white dark:bg-[#0a2a17] border border-slate-200/80 dark:border-emerald-900/50 shadow-card flex items-start justify-between gap-4">
+              <div>
+                <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Backing &amp; Control Practical</span>
+                <h3 class="text-lg font-extrabold text-slate-900 dark:text-white mt-1">90° Alley Dock &amp; Offset Lane Backing</h3>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Evaluated Nov 14, 2026 · Examiner: Ray Callahan</p>
+                <p class="text-xs text-primary dark:text-emerald-400 font-semibold mt-3">Completed within 1 Pull-Up</p>
+              </div>
+              <span class="px-3.5 py-1.5 rounded-xl bg-emerald-100 dark:bg-emerald-950 text-primary dark:text-emerald-400 text-sm font-extrabold">94% PASS</span>
+            </div>
+
+            <div class="md:col-span-2 p-6 rounded-2xl bg-amber-50/90 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/60 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div>
+                <span class="text-[10px] font-bold uppercase tracking-wider text-amber-800 dark:text-amber-300">Final State Licensing Exam</span>
+                <h3 class="text-lg font-extrabold text-slate-900 dark:text-white mt-1">State CDL On-Road Skills &amp; Highway Test</h3>
+                <p class="text-xs text-amber-900/80 dark:text-amber-200/80 mt-1">Scheduled for Nov 28, 2026 @ 08:30 AM · Yard Bay #2 · Assigned Truck: Freightliner Cascadia #14</p>
+              </div>
+              <span class="self-start sm:self-center px-4 py-1.5 rounded-xl bg-amber-200/90 dark:bg-amber-900/70 text-amber-950 dark:text-amber-200 text-xs font-extrabold uppercase">Scheduled</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- =============================================================== -->
+        <!-- PAGE 5: CARRIER JOB OFFERS                                      -->
+        <!-- =============================================================== -->
+        <div id="page-placement" class="dash-page-view hidden space-y-8">
+          <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-slate-200 dark:border-emerald-950 pb-6">
+            <div>
+              <span class="text-[11px] font-bold uppercase tracking-widest text-primary dark:text-emerald-400">Career Placement Desk</span>
+              <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mt-1">Pre-Hire Carrier Partner Offers</h1>
+              <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Conditional job offers matched to your Class A training record and home-time preferences.</p>
+            </div>
+            <button type="button" onclick="openDashboardPage('overview')" class="self-start md:self-auto px-4 py-2.5 rounded-xl bg-white dark:bg-[#0a2a17] border border-slate-200 dark:border-emerald-900 text-xs font-bold text-slate-700 dark:text-slate-200 hover:border-primary">
+              ← Back to Overview
+            </button>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-white dark:bg-[#0a2a17] border border-slate-200/80 dark:border-emerald-900/50 rounded-2xl p-6 shadow-card flex flex-col justify-between space-y-6">
+              <div>
+                <span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase bg-emerald-100 dark:bg-emerald-950 text-primary dark:text-emerald-400">Regional Dedicated</span>
+                <h3 class="text-xl font-extrabold text-slate-900 dark:text-white mt-3">Schneider National</h3>
+                <p class="text-2xl font-display font-extrabold text-primary dark:text-emerald-400 mt-1">$72,000 – $78,000 / yr</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-3 leading-relaxed">
+                  Home every weekend. 100% no-touch dry van freight across Midwest regional corridors + $6,000 tuition reimbursement.
+                </p>
+              </div>
+              <button type="button" onclick="this.textContent='✓ Interview Confirmed'; this.classList.add('bg-emerald-700')" class="w-full py-3 rounded-xl bg-primary hover:bg-primaryHover text-white text-xs font-bold uppercase tracking-wider transition-colors">
+                Accept Pre-Hire Offer
+              </button>
+            </div>
+
+            <div class="bg-white dark:bg-[#0a2a17] border border-slate-200/80 dark:border-emerald-900/50 rounded-2xl p-6 shadow-card flex flex-col justify-between space-y-6">
+              <div>
+                <span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase bg-sky-100 dark:bg-sky-950 text-sky-700 dark:text-sky-300">Intermodal Local</span>
+                <h3 class="text-xl font-extrabold text-slate-900 dark:text-white mt-3">J.B. Hunt Transport</h3>
+                <p class="text-2xl font-display font-extrabold text-primary dark:text-emerald-400 mt-1">$68,500 – $75,000 / yr</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-3 leading-relaxed">
+                  Home daily shifts moving containerized rail-ramp freight within a 150-mile radius. Full medical &amp; 401(k) match from Day 30.
+                </p>
+              </div>
+              <button type="button" onclick="this.textContent='✓ Interview Confirmed'; this.classList.add('bg-emerald-700')" class="w-full py-3 rounded-xl bg-primary hover:bg-primaryHover text-white text-xs font-bold uppercase tracking-wider transition-colors">
+                Accept Pre-Hire Offer
+              </button>
+            </div>
+
+            <div class="bg-white dark:bg-[#0a2a17] border border-slate-200/80 dark:border-emerald-900/50 rounded-2xl p-6 shadow-card flex flex-col justify-between space-y-6">
+              <div>
+                <span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300">Tuition Payback</span>
+                <h3 class="text-xl font-extrabold text-slate-900 dark:text-white mt-3">Werner Enterprises</h3>
+                <p class="text-2xl font-display font-extrabold text-primary dark:text-emerald-400 mt-1">$70,000 – $76,500 / yr</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-3 leading-relaxed">
+                  Dedicated temperature-controlled fleet with $200/month direct tuition reimbursement paid toward your IronRoute balance.
+                </p>
+              </div>
+              <button type="button" onclick="this.textContent='✓ Interview Confirmed'; this.classList.add('bg-emerald-700')" class="w-full py-3 rounded-xl bg-primary hover:bg-primaryHover text-white text-xs font-bold uppercase tracking-wider transition-colors">
+                Accept Pre-Hire Offer
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- =============================================================== -->
+        <!-- PAGE 6: DOT MEDICAL & CLP CHECK                                 -->
+        <!-- =============================================================== -->
+        <div id="page-compliance" class="dash-page-view hidden space-y-8">
+          <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-slate-200 dark:border-emerald-950 pb-6">
+            <div>
+              <span class="text-[11px] font-bold uppercase tracking-widest text-primary dark:text-emerald-400">Federal Driver Credentials</span>
+              <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mt-1">DOT Medical &amp; CLP Compliance</h1>
+              <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Verified FMCSA credentials required to sit for your state commercial road exam.</p>
+            </div>
+            <button type="button" onclick="openDashboardPage('overview')" class="self-start md:self-auto px-4 py-2.5 rounded-xl bg-white dark:bg-[#0a2a17] border border-slate-200 dark:border-emerald-900 text-xs font-bold text-slate-700 dark:text-slate-200 hover:border-primary">
+              ← Back to Overview
+            </button>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-white dark:bg-[#0a2a17] border border-slate-200/80 dark:border-emerald-900/50 rounded-2xl p-6 shadow-card">
+              <span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase bg-emerald-100 dark:bg-emerald-950 text-primary dark:text-emerald-400">✓ Verified</span>
+              <h3 class="text-lg font-extrabold text-slate-900 dark:text-white mt-3">DOT Medical Examiner Card</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">National Registry #88492014 · Valid through Oct 2028</p>
+            </div>
+
+            <div class="bg-white dark:bg-[#0a2a17] border border-slate-200/80 dark:border-emerald-900/50 rounded-2xl p-6 shadow-card">
+              <span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase bg-emerald-100 dark:bg-emerald-950 text-primary dark:text-emerald-400">✓ Active</span>
+              <h3 class="text-lg font-extrabold text-slate-900 dark:text-white mt-1">Commercial Learner's Permit</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Class A CLP · Air Brakes &amp; Combination Endorsed</p>
+            </div>
+
+            <div class="bg-white dark:bg-[#0a2a17] border border-slate-200/80 dark:border-emerald-900/50 rounded-2xl p-6 shadow-card">
+              <span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase bg-emerald-100 dark:bg-emerald-950 text-primary dark:text-emerald-400">✓ Cleared</span>
+              <h3 class="text-lg font-extrabold text-slate-900 dark:text-white mt-1">FMCSA Clearinghouse Query</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Pre-employment DOT drug &amp; alcohol screen cleared</p>
+            </div>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- MODAL: LOG DRIVING HOURS                                              -->
+  <!-- ===================================================================== -->
+  <div id="log-hours-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/65 backdrop-blur-xs p-4">
+    <div class="relative w-full max-w-lg bg-white dark:bg-[#0a2a17] border border-slate-200 dark:border-emerald-800 rounded-3xl p-6 sm:p-8 shadow-2xl">
+      <button type="button" onclick="closeLogModal()" aria-label="Close modal" class="absolute top-5 end-5 w-9 h-9 rounded-full bg-slate-100 dark:bg-emerald-950 text-slate-600 dark:text-slate-300 flex items-center justify-center hover:bg-slate-200">
+        ✕
+      </button>
+
+      <span class="text-[10px] font-bold uppercase tracking-widest text-primary dark:text-emerald-400">FMCSA ELDT Logbook</span>
+      <h3 class="text-2xl font-extrabold text-slate-900 dark:text-white mt-0.5 mb-1">Log Driving Hours</h3>
+      <p class="text-xs text-slate-500 dark:text-slate-400 mb-6">Record your behind-the-wheel range or highway training session.</p>
+
+      <form id="modal-hours-form" class="space-y-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label for="m-date" class="block text-[11px] font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">Session Date</label>
+            <input type="date" id="m-date" value="2026-11-16" required class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-[#051b0e] border border-slate-200 dark:border-emerald-900 text-sm focus:outline-none focus:border-primary" />
+          </div>
+          <div>
+            <label for="m-hours" class="block text-[11px] font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">Duration (Hours)</label>
+            <input type="number" id="m-hours" step="0.5" min="0.5" max="10" value="4.0" required class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-[#051b0e] border border-slate-200 dark:border-emerald-900 text-sm focus:outline-none focus:border-primary" />
+          </div>
+        </div>
+
+        <div>
+          <label for="m-module" class="block text-[11px] font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">Training Module</label>
+          <select id="m-module" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-[#051b0e] border border-slate-200 dark:border-emerald-900 text-sm focus:outline-none focus:border-primary">
+            <option value="Interstate Highway & Night Merge">Interstate Highway &amp; Night Merge</option>
+            <option value="90° Alley Dock & Offset Backing">90° Alley Dock &amp; Offset Backing</option>
+            <option value="10-Speed Manual Double-Clutching">10-Speed Manual Double-Clutching</option>
+            <option value="108-Point Pre-Trip & Air Brakes">108-Point Pre-Trip &amp; Air Brakes</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="m-instructor" class="block text-[11px] font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">Supervising Instructor</label>
+          <select id="m-instructor" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-[#051b0e] border border-slate-200 dark:border-emerald-900 text-sm focus:outline-none focus:border-primary">
+            <option value="Ray Callahan">Ray Callahan (Road Lead)</option>
+            <option value="Denise Okafor">Denise Okafor (Range Lead)</option>
+            <option value="Marcus Biel">Marcus Biel (Highway Lead)</option>
+            <option value="Alina Petrov">Alina Petrov (Theory &amp; HazMat)</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="m-notes" class="block text-[11px] font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">Truck / Maneuver Notes</label>
+          <input type="text" id="m-notes" placeholder="e.g., Freightliner Cascadia · Highway lane changes" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-[#051b0e] border border-slate-200 dark:border-emerald-900 text-sm focus:outline-none focus:border-primary" />
+        </div>
+
+        <div class="pt-2 flex items-center justify-end gap-3">
+          <button type="button" onclick="closeLogModal()" class="px-5 py-2.5 rounded-xl border border-slate-200 dark:border-emerald-900 text-xs font-bold text-slate-600 dark:text-slate-300">
+            Cancel
+          </button>
+          <button type="submit" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-primary to-secondary text-white text-xs font-bold uppercase tracking-wider shadow-bloom">
+            Save Driving Log
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= JAVASCRIPT ================= -->
+  <script>
+    (function () {
+      'use strict';
+
+      /* ---------- Dedicated Page Switcher ---------- */
+      const PAGE_IDS = ['overview', 'enrollment', 'hours', 'results', 'placement', 'compliance'];
+
+      window.openDashboardPage = function (pageName) {
+        if (!PAGE_IDS.includes(pageName)) pageName = 'overview';
+
+        PAGE_IDS.forEach(function (id) {
+          const el = document.getElementById('page-' + id);
+          if (el) el.classList.toggle('hidden', id !== pageName);
+        });
+
+        document.querySelectorAll('.nav-pill').forEach(function (btn) {
+          const isActive = btn.getAttribute('data-page') === pageName;
+          btn.className = isActive
+            ? 'nav-pill active w-full flex items-center gap-3 px-3.5 py-3 rounded-xl text-sm font-bold transition-all duration-200 bg-gradient-to-r from-primary to-secondary text-white shadow-bloom'
+            : 'nav-pill w-full flex items-center gap-3 px-3.5 py-3 rounded-xl text-sm font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-emerald-950/60 transition-all duration-200';
+        });
+
+        toggleMobileSidebar(false);
+        window.scrollTo({ top: 0, behavior: 'instant' });
+      };
+
+      /* ---------- Theme Toggle ---------- */
+      window.toggleTheme = function () {
+        const isDark = document.documentElement.classList.toggle('dark');
+        try { localStorage.setItem('theme', isDark ? 'dark' : 'light'); } catch (e) {}
+      };
+
+      /* ---------- RTL / LTR Toggle ---------- */
+      window.toggleRTL = function () {
+        const html = document.documentElement;
+        const isLtr = html.getAttribute('dir') !== 'rtl';
+        html.setAttribute('dir', isLtr ? 'rtl' : 'ltr');
+        const label = document.getElementById('sidebar-rtl-label');
+        if (label) label.textContent = isLtr ? 'LTR' : 'RTL';
+        try { localStorage.setItem('dir', isLtr ? 'rtl' : 'ltr'); } catch (e) {}
+      };
+
+      /* ---------- Mobile Sidebar Drawer ---------- */
+      window.toggleMobileSidebar = function (open) {
+        const sidebar  = document.getElementById('app-sidebar');
+        const backdrop = document.getElementById('sidebar-backdrop');
+        if (open) {
+          sidebar.classList.remove('-translate-x-full', 'rtl:translate-x-full');
+          backdrop.classList.remove('hidden');
+        } else {
+          sidebar.classList.add('-translate-x-full', 'rtl:translate-x-full');
+          backdrop.classList.add('hidden');
+        }
+      };
+
+      /* ---------- Log Driving Hours Modal ---------- */
+      const logModal = document.getElementById('log-hours-modal');
+      window.openLogModal = function () {
+        logModal.classList.remove('hidden');
+        logModal.classList.add('flex');
+      };
+      window.closeLogModal = function () {
+        logModal.classList.add('hidden');
+        logModal.classList.remove('flex');
+      };
+
+      let totalHours   = 124.5;
+      let sessionCount = 18;
+
+      const modalForm = document.getElementById('modal-hours-form');
+      if (modalForm) {
+        modalForm.addEventListener('submit', function (e) {
+          e.preventDefault();
+          const dateVal = document.getElementById('m-date').value;
+          const hrsVal  = parseFloat(document.getElementById('m-hours').value) || 0;
+          const modVal  = document.getElementById('m-module').value;
+          const instVal = document.getElementById('m-instructor').value;
+          const noteVal = document.getElementById('m-notes').value.trim() || 'Student ELDT Cab Log';
+
+          totalHours   += hrsVal;
+          sessionCount += 1;
+          const pct = Math.min(100, Math.round((totalHours / 160) * 100));
+
+          document.getElementById('overview-total-hours').textContent   = totalHours.toFixed(1);
+          document.getElementById('overview-sessions-badge').textContent = sessionCount + ' Sessions';
+          document.getElementById('hours-page-total').textContent       = totalHours.toFixed(1);
+          document.getElementById('hours-page-pct').textContent         = pct;
+          document.getElementById('hours-page-bar').style.width         = pct + '%';
+
+          const tbody = document.getElementById('driving-records-body');
+          const tr = document.createElement('tr');
+          tr.className = 'hover:bg-slate-50/70 dark:hover:bg-emerald-950/30 transition-colors';
+          tr.innerHTML =
+            '<td class="py-4 px-6 font-semibold whitespace-nowrap text-slate-900 dark:text-white">' + dateVal + '</td>' +
+            '<td class="py-4 px-4"><p class="font-bold text-slate-900 dark:text-white">' + modVal + '</p><p class="text-xs text-slate-500 dark:text-slate-400">' + noteVal + '</p></td>' +
+            '<td class="py-4 px-4 text-slate-600 dark:text-slate-300 whitespace-nowrap">' + instVal + '</td>' +
+            '<td class="py-4 px-4 font-extrabold text-primary dark:text-emerald-400 whitespace-nowrap">' + hrsVal.toFixed(1) + ' Hrs</td>' +
+            '<td class="py-4 px-6 text-end whitespace-nowrap"><span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300">Pending Sign-Off</span></td>';
+          tbody.prepend(tr);
+
+          document.getElementById('m-notes').value = '';
+          closeLogModal();
+          openDashboardPage('hours');
+        });
+      }
+
+      /* ---------- Program / Endorsement Enrollment ---------- */
+      let endorsementCount = 2;
+      const enrollForm = document.getElementById('enroll-form');
+      if (enrollForm) {
+        enrollForm.addEventListener('submit', function (e) {
+          e.preventDefault();
+          const select   = document.getElementById('enroll-select');
+          const schedule = document.getElementById('enroll-schedule').value;
+          const title    = select.value;
+          const list     = document.getElementById('enrolled-courses-list');
+
+          const li = document.createElement('li');
+          li.className = 'p-5 rounded-2xl bg-emerald-50/70 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4';
+          li.innerHTML =
+            '<div><span class="text-[10px] font-bold uppercase tracking-wider text-primary dark:text-emerald-400">Added Endorsement</span>' +
+            '<h3 class="text-base font-extrabold text-slate-900 dark:text-white mt-0.5">' + title + '</h3>' +
+            '<p class="text-xs text-slate-500 dark:text-slate-400 mt-1">' + schedule + '</p></div>' +
+            '<span class="self-start sm:self-center px-3 py-1 rounded-full text-xs font-bold bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300">Enrolled</span>';
+          list.appendChild(li);
+
+          endorsementCount += 1;
+          document.getElementById('overview-endorsement-badge').textContent = endorsementCount + ' Endorsements';
+
+          const toast = document.getElementById('enroll-toast');
+          if (toast) {
+            toast.classList.remove('hidden');
+            setTimeout(function () { toast.classList.add('hidden'); }, 3000);
+          }
+        });
+      }
+
+      if (document.documentElement.getAttribute('dir') === 'rtl') {
+        const label = document.getElementById('sidebar-rtl-label');
+        if (label) label.textContent = 'LTR';
+      }
+    })();
+  </script>
+</body>
+</html>

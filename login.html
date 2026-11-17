@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+  <script>
+    (function () {
+      try {
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (savedTheme === 'dark' || (!savedTheme && prefersDark)) document.documentElement.classList.add('dark');
+        else document.documentElement.classList.remove('dark');
+
+        const savedDir = localStorage.getItem('dir');
+        if (savedDir === 'rtl' || savedDir === 'ltr') document.documentElement.setAttribute('dir', savedDir);
+      } catch (e) {}
+    })();
+  </script>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign In &amp; Register | IronRoute CDL Academy</title>
+  <meta name="description" content="Sign in or create an account to access your IronRoute CDL Academy student or staff & admin training portal." />
+
+  <!-- ================= FAVICON (Semi Truck) ================= -->
+  <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%2315803d'/%3E%3Cpath d='M5 10h13v11H5z' fill='none' stroke='%23ffffff' stroke-width='1.8' stroke-linejoin='round'/%3E%3Cpath d='M18 14h5l4 4v3h-9z' fill='none' stroke='%23ffffff' stroke-width='1.8' stroke-linejoin='round'/%3E%3Ccircle cx='10' cy='23' r='2.4' fill='none' stroke='%23bbf7d0' stroke-width='1.8'/%3E%3Ccircle cx='22' cy='23' r='2.4' fill='none' stroke='%23bbf7d0' stroke-width='1.8'/%3E%3C/svg%3E" />
+
+  <!-- ================= FONTS ================= -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- ================= TAILWIND ================= -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['"Barlow Condensed"', 'sans-serif'],
+            sans: ['"Plus Jakarta Sans"', 'sans-serif']
+          },
+          colors: {
+            primary: '#15803d',
+            primaryHover: '#166534',
+            primaryLight: '#ecfdf5',
+            secondary: '#22c55e',
+            secondaryHover: '#16a34a',
+            brandLight: '#f8fafc',
+            brandDark: '#051b0e'
+          },
+          boxShadow: {
+            card: '0 20px 50px -12px rgba(5, 27, 14, 0.12)',
+            bloom: '0 10px 25px -5px rgba(21, 128, 61, 0.35)',
+            'bloom-hover': '0 16px 32px -6px rgba(21, 128, 61, 0.48)'
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    html[dir="rtl"] .rtl-flip { transform: scaleX(-1); }
+
+    @keyframes panelFade {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-panel { animation: panelFade 0.22s ease-out forwards; }
+  </style>
+</head>
+
+<body class="min-h-screen bg-[#f3f6f4] dark:bg-brandDark text-slate-800 dark:text-slate-100 antialiased flex flex-col justify-center items-center p-4 sm:p-6 relative overflow-x-hidden transition-colors duration-300">
+
+  <!-- Ambient Soft Glows -->
+  <div class="fixed -top-32 -end-32 w-96 h-96 bg-primary/10 dark:bg-primary/20 rounded-full blur-[120px] pointer-events-none"></div>
+  <div class="fixed -bottom-32 -start-32 w-96 h-96 bg-secondary/10 dark:bg-secondary/15 rounded-full blur-[120px] pointer-events-none"></div>
+
+  <!-- ================= TOP-RIGHT FLOATING CONTROLS (Home + Theme + RTL) ================= -->
+  <div class="fixed top-5 end-5 z-50 flex items-center gap-2">
+    <a href="index.html" title="Back to Home" aria-label="Back to Home"
+       class="h-10 px-3.5 rounded-xl bg-white dark:bg-[#0a2a17] border border-slate-200/80 dark:border-emerald-900/60 shadow-sm text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-emerald-400 hover:border-emerald-300 dark:hover:border-emerald-700 flex items-center gap-1.5 text-xs font-bold transition-all">
+      <svg class="w-4 h-4 rtl-flip" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+      </svg>
+      <span class="hidden sm:inline">Home</span>
+    </a>
+
+    <button type="button" onclick="toggleTheme()" aria-label="Toggle color theme" title="Toggle Dark / Light Mode"
+            class="w-10 h-10 rounded-xl bg-white dark:bg-[#0a2a17] border border-slate-200/80 dark:border-emerald-900/60 shadow-sm text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-emerald-400 hover:border-emerald-300 dark:hover:border-emerald-700 flex items-center justify-center transition-all">
+      <svg class="w-4 h-4 hidden dark:block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+      </svg>
+      <svg class="w-4 h-4 block dark:hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+      </svg>
+    </button>
+
+    <button type="button" onclick="toggleRTL()" aria-label="Toggle text direction" title="Switch LTR / RTL"
+            class="w-10 h-10 rounded-xl bg-white dark:bg-[#0a2a17] border border-slate-200/80 dark:border-emerald-900/60 shadow-sm text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-emerald-400 hover:border-emerald-300 dark:hover:border-emerald-700 flex items-center justify-center transition-all">
+      <svg class="w-4 h-4 rtl-flip" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- ================= CENTERED UNIFIED AUTH CARD ================= -->
+  <main class="w-full max-w-[460px] bg-white dark:bg-[#0a2a17] rounded-3xl shadow-card border border-slate-100 dark:border-emerald-900/50 p-7 sm:p-9 relative z-10 transition-colors duration-300">
+
+    <!-- Brand Header -->
+    <div class="flex flex-col items-center text-center mb-6">
+      <a href="index.html" class="inline-flex items-center gap-3 group mb-5">
+        <span class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-primary to-secondary flex items-center justify-center text-white shadow-bloom transition-transform duration-300 group-hover:scale-105">
+          <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 7h11v10H2z" />
+            <path d="M13 10h5l4 4v3h-9z" />
+            <circle cx="6.5" cy="18.5" r="2" />
+            <circle cx="17.5" cy="18.5" r="2" />
+          </svg>
+        </span>
+        <span class="flex flex-col text-start">
+          <span class="font-display text-2xl font-extrabold tracking-wide uppercase text-slate-900 dark:text-white leading-none">
+            IronRoute CDL
+          </span>
+          <span class="text-[9px] font-bold uppercase tracking-[0.18em] text-primary dark:text-emerald-400 mt-1">
+            Driver Training &amp; Placement
+          </span>
+        </span>
+      </a>
+
+      <h1 id="card-title" class="text-2xl sm:text-[26px] font-extrabold text-slate-900 dark:text-white tracking-tight">
+        Welcome Back
+      </h1>
+      <p id="card-subtitle" class="text-xs sm:text-[13px] text-slate-500 dark:text-slate-400 mt-1.5">
+        Enter credentials to access your student portal
+      </p>
+    </div>
+
+    <!-- Role Switcher Tabs (Student / Staff & Admin) -->
+    <div class="grid grid-cols-2 gap-1.5 p-1.5 rounded-xl bg-slate-100/90 dark:bg-[#051b0e] border border-slate-200/70 dark:border-emerald-900/60 mb-4">
+      <button id="role-student-btn" type="button" onclick="selectRole('student')"
+              class="flex items-center justify-center gap-2 py-2.5 px-3 rounded-lg bg-white dark:bg-[#0f3820] text-primary dark:text-emerald-400 font-bold text-xs shadow-sm transition-all">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+        </svg>
+        <span>Student</span>
+      </button>
+
+      <button id="role-admin-btn" type="button" onclick="selectRole('admin')"
+              class="flex items-center justify-center gap-2 py-2.5 px-3 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white font-semibold text-xs transition-all">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+        </svg>
+        <span>Staff &amp; Admin</span>
+      </button>
+    </div>
+
+    <!-- Social Buttons (Google & Apple ID) -->
+    <div class="grid grid-cols-2 gap-3 mb-5">
+      <button type="button" onclick="handleSocialAuth('Google')"
+              class="flex items-center justify-center gap-2.5 py-2.5 px-4 rounded-xl bg-white dark:bg-[#051b0e]/80 border border-slate-200 dark:border-emerald-900/70 hover:bg-slate-50 dark:hover:bg-emerald-950/60 hover:border-slate-300 dark:hover:border-emerald-700 text-xs font-bold text-slate-700 dark:text-slate-200 transition-all">
+        <svg class="w-4 h-4" viewBox="0 0 24 24" aria-hidden="true">
+          <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"/>
+          <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.11-6.72-4.96H1.29v3.14C3.26 21.3 7.31 24 12 24z"/>
+          <path fill="#FBBC05" d="M5.28 14.24c-.24-.72-.38-1.49-.38-2.24s.14-1.52.38-2.24V6.62H1.29C.47 8.24 0 10.06 0 12s.47 3.76 1.29 5.38l3.99-3.14z"/>
+          <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.31 0 3.26 2.7 1.29 6.62l3.99 3.14c.95-2.85 3.6-4.96 6.72-4.96z"/>
+        </svg>
+        <span>Google</span>
+      </button>
+
+      <button type="button" onclick="handleSocialAuth('Apple ID')"
+              class="flex items-center justify-center gap-2.5 py-2.5 px-4 rounded-xl bg-white dark:bg-[#051b0e]/80 border border-slate-200 dark:border-emerald-900/70 hover:bg-slate-50 dark:hover:bg-emerald-950/60 hover:border-slate-300 dark:hover:border-emerald-700 text-xs font-bold text-slate-700 dark:text-slate-200 transition-all">
+        <svg class="w-4 h-4 fill-current text-slate-900 dark:text-white" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M16.365 1.43c0 1.14-.493 2.27-1.177 3.08-.744.9-1.99 1.57-2.987 1.57-.12 0-.23-.02-.3-.03-.01-.06-.04-.22-.04-.39 0-1.15.572-2.27 1.206-2.98.804-.94 2.142-1.64 3.248-1.68.03.13.05.28.05.43zm4.565 15.71c-.03.07-.463 1.58-1.518 3.12-.945 1.34-1.94 2.71-3.43 2.71-1.517 0-1.9-.88-3.63-.88-1.698 0-2.302.91-3.67.91-1.377 0-2.332-1.26-3.428-2.8-1.287-1.82-2.323-4.63-2.323-7.28 0-4.28 2.797-6.55 5.552-6.55 1.448 0 2.675.95 3.6.95.865 0 2.222-1.01 3.902-1.01.613 0 2.886.06 4.374 2.19-.13.09-2.383 1.37-2.383 4.19 0 3.26 2.854 4.42 2.955 4.45z"/>
+        </svg>
+        <span>Apple ID</span>
+      </button>
+    </div>
+
+    <!-- Divider -->
+    <div class="relative flex items-center justify-center my-5">
+      <div class="border-t border-slate-200 dark:border-emerald-900/60 w-full"></div>
+      <span id="divider-label" class="bg-white dark:bg-[#0a2a17] px-3 text-[10px] font-bold uppercase tracking-[0.14em] text-slate-400 whitespace-nowrap">
+        Or Continue With Email
+      </span>
+      <div class="border-t border-slate-200 dark:border-emerald-900/60 w-full"></div>
+    </div>
+
+    <!-- Inline Status Alert -->
+    <div id="status-msg" class="hidden mb-4 px-3.5 py-2.5 rounded-xl text-xs font-semibold border"></div>
+
+    <!-- ==================== 1. LOGIN FORM ==================== -->
+    <form id="login-form" class="animate-panel space-y-4" novalidate>
+      <div>
+        <label for="login-email" class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
+          Email Address
+        </label>
+        <div class="relative">
+          <span class="absolute inset-y-0 start-0 ps-3.5 flex items-center text-slate-400 pointer-events-none">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.9 5.3a2 2 0 002.2 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            </svg>
+          </span>
+          <input id="login-email" type="email" required autocomplete="email"
+                 placeholder="driver@ironroutecdl.com"
+                 class="w-full ps-10 pe-4 py-3 rounded-xl bg-slate-50/80 dark:bg-[#051b0e] border border-slate-200 dark:border-emerald-900/70 text-xs sm:text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:bg-white dark:focus:bg-[#051b0e] focus:border-primary dark:focus:border-secondary focus:ring-2 focus:ring-primary/15 transition-all" />
+        </div>
+      </div>
+
+      <div>
+        <label for="login-password" class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
+          Password
+        </label>
+        <div class="relative">
+          <span class="absolute inset-y-0 start-0 ps-3.5 flex items-center text-slate-400 pointer-events-none">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            </svg>
+          </span>
+          <input id="login-password" type="password" required autocomplete="current-password"
+                 placeholder="••••••••"
+                 class="w-full ps-10 pe-10 py-3 rounded-xl bg-slate-50/80 dark:bg-[#051b0e] border border-slate-200 dark:border-emerald-900/70 text-xs sm:text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:bg-white dark:focus:bg-[#051b0e] focus:border-primary dark:focus:border-secondary focus:ring-2 focus:ring-primary/15 transition-all" />
+          <button type="button" onclick="togglePassword('login-password', this)" aria-label="Show password"
+                  class="absolute inset-y-0 end-0 pe-3.5 flex items-center text-slate-400 hover:text-primary dark:hover:text-emerald-400 transition-colors">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between pt-0.5">
+        <label class="inline-flex items-center gap-2 cursor-pointer select-none">
+          <input id="remember" type="checkbox" checked
+                 class="w-4 h-4 rounded border-slate-300 dark:border-emerald-800 accent-primary text-primary focus:ring-primary" />
+          <span class="text-xs font-medium text-slate-600 dark:text-slate-300">Remember me</span>
+        </label>
+
+        <button type="button" onclick="forgotPassword()"
+                class="text-xs font-bold text-primary dark:text-emerald-400 hover:underline">
+          Forgot password?
+        </button>
+      </div>
+
+      <button type="submit"
+              class="w-full py-3.5 px-6 rounded-xl bg-gradient-to-r from-primary to-secondary hover:from-primaryHover hover:to-secondaryHover text-white text-xs sm:text-sm font-bold shadow-bloom hover:shadow-bloom-hover hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2 mt-2">
+        <span>Sign In to IronRoute</span>
+        <svg class="w-4 h-4 rtl-flip" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+        </svg>
+      </button>
+
+      <p class="text-center text-xs text-slate-500 dark:text-slate-400 pt-2">
+        Don't have an account yet?
+        <button type="button" onclick="switchMode('register')" class="font-bold text-primary dark:text-emerald-400 hover:underline ms-1">
+          Create an Account
+        </button>
+      </p>
+    </form>
+
+    <!-- ==================== 2. REGISTER FORM ==================== -->
+    <form id="register-form" class="hidden animate-panel space-y-4" novalidate>
+      <!-- Full Name & Phone (2-Column Row) -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div>
+          <label for="reg-fullname" class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
+            Full Name
+          </label>
+          <div class="relative">
+            <span class="absolute inset-y-0 start-0 ps-3.5 flex items-center text-slate-400 pointer-events-none">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+            </span>
+            <input id="reg-fullname" type="text" required autocomplete="name"
+                   placeholder="Jamal Rivera"
+                   class="w-full ps-9 pe-3 py-3 rounded-xl bg-slate-50/80 dark:bg-[#051b0e] border border-slate-200 dark:border-emerald-900/70 text-xs sm:text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:bg-white dark:focus:bg-[#051b0e] focus:border-primary dark:focus:border-secondary focus:ring-2 focus:ring-primary/15 transition-all" />
+          </div>
+        </div>
+
+        <div>
+          <label for="reg-phone" class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
+            Phone
+          </label>
+          <div class="relative">
+            <span class="absolute inset-y-0 start-0 ps-3.5 flex items-center text-slate-400 pointer-events-none">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h2.6a1 1 0 01.97.757l1.1 4.4a1 1 0 01-.5 1.1l-1.5.9a12 12 0 005.7 5.7l.9-1.5a1 1 0 011.1-.5l4.4 1.1a1 1 0 01.757.97V19a2 2 0 01-2 2h-1C9.7 21 3 14.3 3 6V5z" />
+              </svg>
+            </span>
+            <input id="reg-phone" type="tel" required autocomplete="tel"
+                   placeholder="+1 (555) 000"
+                   class="w-full ps-9 pe-3 py-3 rounded-xl bg-slate-50/80 dark:bg-[#051b0e] border border-slate-200 dark:border-emerald-900/70 text-xs sm:text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:bg-white dark:focus:bg-[#051b0e] focus:border-primary dark:focus:border-secondary focus:ring-2 focus:ring-primary/15 transition-all" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Email Address -->
+      <div>
+        <label for="reg-email" class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
+          Email Address
+        </label>
+        <div class="relative">
+          <span class="absolute inset-y-0 start-0 ps-3.5 flex items-center text-slate-400 pointer-events-none">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.9 5.3a2 2 0 002.2 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            </svg>
+          </span>
+          <input id="reg-email" type="email" required autocomplete="email"
+                 placeholder="driver@ironroutecdl.com"
+                 class="w-full ps-10 pe-4 py-3 rounded-xl bg-slate-50/80 dark:bg-[#051b0e] border border-slate-200 dark:border-emerald-900/70 text-xs sm:text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:bg-white dark:focus:bg-[#051b0e] focus:border-primary dark:focus:border-secondary focus:ring-2 focus:ring-primary/15 transition-all" />
+        </div>
+      </div>
+
+      <!-- Password & Confirm (2-Column Row) -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div>
+          <label for="reg-password" class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
+            Password
+          </label>
+          <div class="relative">
+            <span class="absolute inset-y-0 start-0 ps-3.5 flex items-center text-slate-400 pointer-events-none">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              </svg>
+            </span>
+            <input id="reg-password" type="password" required minlength="8" autocomplete="new-password"
+                   placeholder="••••••••"
+                   class="w-full ps-9 pe-9 py-3 rounded-xl bg-slate-50/80 dark:bg-[#051b0e] border border-slate-200 dark:border-emerald-900/70 text-xs sm:text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:bg-white dark:focus:bg-[#051b0e] focus:border-primary dark:focus:border-secondary focus:ring-2 focus:ring-primary/15 transition-all" />
+            <button type="button" onclick="togglePassword('reg-password', this)" aria-label="Show password"
+                    class="absolute inset-y-0 end-0 pe-3 flex items-center text-slate-400 hover:text-primary dark:hover:text-emerald-400 transition-colors">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div>
+          <label for="reg-confirm" class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
+            Confirm
+          </label>
+          <div class="relative">
+            <span class="absolute inset-y-0 start-0 ps-3.5 flex items-center text-slate-400 pointer-events-none">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+              </svg>
+            </span>
+            <input id="reg-confirm" type="password" required minlength="8" autocomplete="new-password"
+                   placeholder="••••••••"
+                   class="w-full ps-9 pe-9 py-3 rounded-xl bg-slate-50/80 dark:bg-[#051b0e] border border-slate-200 dark:border-emerald-900/70 text-xs sm:text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:bg-white dark:focus:bg-[#051b0e] focus:border-primary dark:focus:border-secondary focus:ring-2 focus:ring-primary/15 transition-all" />
+            <button type="button" onclick="togglePassword('reg-confirm', this)" aria-label="Show confirm password"
+                    class="absolute inset-y-0 end-0 pe-3 flex items-center text-slate-400 hover:text-primary dark:hover:text-emerald-400 transition-colors">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Terms Checkbox -->
+      <div class="pt-0.5">
+        <label class="inline-flex items-center gap-2 cursor-pointer select-none">
+          <input id="terms" type="checkbox" required
+                 class="w-4 h-4 rounded border-slate-300 dark:border-emerald-800 accent-primary text-primary focus:ring-primary" />
+          <span class="text-xs text-slate-600 dark:text-slate-300">
+            I agree to the <a href="#" class="font-bold text-primary dark:text-emerald-400 hover:underline">Terms &amp; ELDT Training Guidelines</a>
+          </span>
+        </label>
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit"
+              class="w-full py-3.5 px-6 rounded-xl bg-gradient-to-r from-primary to-secondary hover:from-primaryHover hover:to-secondaryHover text-white text-xs sm:text-sm font-bold shadow-bloom hover:shadow-bloom-hover hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2 mt-2">
+        <span>Create IronRoute Account</span>
+        <svg class="w-4 h-4 rtl-flip" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+        </svg>
+      </button>
+
+      <p class="text-center text-xs text-slate-500 dark:text-slate-400 pt-2">
+        Already have an account?
+        <button type="button" onclick="switchMode('login')" class="font-bold text-primary dark:text-emerald-400 hover:underline ms-1">
+          Sign In
+        </button>
+      </p>
+    </form>
+
+  </main>
+
+  <script>
+    let currentRole = 'student';
+    let currentMode = 'login';
+
+    function toggleTheme() {
+      const isDark = document.documentElement.classList.toggle('dark');
+      try { localStorage.setItem('theme', isDark ? 'dark' : 'light'); } catch (e) {}
+    }
+
+    function toggleRTL() {
+      const root = document.documentElement;
+      const next = root.getAttribute('dir') === 'rtl' ? 'ltr' : 'rtl';
+      root.setAttribute('dir', next);
+      try { localStorage.setItem('dir', next); } catch (e) {}
+    }
+
+    function updateHeaderCopy() {
+      const title = document.getElementById('card-title');
+      const subtitle = document.getElementById('card-subtitle');
+      const divider = document.getElementById('divider-label');
+
+      if (currentMode === 'login') {
+        title.textContent = 'Welcome Back';
+        divider.textContent = 'Or Continue With Email';
+        subtitle.textContent = currentRole === 'admin'
+          ? 'Enter credentials to access your staff & admin portal'
+          : 'Enter credentials to access your student portal';
+      } else {
+        title.textContent = 'Create an Account';
+        divider.textContent = 'Or Register With Email';
+        subtitle.textContent = currentRole === 'admin'
+          ? 'Register an instructor or yard coordinator profile'
+          : 'Join IronRoute to reserve your seat & begin ELDT training';
+      }
+    }
+
+    function selectRole(role) {
+      currentRole = role;
+      const studentBtn = document.getElementById('role-student-btn');
+      const adminBtn = document.getElementById('role-admin-btn');
+
+      const activeClass = 'flex items-center justify-center gap-2 py-2.5 px-3 rounded-lg bg-white dark:bg-[#0f3820] text-primary dark:text-emerald-400 font-bold text-xs shadow-sm transition-all';
+      const inactiveClass = 'flex items-center justify-center gap-2 py-2.5 px-3 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white font-semibold text-xs transition-all';
+
+      if (role === 'admin') {
+        adminBtn.className = activeClass;
+        studentBtn.className = inactiveClass;
+        document.getElementById('login-email').placeholder = 'instructor@ironroutecdl.com';
+        document.getElementById('reg-email').placeholder = 'instructor@ironroutecdl.com';
+      } else {
+        studentBtn.className = activeClass;
+        adminBtn.className = inactiveClass;
+        document.getElementById('login-email').placeholder = 'driver@ironroutecdl.com';
+        document.getElementById('reg-email').placeholder = 'driver@ironroutecdl.com';
+      }
+      updateHeaderCopy();
+    }
+
+    function switchMode(mode) {
+      currentMode = mode;
+      const loginForm = document.getElementById('login-form');
+      const registerForm = document.getElementById('register-form');
+      const statusBox = document.getElementById('status-msg');
+
+      statusBox.classList.add('hidden');
+
+      if (mode === 'register') {
+        loginForm.classList.add('hidden');
+        registerForm.classList.remove('hidden');
+        document.title = 'Create an Account | IronRoute CDL Academy';
+      } else {
+        registerForm.classList.add('hidden');
+        loginForm.classList.remove('hidden');
+        document.title = 'Sign In | IronRoute CDL Academy';
+      }
+      updateHeaderCopy();
+    }
+
+    function togglePassword(id, btn) {
+      const input = document.getElementById(id);
+      const isHidden = input.type === 'password';
+      input.type = isHidden ? 'text' : 'password';
+      btn.innerHTML = isHidden
+        ? '<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" /></svg>'
+        : '<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>';
+    }
+
+    function showStatus(type, msg) {
+      const box = document.getElementById('status-msg');
+      box.className = 'mb-4 px-3.5 py-2.5 rounded-xl text-xs font-semibold border ' + (
+        type === 'error'
+          ? 'bg-rose-50 dark:bg-rose-950/50 border-rose-200 dark:border-rose-800 text-rose-700 dark:text-rose-300'
+          : 'bg-emerald-50 dark:bg-emerald-950/60 border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300'
+      );
+      box.textContent = msg;
+    }
+
+    function handleSocialAuth(provider) {
+      const target = currentRole === 'admin' ? 'admin-dashboard.html' : 'student-dashboard.html';
+      showStatus('success', `Continuing with ${provider}... Opening your portal.`);
+      setTimeout(() => { window.location.href = target; }, 750);
+    }
+
+    function forgotPassword() {
+      const email = document.getElementById('login-email').value.trim();
+      if (!email) {
+        showStatus('error', 'Enter your email address first, then click Forgot password.');
+        return;
+      }
+      showStatus('success', `Password reset link sent to ${email}.`);
+    }
+
+    // Sign In Submit
+    document.getElementById('login-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const email = document.getElementById('login-email').value.trim();
+      const password = document.getElementById('login-password').value;
+
+      if (!email || !password) {
+        showStatus('error', 'Please enter both your email address and password.');
+        return;
+      }
+
+      const target = currentRole === 'admin' ? 'admin-dashboard.html' : 'student-dashboard.html';
+      showStatus('success', 'Signed in successfully! Redirecting...');
+      setTimeout(() => { window.location.href = target; }, 750);
+    });
+
+    // Register Submit
+    document.getElementById('register-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const fullname = document.getElementById('reg-fullname').value.trim();
+      const phone = document.getElementById('reg-phone').value.trim();
+      const email = document.getElementById('reg-email').value.trim();
+      const password = document.getElementById('reg-password').value;
+      const confirm = document.getElementById('reg-confirm').value;
+      const terms = document.getElementById('terms').checked;
+
+      if (!fullname || !phone || !email) {
+        showStatus('error', 'Please fill in your full name, phone number, and email address.');
+        return;
+      }
+      if (password.length < 8) {
+        showStatus('error', 'Password must be at least 8 characters long.');
+        return;
+      }
+      if (password !== confirm) {
+        showStatus('error', 'Password and confirmation do not match.');
+        return;
+      }
+      if (!terms) {
+        showStatus('error', 'Please agree to the Terms & ELDT Training Guidelines.');
+        return;
+      }
+
+      const target = currentRole === 'admin' ? 'admin-dashboard.html' : 'student-dashboard.html';
+      showStatus('success', `Account created for ${fullname}! Redirecting...`);
+      setTimeout(() => { window.location.href = target; }, 800);
+    });
+
+    // Support direct hash navigation (e.g., login.html#register)
+    document.addEventListener('DOMContentLoaded', function () {
+      if (window.location.hash === '#register' || window.location.hash === '#signup') {
+        switchMode('register');
+      }
+    });
+  </script>
+</body>
+</html>

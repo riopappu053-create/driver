@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+  <script>
+    (function () {
+      try {
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (savedTheme === 'dark' || (!savedTheme && prefersDark)) document.documentElement.classList.add('dark');
+        else document.documentElement.classList.remove('dark');
+      } catch (e) {}
+    })();
+  </script>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About IronRoute CDL Academy — Our Story, Instructors &amp; Facility</title>
+  <meta name="description" content="Learn about IronRoute CDL Academy: an FMCSA-registered ELDT truck driving school with 16 years of training, 40+ carrier partners, a private range and a 96% first-time pass rate." />
+
+  <!-- ================= FAVICON (Semi Truck) ================= -->
+  <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%2315803d'/%3E%3Cpath d='M5 10h13v11H5z' fill='none' stroke='%23ffffff' stroke-width='1.8' stroke-linejoin='round'/%3E%3Cpath d='M18 14h5l4 4v3h-9z' fill='none' stroke='%23ffffff' stroke-width='1.8' stroke-linejoin='round'/%3E%3Ccircle cx='10' cy='23' r='2.4' fill='none' stroke='%23bbf7d0' stroke-width='1.8'/%3E%3Ccircle cx='22' cy='23' r='2.4' fill='none' stroke='%23bbf7d0' stroke-width='1.8'/%3E%3C/svg%3E" />
+
+  <!-- ================= FONTS ================= -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- ================= TAILWIND ================= -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['"Barlow Condensed"', 'sans-serif'],
+            sans: ['Plus Jakarta Sans', 'sans-serif']
+          },
+          colors: {
+            primary: '#15803d',
+            primaryHover: '#166534',
+            primaryLight: '#ecfdf5',
+            secondary: '#22c55e',
+            secondaryHover: '#16a34a',
+            accentCoral: '#ea580c',
+            accentRose: '#e11d48',
+            accentAmber: '#d97706',
+            accentViolet: '#7c3aed',
+            brandLight: '#f8fafc',
+            brandDark: '#051b0e'
+          },
+          boxShadow: {
+            bloom: '0 10px 30px -5px rgba(21, 128, 61, 0.28)',
+            'bloom-hover': '0 20px 40px -10px rgba(21, 128, 61, 0.42)'
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+
+    html { scrollbar-width: thin; scrollbar-color: #15803d #dcfce7; }
+    html.dark { scrollbar-color: #22c55e #051b0e; }
+
+    ::-webkit-scrollbar { width: 10px; height: 10px; }
+    ::-webkit-scrollbar-track { background: #dcfce7; }
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, #15803d, #22c55e);
+      border-radius: 9999px;
+      border: 2px solid #dcfce7;
+    }
+    ::-webkit-scrollbar-thumb:hover { background: #166534; }
+    html.dark ::-webkit-scrollbar-track { background: #051b0e; }
+    html.dark ::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, #22c55e, #15803d);
+      border: 2px solid #051b0e;
+    }
+    html.dark ::-webkit-scrollbar-thumb:hover { background: #16a34a; }
+
+    .bloom-scrollbar { scrollbar-width: thin; scrollbar-color: #15803d transparent; }
+    .bloom-scrollbar::-webkit-scrollbar { width: 5px; }
+    .bloom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+    .bloom-scrollbar::-webkit-scrollbar-thumb { background: #15803d; border-radius: 9999px; }
+    .bloom-scrollbar::-webkit-scrollbar-thumb:hover { background: #166534; }
+
+    .dash-scroll { scrollbar-width: thin; scrollbar-color: #22c55e rgba(6, 44, 24, 0.6); }
+    .dash-scroll::-webkit-scrollbar { width: 6px; height: 6px; }
+    .dash-scroll::-webkit-scrollbar-track { background: rgba(6, 44, 24, 0.55); border-radius: 9999px; }
+    .dash-scroll::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #22c55e, #15803d); border-radius: 9999px; }
+    .dash-scroll::-webkit-scrollbar-thumb:hover { background: #16a34a; }
+    .dash-scroll::-webkit-scrollbar-corner { background: transparent; }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+    }
+  </style>
+</head>
+
+<body id="top" class="bg-brandLight dark:bg-brandDark text-slate-800 dark:text-slate-100 antialiased overflow-x-hidden transition-colors duration-300">
+
+<!-- ================= NAVBAR (self-contained: HTML + CSS + JS) ================= -->
+<nav class="sticky top-0 w-full z-50 bg-white/95 dark:bg-[#051b0e]/95 backdrop-blur-md border-b border-emerald-100 dark:border-emerald-950/70 shadow-sm transition-colors duration-300">
+
+  <!-- Navbar-only styles -->
+  <style>
+    /* Dashboard dropdown scrollbar */
+    .nav-dash-scroll { scrollbar-width: thin; scrollbar-color: #15803d transparent; }
+    .nav-dash-scroll::-webkit-scrollbar { width: 5px; }
+    .nav-dash-scroll::-webkit-scrollbar-track { background: transparent; }
+    .nav-dash-scroll::-webkit-scrollbar-thumb { background: #15803d; border-radius: 9999px; }
+    .nav-dash-scroll::-webkit-scrollbar-thumb:hover { background: #166534; }
+    html.dark .nav-dash-scroll { scrollbar-color: #22c55e transparent; }
+    html.dark .nav-dash-scroll::-webkit-scrollbar-thumb { background: #22c55e; }
+    html.dark .nav-dash-scroll::-webkit-scrollbar-thumb:hover { background: #16a34a; }
+
+    /* RTL icon flip */
+    html[dir="rtl"] .rtl-icon-flip { transform: scaleX(-1); }
+
+    /* Mobile drawer scrollbar */
+    .bloom-scrollbar { scrollbar-width: thin; scrollbar-color: #15803d transparent; }
+    .bloom-scrollbar::-webkit-scrollbar { width: 5px; }
+    .bloom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+    .bloom-scrollbar::-webkit-scrollbar-thumb { background: #15803d; border-radius: 9999px; }
+  </style>
+
+  <div class="max-w-[1400px] mx-auto px-6 lg:px-12 h-20 flex items-center justify-between gap-4">
+
+    <!-- Brand -->
+    <a href="index.html" class="flex items-center gap-3 flex-shrink-0 group" aria-label="IronRoute CDL Academy home">
+      <span class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-primary to-secondary flex items-center justify-center shadow-bloom text-white transition-transform duration-300 group-hover:scale-105">
+        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M2 7h11v10H2z" />
+          <path d="M13 10h5l4 4v3h-9z" />
+          <circle cx="6.5" cy="18.5" r="2" />
+          <circle cx="17.5" cy="18.5" r="2" />
+        </svg>
+      </span>
+      <span class="flex flex-col">
+        <span class="font-display text-2xl font-extrabold tracking-wide uppercase bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent leading-none">
+          IronRoute CDL
+        </span>
+        <span class="text-[9px] uppercase font-bold tracking-widest text-emerald-700 dark:text-emerald-400 mt-1">
+          Driver Training &amp; Placement
+        </span>
+      </span>
+    </a>
+
+    <!-- Desktop Links -->
+    <div class="hidden xl:flex items-center gap-5 2xl:gap-7">
+
+      <!-- Home Dropdown -->
+      <div class="relative group">
+        <button type="button" class="flex items-center gap-1.5 text-[11px] font-bold tracking-[0.14em] uppercase text-primary dark:text-emerald-400 py-6 focus:outline-none">
+          Home
+          <svg class="w-3.5 h-3.5 transition-transform duration-300 group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+        <div class="absolute top-full start-0 w-52 bg-white dark:bg-[#0a2a17] border border-emerald-100 dark:border-emerald-900/40 shadow-bloom rounded-b-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 origin-top -translate-y-2 group-hover:translate-y-0 z-50">
+          <div class="py-2.5">
+            <a href="index.html" class="block px-4 py-2.5 text-[11px] font-bold tracking-[0.14em] uppercase text-primary dark:text-emerald-400 bg-primaryLight/60 dark:bg-emerald-950/40 transition-colors">home-1</a>
+            <a href="home-2.html" class="block px-4 py-2.5 text-[11px] font-bold tracking-[0.14em] uppercase text-slate-700 dark:text-slate-300 hover:bg-primaryLight dark:hover:bg-emerald-950/60 hover:text-primary transition-colors">home-2</a>
+          </div>
+        </div>
+      </div>
+
+      <a href="about.html" class="text-[11px] font-bold tracking-[0.14em] uppercase text-slate-700 dark:text-slate-200 hover:text-primary dark:hover:text-emerald-400 transition-colors">About</a>
+      <a href="programs.html" class="text-[11px] font-bold tracking-[0.14em] uppercase text-slate-700 dark:text-slate-200 hover:text-primary dark:hover:text-emerald-400 transition-colors">Programs</a>
+      <a href="instructors.html" class="text-[11px] font-bold tracking-[0.14em] uppercase text-slate-700 dark:text-slate-200 hover:text-primary dark:hover:text-emerald-400 transition-colors">Instructors</a>
+      <a href="placement.html" class="text-[11px] font-bold tracking-[0.14em] uppercase text-slate-700 dark:text-slate-200 hover:text-primary dark:hover:text-emerald-400 transition-colors">Placement</a>
+      <a href="contact.html" class="text-[11px] font-bold tracking-[0.14em] uppercase text-slate-700 dark:text-slate-200 hover:text-primary dark:hover:text-emerald-400 transition-colors">Contact</a>
+
+      <!-- Dashboard Dropdown -->
+      <div class="relative group">
+        <button type="button" class="flex items-center gap-1.5 text-[11px] font-bold tracking-[0.14em] uppercase text-slate-700 dark:text-slate-200 hover:text-primary dark:hover:text-emerald-400 py-6 focus:outline-none transition-colors">
+          Dashboard
+          <svg class="w-3.5 h-3.5 transition-transform duration-300 group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+
+        <div class="absolute top-full start-0 w-60 bg-white dark:bg-[#0a2a17] border border-emerald-100 dark:border-emerald-900/40 shadow-bloom rounded-b-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 origin-top -translate-y-2 group-hover:translate-y-0 z-50">
+          <div class="nav-dash-scroll max-h-56 overflow-y-auto py-2">
+
+            <!-- Student Dashboard -->
+            <a href="student-dashboard.html" class="flex items-start gap-3 px-4 py-3 hover:bg-primaryLight dark:hover:bg-emerald-950/60 transition-colors group/item">
+              <span class="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-900/60 flex items-center justify-center text-primary dark:text-emerald-400 flex-shrink-0">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+              </span>
+              <span class="flex flex-col">
+                <span class="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-800 dark:text-slate-100 group-hover/item:text-primary dark:group-hover/item:text-emerald-400 transition-colors">Student Dashboard</span>
+                <span class="text-[10px] text-slate-500 dark:text-slate-400 font-medium mt-0.5">Hours · Tests · Enrollment</span>
+              </span>
+            </a>
+
+            <!-- Admin Dashboard -->
+            <a href="admin-dashboard.html" class="flex items-start gap-3 px-4 py-3 hover:bg-primaryLight dark:hover:bg-emerald-950/60 transition-colors group/item">
+              <span class="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-900/60 flex items-center justify-center text-primary dark:text-emerald-400 flex-shrink-0">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 3l8 4v5c0 5-3.4 8.3-8 9-4.6-.7-8-4-8-9V7l8-4z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4" />
+                </svg>
+              </span>
+              <span class="flex flex-col">
+                <span class="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-800 dark:text-slate-100 group-hover/item:text-primary dark:group-hover/item:text-emerald-400 transition-colors">Admin Dashboard</span>
+                <span class="text-[10px] text-slate-500 dark:text-slate-400 font-medium mt-0.5">Students · Cohorts · Placement</span>
+              </span>
+            </a>
+
+            <div class="my-1 border-t border-emerald-100 dark:border-emerald-900/50"></div>
+            <a href="login.html" class="flex items-center gap-2 px-4 py-2.5 text-[11px] font-bold uppercase tracking-[0.14em] text-slate-600 dark:text-slate-300 hover:bg-primaryLight dark:hover:bg-emerald-950/60 hover:text-primary dark:hover:text-emerald-400 transition-colors">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M11 16l4-4-4-4m0 8H3m8-8H3" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 4h4a2 2 0 012 2v12a2 2 0 01-2 2h-4" />
+              </svg>
+              Login Portal
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Desktop Actions -->
+    <div class="hidden xl:flex items-center gap-3">
+
+      <!-- RTL Toggle -->
+      <button id="rtl-btn" type="button" onclick="toggleRTL()" aria-label="Toggle text direction" title="Switch text direction (RTL / LTR)" class="flex items-center gap-1.5 text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-emerald-400 transition-colors px-2.5 py-2 rounded-lg border border-slate-200 dark:border-emerald-900/60 hover:border-emerald-300 dark:hover:border-emerald-700">
+        <svg class="w-4 h-4 transition-transform duration-300 rtl-icon-flip" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M16 4h-6.5a3.5 3.5 0 0 0 0 7h.5" />
+          <path d="M14 4v10" />
+          <path d="M10 4v10" />
+          <path d="M4 18h12" />
+          <path d="M7 15l-3 3 3 3" />
+        </svg>
+        <span id="rtl-label" class="text-[11px] font-bold uppercase tracking-wider">RTL</span>
+      </button>
+
+      <!-- Theme Toggle -->
+      <button type="button" onclick="toggleTheme()" aria-label="Toggle color theme" class="text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-emerald-400 transition-colors p-2 rounded-lg border border-slate-200 dark:border-emerald-900/60 hover:border-emerald-300 dark:hover:border-emerald-700">
+        <svg class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+        </svg>
+        <svg class="w-5 h-5 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+        </svg>
+      </button>
+
+      <!-- Login -->
+      <a href="login.html" class="bg-gradient-to-r from-primary to-secondary hover:from-primaryHover hover:to-secondaryHover text-white text-[11px] font-bold uppercase tracking-[0.14em] px-6 py-3 rounded-lg shadow-bloom hover:shadow-bloom-hover hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2 border border-emerald-400/30">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+        </svg>
+        <span>Login</span>
+      </a>
+    </div>
+
+    <!-- Mobile Hamburger (inline onclick → guaranteed to work) -->
+    <button id="hamburger-btn" type="button" onclick="toggleMobileMenu()" class="xl:hidden text-primary dark:text-emerald-400 p-2 focus:outline-none" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-menu">
+      <svg id="menu-icon" class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- Mobile Drawer -->
+  <div id="mobile-menu" class="hidden flex-col bg-white dark:bg-[#051b0e] border-t border-emerald-100 dark:border-emerald-950/70 w-full shadow-2xl max-h-[85vh] overflow-y-auto bloom-scrollbar">
+    <div class="px-6 py-8 flex flex-col gap-6">
+
+      <div>
+        <span class="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-400 block mb-2">Home</span>
+        <div class="flex flex-col gap-3 ps-3 border-s-2 border-primary">
+          <a href="index.html" class="text-sm font-bold uppercase tracking-[0.14em] text-primary dark:text-emerald-400">home-1</a>
+          <a href="home-2.html" class="text-sm font-bold uppercase tracking-[0.14em] text-slate-700 dark:text-slate-300 hover:text-primary">home-2</a>
+        </div>
+      </div>
+
+      <a href="about.html" class="text-sm font-bold uppercase tracking-[0.14em] text-slate-800 dark:text-slate-100 hover:text-primary">About</a>
+      <a href="programs.html" class="text-sm font-bold uppercase tracking-[0.14em] text-slate-800 dark:text-slate-100 hover:text-primary">Programs</a>
+      <a href="instructors.html" class="text-sm font-bold uppercase tracking-[0.14em] text-slate-800 dark:text-slate-100 hover:text-primary">Instructors</a>
+      <a href="placement.html" class="text-sm font-bold uppercase tracking-[0.14em] text-slate-800 dark:text-slate-100 hover:text-primary">Placement</a>
+      <a href="contact.html" class="text-sm font-bold uppercase tracking-[0.14em] text-slate-800 dark:text-slate-100 hover:text-primary">Contact</a>
+
+      <div>
+        <span class="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-400 block mb-2">Dashboard</span>
+        <div class="flex flex-col gap-3 ps-3 border-s-2 border-primary">
+          <a href="student-dashboard.html" class="text-sm font-bold uppercase tracking-[0.14em] text-slate-700 dark:text-slate-300 hover:text-primary">Student Dashboard</a>
+          <a href="admin-dashboard.html" class="text-sm font-bold uppercase tracking-[0.14em] text-slate-700 dark:text-slate-300 hover:text-primary">Admin Dashboard</a>
+        </div>
+      </div>
+
+      <hr class="border-emerald-100 dark:border-emerald-950/70 my-1" />
+
+      <div class="flex items-center justify-center gap-3">
+        <button id="rtl-btn-mobile" type="button" onclick="toggleRTL()" aria-label="Toggle text direction" title="Switch text direction (RTL / LTR)" class="flex-1 flex items-center justify-center gap-2 text-[11px] font-bold uppercase tracking-[0.14em] text-slate-600 dark:text-slate-300 hover:text-primary border border-emerald-200 dark:border-emerald-900/60 rounded-lg px-4 py-3 transition-colors">
+          <svg class="w-4 h-4 transition-transform duration-300 rtl-icon-flip" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M16 4h-6.5a3.5 3.5 0 0 0 0 7h.5" />
+            <path d="M14 4v10" />
+            <path d="M10 4v10" />
+            <path d="M4 18h12" />
+            <path d="M7 15l-3 3 3 3" />
+          </svg>
+          <span id="rtl-label-mobile">RTL</span>
+        </button>
+        <button type="button" onclick="toggleTheme()" aria-label="Toggle color theme" class="flex-1 flex items-center justify-center gap-2 text-[11px] font-bold uppercase tracking-[0.14em] text-slate-600 dark:text-slate-300 hover:text-primary border border-emerald-200 dark:border-emerald-900/60 rounded-lg px-4 py-3 transition-colors">
+          <svg class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+          <svg class="w-5 h-5 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+          </svg>
+          <span class="hidden dark:inline">Light</span>
+          <span class="inline dark:hidden">Dark</span>
+        </button>
+      </div>
+
+      <a href="login.html" class="text-center bg-gradient-to-r from-primary to-secondary text-white text-sm font-bold uppercase tracking-[0.14em] px-6 py-3.5 rounded-lg shadow-bloom mt-2">Student Login</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ================= NAVBAR SCRIPTS (self-contained) ================= -->
+<script>
+  /* ---------- Mobile menu (explicit add/remove — reliable) ---------- */
+  function toggleMobileMenu() {
+    const menu = document.getElementById('mobile-menu');
+    const btn  = document.getElementById('hamburger-btn');
+    const icon = document.getElementById('menu-icon');
+    if (!menu) return;
+
+    const isHidden = menu.classList.contains('hidden');
+
+    if (isHidden) {
+      menu.classList.remove('hidden');
+      menu.classList.add('flex');
+      menu.style.display = 'flex';
+      if (btn)  btn.setAttribute('aria-expanded', 'true');
+      if (icon) icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />';
+    } else {
+      menu.classList.add('hidden');
+      menu.classList.remove('flex');
+      menu.style.display = 'none';
+      if (btn)  btn.setAttribute('aria-expanded', 'false');
+      if (icon) icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />';
+    }
+  }
+
+  /* ---------- Theme ---------- */
+  function toggleTheme() {
+    const root = document.documentElement;
+    const isDark = root.classList.toggle('dark');
+    try { localStorage.setItem('theme', isDark ? 'dark' : 'light'); } catch (e) {}
+  }
+
+  /* ---------- Direction (RTL / LTR) ---------- */
+  function updateRTLLabels() {
+    const isRtl = document.documentElement.getAttribute('dir') === 'rtl';
+    ['rtl-label', 'rtl-label-mobile'].forEach(function (id) {
+      const el = document.getElementById(id);
+      if (el) el.textContent = isRtl ? 'LTR' : 'RTL';
+    });
+  }
+
+  function toggleRTL() {
+    const root = document.documentElement;
+    const next = root.getAttribute('dir') === 'rtl' ? 'ltr' : 'rtl';
+    root.setAttribute('dir', next);
+    try { localStorage.setItem('dir', next); } catch (e) {}
+    updateRTLLabels();
+  }
+
+  /* ---------- Init ---------- */
+  document.addEventListener('DOMContentLoaded', function () {
+    updateRTLLabels();
+    try {
+      const savedDir = localStorage.getItem('dir');
+      if (savedDir) document.documentElement.setAttribute('dir', savedDir);
+    } catch (e) {}
+    updateRTLLabels();
+  });
+</script>
+
+<!-- ================= FULL-VIEWPORT HERO (CENTERED) ================= -->
+<header class="relative w-full min-h-[calc(100vh-5rem)] flex items-center overflow-hidden bg-brandDark">
+
+  <!-- Background image -->
+  <img src="img/p3.webp"
+       alt="Semi truck rolling down an open highway at golden hour"
+       class="absolute inset-0 w-full h-full object-cover object-center" />
+
+  <!-- Overlays -->
+  <div class="absolute inset-0 bg-gradient-to-br from-[#03130a]/95 via-[#03130a]/80 to-primary/60"></div>
+  <div class="absolute inset-0 bg-gradient-to-t from-[#03130a] via-transparent to-[#03130a]/60"></div>
+
+  <!-- Decorative glows -->
+  <div class="absolute -top-24 end-0 w-[520px] h-[520px] bg-secondary/20 rounded-full blur-[140px] pointer-events-none"></div>
+  <div class="absolute bottom-0 start-0 w-[420px] h-[420px] bg-primary/30 rounded-full blur-[130px] pointer-events-none"></div>
+
+  <!-- Content -->
+  <div class="relative z-10 w-full max-w-[1400px] mx-auto px-6 lg:px-12 py-16 lg:py-24">
+    <div class="max-w-4xl mx-auto text-center">
+
+      <!-- Breadcrumb -->
+      <nav aria-label="Breadcrumb" class="mb-7">
+        <ol class="flex flex-wrap items-center justify-center gap-2 text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.16em] text-emerald-200/80">
+          <li><a href="index.html" class="hover:text-white transition-colors">Home</a></li>
+          <li aria-hidden="true" class="text-emerald-500/70">
+            <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+          </li>
+          <li><span class="text-white" aria-current="page">About</span></li>
+        </ol>
+      </nav>
+
+      <!-- Badge -->
+      <div class="inline-flex items-center justify-center gap-2.5 bg-white/10 backdrop-blur-md border border-white/25 rounded-full px-5 py-2 mb-8">
+        <span class="flex h-2.5 w-2.5 relative">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-secondary"></span>
+        </span>
+        <span class="text-[10px] sm:text-[11px] font-bold tracking-[0.14em] uppercase text-emerald-50">FMCSA-Registered ELDT Provider · Est. 2009</span>
+      </div>
+
+      <!-- Heading -->
+      <h1 class="font-display text-5xl sm:text-6xl lg:text-7xl xl:text-8xl leading-[1.02] tracking-tight font-extrabold uppercase text-white mb-6">
+        Built in a truck yard.
+        <span class="block mt-2 pb-2 bg-gradient-to-r from-emerald-300 via-secondary to-emerald-200 bg-clip-text text-transparent">
+          Run like a fleet.
+        </span>
+      </h1>
+
+      <p class="text-base sm:text-lg lg:text-xl text-emerald-50/90 leading-relaxed max-w-2xl mx-auto mb-10">
+        IronRoute CDL Academy has trained over 4,800 drivers since 2009 — not in a lecture hall,
+        but on a private range and real highway miles. We build drivers carriers actually want to hire.
+      </p>
+
+      <!-- CTAs -->
+      <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-4 mb-14">
+        <a href="enroll.html#apply" class="inline-flex items-center justify-center px-9 py-4 bg-gradient-to-r from-primary to-secondary hover:from-primaryHover hover:to-secondaryHover text-white text-sm font-bold uppercase tracking-wider rounded-lg shadow-bloom hover:shadow-bloom-hover hover:-translate-y-0.5 transition-all duration-300 border border-emerald-400/40">
+          Start Enrollment
+        </a>
+        <a href="programs.html" class="inline-flex items-center justify-center gap-2 px-9 py-4 bg-white/10 backdrop-blur-md border-2 border-white/40 text-white hover:bg-white hover:text-primary text-sm font-bold uppercase tracking-wider rounded-lg transition-all duration-300">
+          Explore Programs
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+        </a>
+      </div>
+
+      <!-- Hero stats -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-8 pt-8 border-t border-white/20 max-w-2xl mx-auto">
+        <div class="flex flex-col items-center text-center">
+          <span class="font-display text-3xl sm:text-4xl font-extrabold text-white leading-none mb-1.5">16</span>
+          <span class="text-[10px] font-bold uppercase tracking-[0.14em] text-emerald-200/80">Years Training</span>
+        </div>
+        <div class="flex flex-col items-center text-center">
+          <span class="font-display text-3xl sm:text-4xl font-extrabold text-white leading-none mb-1.5">4,800+</span>
+          <span class="text-[10px] font-bold uppercase tracking-[0.14em] text-emerald-200/80">Graduates</span>
+        </div>
+        <div class="flex flex-col items-center text-center">
+          <span class="font-display text-3xl sm:text-4xl font-extrabold text-white leading-none mb-1.5">96%</span>
+          <span class="text-[10px] font-bold uppercase tracking-[0.14em] text-emerald-200/80">First-Time Pass</span>
+        </div>
+        <div class="flex flex-col items-center text-center">
+          <span class="font-display text-3xl sm:text-4xl font-extrabold text-white leading-none mb-1.5">40+</span>
+          <span class="text-[10px] font-bold uppercase tracking-[0.14em] text-emerald-200/80">Carrier Partners</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Scroll cue -->
+  <a href="#story" aria-label="Scroll to our story" class="hidden lg:flex absolute bottom-8 start-1/2 -translate-x-1/2 rtl:translate-x-1/2 z-10 w-11 h-11 rounded-full bg-white/10 backdrop-blur-md border border-white/30 items-center justify-center text-white hover:bg-white hover:text-primary transition-colors duration-300">
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
+  </a>
+</header>
+
+<!-- ================= SECTION 1: OUR STORY ================= -->
+<section id="story" class="relative w-full py-20 lg:py-28 bg-white dark:bg-[#071f11] border-y border-emerald-100 dark:border-emerald-950/70 transition-colors duration-300 overflow-hidden">
+  <div class="absolute -top-24 end-0 w-[420px] h-[420px] bg-primary/5 dark:bg-primary/10 rounded-full blur-[120px] pointer-events-none"></div>
+
+  <div class="max-w-[1400px] mx-auto px-6 lg:px-12 relative z-10">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+
+      <!-- Text -->
+      <div class="lg:col-span-6 order-2 lg:order-1">
+        <span class="inline-flex items-center gap-2 bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800/60 rounded-full px-4 py-1.5 mb-5">
+          <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+          <span class="text-[11px] font-bold tracking-[0.14em] uppercase text-emerald-800 dark:text-emerald-300">Our Story</span>
+        </span>
+
+        <h2 class="font-display text-4xl sm:text-5xl leading-[1.1] font-extrabold uppercase text-slate-900 dark:text-white mb-6">
+          Two tractors,
+          <span class="block mt-1 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">one stubborn idea.</span>
+        </h2>
+
+        <div class="space-y-5 text-base sm:text-lg text-slate-600 dark:text-slate-300 leading-relaxed">
+          <p>
+            IronRoute started in 2009 when two owner-operators got tired of watching green drivers wash out of
+            orientation week. They had a combined 40 years and 3 million safe miles between them — and a single
+            belief: nobody should sit in a commercial cab for the first time on a carrier's dime.
+          </p>
+          <p>
+            So they bought a used day cab, leased a gravel lot outside the industrial park, and started teaching
+            pre-trips at 5 a.m. Sixteen years later that lot is a 14-acre training facility with a paved range,
+            six road units, and an ELDT curriculum registered with the FMCSA.
+          </p>
+          <p>
+            What hasn't changed is the ratio. Two students per truck. Never more.
+          </p>
+        </div>
+
+        <!-- Signature row -->
+        <div class="mt-10 flex flex-wrap items-center gap-6 pt-8 border-t border-emerald-100 dark:border-emerald-950/70">
+          <div class="flex items-center gap-3">
+            <img src="img/w3.webp" alt="Co-founder portrait" class="w-11 h-11 rounded-full object-cover border-2 border-emerald-200 dark:border-emerald-900/60" />
+            <div>
+              <p class="text-sm font-bold text-slate-900 dark:text-white leading-tight">Ray Callahan</p>
+              <p class="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mt-0.5">Co-Founder · Lead Road Instructor</p>
+            </div>
+          </div>
+          <div class="hidden sm:block w-px h-10 bg-emerald-200 dark:bg-emerald-900/60"></div>
+          <div class="flex items-center gap-3">
+            <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=120&q=80" alt="Co-founder portrait" class="w-11 h-11 rounded-full object-cover border-2 border-emerald-200 dark:border-emerald-900/60" />
+            <div>
+              <p class="text-sm font-bold text-slate-900 dark:text-white leading-tight">Denise Okafor</p>
+              <p class="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mt-0.5">Co-Founder · Range &amp; Pre-Trip Lead</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Visual -->
+      <div class="lg:col-span-6 order-1 lg:order-2">
+        <div class="relative">
+          <div class="relative rounded-3xl overflow-hidden shadow-2xl shadow-emerald-950/25 border border-emerald-200/50 dark:border-emerald-900/40 h-[330px] sm:h-[430px] lg:h-[520px]">
+            <img src="img/a1.webp"
+                 alt="Instructor coaching a student inside a training truck cab"
+                 class="w-full h-full object-cover" />
+            <div class="absolute inset-0 bg-gradient-to-t from-[#03130a]/70 via-transparent to-transparent"></div>
+          </div>
+
+          <!-- Floating badge -->
+          <div class="absolute -bottom-6 start-4 sm:start-8 bg-white dark:bg-[#0a2a17] border border-emerald-100 dark:border-emerald-900/40 rounded-2xl shadow-bloom p-5 max-w-[240px]">
+            <p class="font-display text-3xl font-extrabold text-primary dark:text-emerald-400 leading-none mb-1.5">2:1</p>
+            <p class="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-500 dark:text-slate-400">Student-to-truck ratio — always</p>
+          </div>
+
+          <!-- Dotted accent -->
+          <div class="absolute -top-6 -end-6 w-28 h-28 bg-[radial-gradient(circle,theme(colors.primary/0.4)_2.5px,transparent_2.5px)] bg-[length:16px_16px] z-0 hidden sm:block"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ================= SECTION 2: MISSION, VISION & VALUES ================= -->
+<section class="relative w-full py-20 lg:py-28 bg-brandLight dark:bg-brandDark transition-colors duration-300 overflow-hidden">
+  <div class="absolute top-1/3 start-0 w-[400px] h-[400px] bg-secondary/5 dark:bg-secondary/10 rounded-full blur-[130px] pointer-events-none"></div>
+
+  <div class="max-w-[1400px] mx-auto px-6 lg:px-12 relative z-10">
+
+    <div class="max-w-3xl mx-auto text-center mb-14 lg:mb-16">
+      <span class="inline-flex items-center gap-2 bg-white dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800/60 rounded-full px-4 py-1.5 mb-5 shadow-sm">
+        <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+        <span class="text-[11px] font-bold tracking-[0.14em] uppercase text-emerald-800 dark:text-emerald-300">What Drives Us</span>
+      </span>
+      <h2 class="font-display text-4xl sm:text-5xl leading-[1.1] font-extrabold uppercase text-slate-900 dark:text-white mb-5">
+        One mission.
+        <span class="block mt-1 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Three non-negotiables.</span>
+      </h2>
+      <p class="text-base sm:text-lg text-slate-600 dark:text-slate-300 leading-relaxed">
+        Every scheduling decision, every tuition dollar and every instructor hire gets measured against these three.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-7 items-stretch">
+
+      <!-- Mission -->
+      <article class="group flex flex-col h-full bg-white dark:bg-[#0a2a17] border border-emerald-100 dark:border-emerald-900/40 rounded-2xl p-8 shadow-sm hover:shadow-bloom-hover hover:-translate-y-1 hover:border-emerald-200 dark:hover:border-emerald-800/60 transition-all duration-300">
+        <span class="w-12 h-12 rounded-xl bg-gradient-to-tr from-primary to-secondary text-white flex items-center justify-center shadow-bloom mb-6 group-hover:scale-105 transition-transform duration-300">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="9" />
+            <circle cx="12" cy="12" r="4.5" />
+            <circle cx="12" cy="12" r="1" fill="currentColor" />
+          </svg>
+        </span>
+        <h3 class="font-display text-2xl font-bold uppercase text-slate-900 dark:text-white mb-3">Our Mission</h3>
+        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed flex-1">
+          Turn complete beginners into safe, employable CDL holders — with enough real wheel time that their first
+          solo load doesn't feel like their first day.
+        </p>
+        <span class="mt-6 inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.14em] text-primary dark:text-emerald-400">
+          <span class="w-1.5 h-1.5 rounded-full bg-primary dark:bg-emerald-400"></span>
+          Safety before speed
+        </span>
+      </article>
+
+      <!-- Vision -->
+      <article class="group flex flex-col h-full bg-white dark:bg-[#0a2a17] border border-emerald-100 dark:border-emerald-900/40 rounded-2xl p-8 shadow-sm hover:shadow-bloom-hover hover:-translate-y-1 hover:border-emerald-200 dark:hover:border-emerald-800/60 transition-all duration-300">
+        <span class="w-12 h-12 rounded-xl bg-gradient-to-tr from-primary to-secondary text-white flex items-center justify-center shadow-bloom mb-6 group-hover:scale-105 transition-transform duration-300">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z" />
+            <circle cx="12" cy="12" r="3" />
+          </svg>
+        </span>
+        <h3 class="font-display text-2xl font-bold uppercase text-slate-900 dark:text-white mb-3">Our Vision</h3>
+        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed flex-1">
+          A freight industry where every new driver is trained to a national standard before they touch a paid
+          load — and where the training is affordable enough that a career change is realistic.
+        </p>
+        <span class="mt-6 inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.14em] text-primary dark:text-emerald-400">
+          <span class="w-1.5 h-1.5 rounded-full bg-primary dark:bg-emerald-400"></span>
+          Access over exclusivity
+        </span>
+      </article>
+
+      <!-- Values -->
+      <article class="group flex flex-col h-full bg-gradient-to-b from-primary to-primaryHover text-white rounded-2xl p-8 shadow-bloom-hover ring-1 ring-emerald-400/30 hover:-translate-y-1 transition-all duration-300">
+        <span class="w-12 h-12 rounded-xl bg-white/15 border border-white/25 text-white flex items-center justify-center shadow-lg mb-6 group-hover:scale-105 transition-transform duration-300">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 3l8 4v5c0 5-3.4 8.3-8 9-4.6-.7-8-4-8-9V7l8-4z" />
+            <path d="M9 12l2 2 4-4" />
+          </svg>
+        </span>
+        <h3 class="font-display text-2xl font-bold uppercase mb-3">Our Values</h3>
+        <ul class="flex flex-col gap-3 text-sm text-emerald-50/95 leading-relaxed flex-1">
+          <li class="flex items-start gap-2.5">
+            <svg class="w-4 h-4 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+            Honest timelines, no inflated promises
+          </li>
+          <li class="flex items-start gap-2.5">
+            <svg class="w-4 h-4 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+            Instructor first, salesperson never
+          </li>
+          <li class="flex items-start gap-2.5">
+            <svg class="w-4 h-4 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+            Every hour logged, every mile accounted for
+          </li>
+        </ul>
+        <a href="programs.html" class="mt-6 inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.14em] text-white/90 hover:text-white transition-colors">
+          See how we train
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+        </a>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ================= SECTION 3: BY THE NUMBERS ================= -->
+<section class="relative w-full py-20 lg:py-28 bg-gradient-to-br from-primary via-primary to-primaryHover text-white overflow-hidden">
+
+  <div class="absolute -top-32 end-0 w-[520px] h-[520px] bg-secondary/25 rounded-full blur-[140px] pointer-events-none"></div>
+  <div class="absolute -bottom-32 start-0 w-[420px] h-[420px] bg-emerald-300/20 rounded-full blur-[130px] pointer-events-none"></div>
+  <div class="absolute inset-0 bg-[radial-gradient(circle_at_70%_20%,rgba(255,255,255,0.08),transparent_60%)] pointer-events-none"></div>
+
+  <div class="max-w-[1400px] mx-auto px-6 lg:px-12 relative z-10">
+
+    <div class="max-w-3xl mb-14 lg:mb-16">
+      <span class="inline-flex items-center gap-2 bg-white/15 backdrop-blur-sm border border-white/25 rounded-full px-4 py-1.5 mb-5">
+        <span class="w-1.5 h-1.5 rounded-full bg-emerald-300"></span>
+        <span class="text-[11px] font-bold tracking-[0.14em] uppercase text-emerald-50">By The Numbers</span>
+      </span>
+      <h2 class="font-display text-4xl sm:text-5xl leading-[1.1] font-extrabold uppercase mb-5">
+        Sixteen years of
+        <span class="block mt-1 text-emerald-200">receipts, not slogans.</span>
+      </h2>
+      <p class="text-base sm:text-lg text-emerald-50/85 leading-relaxed">
+        We publish our pass rates and placement figures every quarter. Here's where they stand today.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+
+      <div class="rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-6 sm:p-7 hover:bg-white/15 hover:-translate-y-1 transition-all duration-300">
+        <p class="font-display text-4xl sm:text-5xl font-extrabold leading-none mb-2">96%</p>
+        <p class="text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.14em] text-emerald-100/85">First-Time Skills Test Pass</p>
+      </div>
+
+      <div class="rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-6 sm:p-7 hover:bg-white/15 hover:-translate-y-1 transition-all duration-300">
+        <p class="font-display text-4xl sm:text-5xl font-extrabold leading-none mb-2">4,800+</p>
+        <p class="text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.14em] text-emerald-100/85">Graduates Since 2009</p>
+      </div>
+
+      <div class="rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-6 sm:p-7 hover:bg-white/15 hover:-translate-y-1 transition-all duration-300">
+        <p class="font-display text-4xl sm:text-5xl font-extrabold leading-none mb-2">91%</p>
+        <p class="text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.14em] text-emerald-100/85">Placed Within 60 Days</p>
+      </div>
+
+      <div class="rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-6 sm:p-7 hover:bg-white/15 hover:-translate-y-1 transition-all duration-300">
+        <p class="font-display text-4xl sm:text-5xl font-extrabold leading-none mb-2">14</p>
+        <p class="text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.14em] text-emerald-100/85">Acres of Training Range</p>
+      </div>
+
+    </div>
+
+    <!-- Sub-strip -->
+    <div class="mt-10 sm:mt-12 flex flex-wrap items-center gap-x-8 gap-y-4 pt-8 border-t border-white/20 text-[11px] font-bold uppercase tracking-[0.14em] text-emerald-100/80">
+      <span class="inline-flex items-center gap-2">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+        FMCSA ELDT Registered
+      </span>
+      <span class="inline-flex items-center gap-2">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+        State Licensed School
+      </span>
+      <span class="inline-flex items-center gap-2">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+        Third-Party Skills Testing
+      </span>
+      <span class="inline-flex items-center gap-2">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+        VA-Approved Benefits
+      </span>
+    </div>
+
+  </div>
+</section>
+
+<!-- ================= SECTION 4: FACILITY & FLEET ================= -->
+<section class="relative w-full py-20 lg:py-28 bg-white dark:bg-[#071f11] border-y border-emerald-100 dark:border-emerald-950/70 transition-colors duration-300 overflow-hidden">
+  <div class="absolute -bottom-24 start-1/4 w-[420px] h-[420px] bg-primary/5 dark:bg-primary/10 rounded-full blur-[120px] pointer-events-none"></div>
+
+  <div class="max-w-[1400px] mx-auto px-6 lg:px-12 relative z-10">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+
+      <!-- Visual -->
+      <div class="lg:col-span-6">
+        <div class="relative">
+          <div class="relative rounded-3xl overflow-hidden shadow-2xl shadow-emerald-950/25 border border-emerald-200/50 dark:border-emerald-900/40 h-[330px] sm:h-[430px] lg:h-[520px]">
+            <img src="img/a2.webp"
+                 alt="Row of training trucks parked on the academy lot"
+                 class="w-full h-full object-cover" />
+            <div class="absolute inset-0 bg-gradient-to-t from-[#03130a]/75 via-transparent to-transparent"></div>
+
+            <div class="absolute bottom-0 start-0 end-0 p-6 sm:p-8">
+              <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-emerald-300 mb-2">IronRoute Training Facility</p>
+              <p class="font-display text-xl sm:text-2xl font-extrabold uppercase text-white leading-tight">
+                Paved range · 6 road units · Night lighting
+              </p>
+            </div>
+          </div>
+
+          <!-- Floating stat card -->
+          <div class="absolute -top-6 end-4 sm:end-8 bg-white dark:bg-[#0a2a17] border border-emerald-100 dark:border-emerald-900/40 rounded-2xl shadow-bloom px-5 py-4">
+            <p class="font-display text-2xl font-extrabold text-primary dark:text-emerald-400 leading-none mb-1">6</p>
+            <p class="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-500 dark:text-slate-400">Road Units</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Text -->
+      <div class="lg:col-span-6">
+        <span class="inline-flex items-center gap-2 bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800/60 rounded-full px-4 py-1.5 mb-5">
+          <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+          <span class="text-[11px] font-bold tracking-[0.14em] uppercase text-emerald-800 dark:text-emerald-300">Facility &amp; Fleet</span>
+        </span>
+
+        <h2 class="font-display text-4xl sm:text-5xl leading-[1.1] font-extrabold uppercase text-slate-900 dark:text-white mb-6">
+          You can't learn
+          <span class="block mt-1 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">on a simulator.</span>
+        </h2>
+
+        <p class="text-base sm:text-lg text-slate-600 dark:text-slate-300 leading-relaxed mb-8">
+          Our yard is built for repetition. Backing lanes you can run fifty times in a morning, a lit range for
+          night sessions, and a fleet maintained to the same DOT standard your future carrier will hold you to.
+        </p>
+
+        <ul class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 mb-10">
+          <li class="flex items-start gap-3">
+            <span class="w-6 h-6 rounded-lg bg-emerald-100 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-900/60 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <svg class="w-3.5 h-3.5 text-primary dark:text-emerald-400" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+            </span>
+            <span class="text-sm text-slate-700 dark:text-slate-300 font-medium leading-relaxed">14-acre paved skills range</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <span class="w-6 h-6 rounded-lg bg-emerald-100 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-900/60 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <svg class="w-3.5 h-3.5 text-primary dark:text-emerald-400" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+            </span>
+            <span class="text-sm text-slate-700 dark:text-slate-300 font-medium leading-relaxed">Automatic &amp; 10-speed manual tractors</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <span class="w-6 h-6 rounded-lg bg-emerald-100 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-900/60 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <svg class="w-3.5 h-3.5 text-primary dark:text-emerald-400" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+            </span>
+            <span class="text-sm text-slate-700 dark:text-slate-300 font-medium leading-relaxed">Lit range for evening cohorts</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <span class="w-6 h-6 rounded-lg bg-emerald-100 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-900/60 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <svg class="w-3.5 h-3.5 text-primary dark:text-emerald-400" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+            </span>
+            <span class="text-sm text-slate-700 dark:text-slate-300 font-medium leading-relaxed">On-site DOT pre-trip bays</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <span class="w-6 h-6 rounded-lg bg-emerald-100 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-900/60 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <svg class="w-3.5 h-3.5 text-primary dark:text-emerald-400" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+            </span>
+            <span class="text-sm text-slate-700 dark:text-slate-300 font-medium leading-relaxed">Classroom with ELDT theory lab</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <span class="w-6 h-6 rounded-lg bg-emerald-100 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-900/60 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <svg class="w-3.5 h-3.5 text-primary dark:text-emerald-400" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+            </span>
+            <span class="text-sm text-slate-700 dark:text-slate-300 font-medium leading-relaxed">Skills-test truck included in tuition</span>
+          </li>
+        </ul>
+
+        <a href="contact.html" class="inline-flex items-center gap-2 px-7 py-3.5 rounded-lg border-2 border-primary text-primary dark:border-emerald-400 dark:text-emerald-400 hover:bg-primary hover:text-white dark:hover:bg-emerald-400 dark:hover:text-slate-900 text-[11px] font-bold uppercase tracking-[0.14em] transition-all duration-300">
+          Book A Yard Tour
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ================= SECTION 5: MILESTONES TIMELINE ================= -->
+<section class="relative w-full py-20 lg:py-28 bg-brandLight dark:bg-brandDark transition-colors duration-300 overflow-hidden">
+  <div class="absolute top-0 end-1/3 w-[400px] h-[400px] bg-accentAmber/5 dark:bg-accentAmber/10 rounded-full blur-[130px] pointer-events-none"></div>
+
+  <div class="max-w-[1400px] mx-auto px-6 lg:px-12 relative z-10">
+
+    <div class="max-w-3xl mx-auto text-center mb-14 lg:mb-16">
+      <span class="inline-flex items-center gap-2 bg-white dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800/60 rounded-full px-4 py-1.5 mb-5 shadow-sm">
+        <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+        <span class="text-[11px] font-bold tracking-[0.14em] uppercase text-emerald-800 dark:text-emerald-300">Milestones</span>
+      </span>
+      <h2 class="font-display text-4xl sm:text-5xl leading-[1.1] font-extrabold uppercase text-slate-900 dark:text-white mb-5">
+        The road so far
+        <span class="block mt-1 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">— mile by mile.</span>
+      </h2>
+      <p class="text-base sm:text-lg text-slate-600 dark:text-slate-300 leading-relaxed">
+        From a gravel lot and two day cabs to a registered ELDT provider with a placement desk.
+      </p>
+    </div>
+
+    <div class="relative max-w-4xl mx-auto">
+      <!-- Vertical line -->
+      <span class="absolute start-[19px] sm:start-1/2 top-2 bottom-2 w-0.5 bg-gradient-to-b from-primary via-secondary to-emerald-200 dark:to-emerald-900/60 sm:-translate-x-1/2 rtl:sm:translate-x-1/2" aria-hidden="true"></span>
+
+      <!-- Item 1 -->
+      <div class="relative flex items-start gap-6 sm:gap-0 mb-10 sm:mb-14">
+        <div class="relative z-10 flex-shrink-0 w-10 h-10 rounded-full bg-gradient-to-tr from-primary to-secondary text-white flex items-center justify-center shadow-bloom border-4 border-brandLight dark:border-brandDark sm:absolute sm:start-1/2 sm:-translate-x-1/2 rtl:sm:translate-x-1/2">
+          <span class="font-display text-[11px] font-extrabold">09</span>
+        </div>
+        <div class="sm:w-1/2 sm:pe-12 sm:text-end flex-1">
+          <div class="bg-white dark:bg-[#0a2a17] border border-emerald-100 dark:border-emerald-900/40 rounded-2xl p-6 shadow-sm hover:shadow-bloom-hover hover:-translate-y-1 transition-all duration-300">
+            <p class="text-[10px] font-bold uppercase tracking-[0.16em] text-primary dark:text-emerald-400 mb-2">2009</p>
+            <h3 class="font-display text-xl font-bold uppercase text-slate-900 dark:text-white mb-2">The Gravel Lot</h3>
+            <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+              Two owner-operators, one used day cab, and eight students in the first cohort.
+            </p>
+          </div>
+        </div>
+        <div class="hidden sm:block sm:w-1/2"></div>
+      </div>
+
+      <!-- Item 2 -->
+      <div class="relative flex items-start gap-6 sm:gap-0 mb-10 sm:mb-14">
+        <div class="relative z-10 flex-shrink-0 w-10 h-10 rounded-full bg-gradient-to-tr from-primary to-secondary text-white flex items-center justify-center shadow-bloom border-4 border-brandLight dark:border-brandDark sm:absolute sm:start-1/2 sm:-translate-x-1/2 rtl:sm:translate-x-1/2">
+          <span class="font-display text-[11px] font-extrabold">14</span>
+        </div>
+        <div class="hidden sm:block sm:w-1/2"></div>
+        <div class="sm:w-1/2 sm:ps-12 flex-1">
+          <div class="bg-white dark:bg-[#0a2a17] border border-emerald-100 dark:border-emerald-900/40 rounded-2xl p-6 shadow-sm hover:shadow-bloom-hover hover:-translate-y-1 transition-all duration-300">
+            <p class="text-[10px] font-bold uppercase tracking-[0.16em] text-primary dark:text-emerald-400 mb-2">2014</p>
+            <h3 class="font-display text-xl font-bold uppercase text-slate-900 dark:text-white mb-2">Range Goes Paved</h3>
+            <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+              Backing lanes, offset alleys and a dedicated pre-trip bay replace the old gravel pad.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 3 -->
+      <div class="relative flex items-start gap-6 sm:gap-0 mb-10 sm:mb-14">
+        <div class="relative z-10 flex-shrink-0 w-10 h-10 rounded-full bg-gradient-to-tr from-primary to-secondary text-white flex items-center justify-center shadow-bloom border-4 border-brandLight dark:border-brandDark sm:absolute sm:start-1/2 sm:-translate-x-1/2 rtl:sm:translate-x-1/2">
+          <span class="font-display text-[11px] font-extrabold">19</span>
+        </div>
+        <div class="sm:w-1/2 sm:pe-12 sm:text-end flex-1">
+          <div class="bg-white dark:bg-[#0a2a17] border border-emerald-100 dark:border-emerald-900/40 rounded-2xl p-6 shadow-sm hover:shadow-bloom-hover hover:-translate-y-1 transition-all duration-300">
+            <p class="text-[10px] font-bold uppercase tracking-[0.16em] text-primary dark:text-emerald-400 mb-2">2019</p>
+            <h3 class="font-display text-xl font-bold uppercase text-slate-900 dark:text-white mb-2">Placement Desk Opens</h3>
+            <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+              A dedicated placement team and the first 12 carrier partners sign on.
+            </p>
+          </div>
+        </div>
+        <div class="hidden sm:block sm:w-1/2"></div>
+      </div>
+
+      <!-- Item 4 -->
+      <div class="relative flex items-start gap-6 sm:gap-0">
+        <div class="relative z-10 flex-shrink-0 w-10 h-10 rounded-full bg-gradient-to-tr from-primary to-secondary text-white flex items-center justify-center shadow-bloom border-4 border-brandLight dark:border-brandDark sm:absolute sm:start-1/2 sm:-translate-x-1/2 rtl:sm:translate-x-1/2">
+          <span class="font-display text-[11px] font-extrabold">22</span>
+        </div>
+        <div class="hidden sm:block sm:w-1/2"></div>
+        <div class="sm:w-1/2 sm:ps-12 flex-1">
+          <div class="bg-white dark:bg-[#0a2a17] border border-emerald-100 dark:border-emerald-900/40 rounded-2xl p-6 shadow-sm hover:shadow-bloom-hover hover:-translate-y-1 transition-all duration-300">
+            <p class="text-[10px] font-bold uppercase tracking-[0.16em] text-primary dark:text-emerald-400 mb-2">2022 — Today</p>
+            <h3 class="font-display text-xl font-bold uppercase text-slate-900 dark:text-white mb-2">FMCSA ELDT Registered</h3>
+            <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+              Full ELDT compliance, a digital student dashboard, and 40+ active hiring partners.
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ================= SECTION 6: ACCREDITATIONS + CTA ================= -->
+<section class="relative w-full py-20 lg:py-28 bg-white dark:bg-[#071f11] border-y border-emerald-100 dark:border-emerald-950/70 transition-colors duration-300 overflow-hidden">
+  <div class="absolute -top-24 start-1/4 w-[420px] h-[420px] bg-primary/5 dark:bg-primary/10 rounded-full blur-[130px] pointer-events-none"></div>
+
+  <div class="max-w-[1400px] mx-auto px-6 lg:px-12 relative z-10">
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+
+      <!-- Accreditations -->
+      <div class="lg:col-span-7">
+        <span class="inline-flex items-center gap-2 bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800/60 rounded-full px-4 py-1.5 mb-5">
+          <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+          <span class="text-[11px] font-bold tracking-[0.14em] uppercase text-emerald-800 dark:text-emerald-300">Credentials</span>
+        </span>
+
+        <h2 class="font-display text-4xl sm:text-5xl leading-[1.1] font-extrabold uppercase text-slate-900 dark:text-white mb-5">
+          Registered, licensed
+          <span class="block mt-1 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">and audited.</span>
+        </h2>
+
+        <p class="text-base sm:text-lg text-slate-600 dark:text-slate-300 leading-relaxed mb-10">
+          Your CDL is a legal document. The school that trains you should be able to prove it meets the standard —
+          not just claim it on a website.
+        </p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+
+          <div class="flex items-start gap-4 bg-brandLight dark:bg-[#0a2a17] border border-emerald-100 dark:border-emerald-900/40 rounded-2xl p-5 shadow-sm hover:shadow-bloom-hover hover:-translate-y-1 transition-all duration-300">
+            <span class="w-10 h-10 rounded-xl bg-gradient-to-tr from-primary to-secondary text-white flex items-center justify-center flex-shrink-0">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3l8 4v5c0 5-3.4 8.3-8 9-4.6-.7-8-4-8-9V7l8-4z"/><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4"/></svg>
+            </span>
+            <div>
+              <h3 class="text-sm font-bold text-slate-900 dark:text-white mb-1">FMCSA ELDT Provider</h3>
+              <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">Listed on the national Training Provider Registry.</p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-4 bg-brandLight dark:bg-[#0a2a17] border border-emerald-100 dark:border-emerald-900/40 rounded-2xl p-5 shadow-sm hover:shadow-bloom-hover hover:-translate-y-1 transition-all duration-300">
+            <span class="w-10 h-10 rounded-xl bg-gradient-to-tr from-primary to-secondary text-white flex items-center justify-center flex-shrink-0">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>
+            </span>
+            <div>
+              <h3 class="text-sm font-bold text-slate-900 dark:text-white mb-1">State-Licensed School</h3>
+              <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">Bonded, insured and inspected annually.</p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-4 bg-brandLight dark:bg-[#0a2a17] border border-emerald-100 dark:border-emerald-900/40 rounded-2xl p-5 shadow-sm hover:shadow-bloom-hover hover:-translate-y-1 transition-all duration-300">
+            <span class="w-10 h-10 rounded-xl bg-gradient-to-tr from-primary to-secondary text-white flex items-center justify-center flex-shrink-0">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h11v7H3z"/><path stroke-linecap="round" stroke-linejoin="round" d="M14 12h4l3 3v2h-7z"/><circle cx="7" cy="18" r="2"/><circle cx="18" cy="18" r="2"/></svg>
+            </span>
+            <div>
+              <h3 class="text-sm font-bold text-slate-900 dark:text-white mb-1">Third-Party Skills Testing</h3>
+              <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">Authorised to administer the CDL skills exam.</p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-4 bg-brandLight dark:bg-[#0a2a17] border border-emerald-100 dark:border-emerald-900/40 rounded-2xl p-5 shadow-sm hover:shadow-bloom-hover hover:-translate-y-1 transition-all duration-300">
+            <span class="w-10 h-10 rounded-xl bg-gradient-to-tr from-primary to-secondary text-white flex items-center justify-center flex-shrink-0">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3l8 4v5c0 5-3.4 8.3-8 9-4.6-.7-8-4-8-9V7l8-4z"/></svg>
+            </span>
+            <div>
+              <h3 class="text-sm font-bold text-slate-900 dark:text-white mb-1">VA-Approved Benefits</h3>
+              <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">Eligible veterans can use education benefits.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- CTA card -->
+      <div class="lg:col-span-5 lg:sticky lg:top-28">
+        <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary via-primary to-primaryHover text-white p-8 sm:p-10 shadow-bloom-hover ring-1 ring-emerald-400/30">
+          <div class="absolute -top-16 -end-16 w-56 h-56 bg-secondary/30 rounded-full blur-[80px] pointer-events-none"></div>
+          <div class="absolute -bottom-16 -start-16 w-56 h-56 bg-emerald-300/20 rounded-full blur-[80px] pointer-events-none"></div>
+
+          <div class="relative z-10">
+            <span class="inline-flex items-center gap-2 bg-white/15 backdrop-blur-sm border border-white/25 rounded-full px-3.5 py-1.5 mb-6">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-300"></span>
+              <span class="text-[10px] font-bold uppercase tracking-[0.14em]">Next Cohort · 8 Seats Left</span>
+            </span>
+
+            <h3 class="font-display text-3xl sm:text-4xl font-extrabold uppercase leading-tight mb-4">
+              Come see the yard before you commit.
+            </h3>
+            <p class="text-sm text-emerald-50/90 leading-relaxed mb-8">
+              Free 20-minute tour, meet an instructor, sit in a tractor. No pressure and no deposit required.
+            </p>
+
+            <div class="flex flex-col gap-3 mb-8">
+              <div class="flex items-center gap-3 text-sm text-emerald-50">
+                <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                Meet the instructors 1-on-1
+              </div>
+              <div class="flex items-center gap-3 text-sm text-emerald-50">
+                <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                Walk the range and the fleet
+              </div>
+              <div class="flex items-center gap-3 text-sm text-emerald-50">
+                <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                Get a written cost breakdown
+              </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-3">
+              <a href="contact.html" class="flex-1 inline-flex items-center justify-center px-6 py-3.5 rounded-lg bg-white text-primary hover:bg-emerald-50 text-[11px] font-bold uppercase tracking-[0.14em] transition-all duration-300 shadow-lg">
+                Book A Tour
+              </a>
+              <a href="enroll.html#apply" class="flex-1 inline-flex items-center justify-center px-6 py-3.5 rounded-lg border-2 border-white/50 text-white hover:bg-white/10 text-[11px] font-bold uppercase tracking-[0.14em] transition-all duration-300">
+                Apply Now
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ================= FOOTER (DARK) ================= -->
+<footer class="relative w-full bg-[#03130a] border-t border-emerald-900/50 transition-colors duration-300 overflow-hidden">
+
+  <!-- Glows -->
+  <div class="absolute -top-24 start-1/4 w-[420px] h-[420px] bg-primary/20 rounded-full blur-[130px] pointer-events-none"></div>
+  <div class="absolute -bottom-32 end-0 w-[420px] h-[420px] bg-secondary/10 rounded-full blur-[130px] pointer-events-none"></div>
+
+  <div class="max-w-[1400px] mx-auto px-6 lg:px-12 relative z-10">
+
+    <!-- Main grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8 py-16 lg:py-20">
+
+      <!-- Brand -->
+      <div class="lg:col-span-4">
+        <a href="index.html" class="flex items-center gap-3 flex-shrink-0 group mb-6" aria-label="IronRoute CDL Academy home">
+          <span class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-primary to-secondary flex items-center justify-center shadow-bloom text-white transition-transform duration-300 group-hover:scale-105">
+            <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M2 7h11v10H2z" />
+              <path d="M13 10h5l4 4v3h-9z" />
+              <circle cx="6.5" cy="18.5" r="2" />
+              <circle cx="17.5" cy="18.5" r="2" />
+            </svg>
+          </span>
+          <span class="flex flex-col">
+            <span class="font-display text-2xl font-extrabold tracking-wide uppercase bg-gradient-to-r from-emerald-300 via-secondary to-emerald-200 bg-clip-text text-transparent leading-none">
+              IronRoute CDL
+            </span>
+            <span class="text-[9px] uppercase font-bold tracking-widest text-emerald-400 mt-1">
+              Driver Training &amp; Placement
+            </span>
+          </span>
+        </a>
+
+        <p class="text-sm text-emerald-100/70 leading-relaxed mb-6 max-w-sm">
+          An FMCSA-registered ELDT truck driving school training Class A, B and C drivers since 2009 — with real
+          highway miles and a placement team behind every graduate.
+        </p>
+
+        <!-- Socials -->
+        <div class="flex items-center gap-3">
+          <a href="#" aria-label="Facebook" class="w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-emerald-100/70 hover:text-white hover:bg-primary hover:border-primary transition-all duration-300">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12a10 10 0 10-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.4h-1.2c-1.2 0-1.6.8-1.6 1.6V12h2.7l-.4 2.9h-2.3v7A10 10 0 0022 12z"/></svg>
+          </a>
+          <a href="#" aria-label="Instagram" class="w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-emerald-100/70 hover:text-white hover:bg-primary hover:border-primary transition-all duration-300">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.2c3.2 0 3.6 0 4.9.1 1.2.1 1.8.3 2.2.4.6.2 1 .5 1.4.9.4.4.7.8.9 1.4.2.4.3 1 .4 2.2.1 1.3.1 1.7.1 4.9s0 3.6-.1 4.9c-.1 1.2-.3 1.8-.4 2.2-.2.6-.5 1-.9 1.4-.4.4-.8.7-1.4.9-.4.2-1 .3-2.2.4-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-1.2-.1-1.8-.3-2.2-.4-.6-.2-1-.5-1.4-.9-.4-.4-.7-.8-.9-1.4-.2-.4-.3-1-.4-2.2C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.9c.1-1.2.3-1.8.4-2.2.2-.6.5-1 .9-1.4.4-.4.8-.7 1.4-.9.4-.2 1-.3 2.2-.4 1.3-.1 1.7-.1 4.8-.1zm0 3.2A6.6 6.6 0 1012 18.6 6.6 6.6 0 0012 5.4zm0 10.9a4.3 4.3 0 110-8.6 4.3 4.3 0 010 8.6zm6.9-11.1a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z"/></svg>
+          </a>
+          <a href="#" aria-label="LinkedIn" class="w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-emerald-100/70 hover:text-white hover:bg-primary hover:border-primary transition-all duration-300">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 11-.02 5 2.5 2.5 0 01.02-5zM3 9h4v12H3zM10 9h3.8v1.7h.1c.5-1 1.8-2 3.7-2 4 0 4.7 2.5 4.7 5.8V21h-4v-5.6c0-1.3 0-3-1.9-3s-2.2 1.4-2.2 2.9V21h-4z"/></svg>
+          </a>
+          <a href="#" aria-label="YouTube" class="w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-emerald-100/70 hover:text-white hover:bg-primary hover:border-primary transition-all duration-300">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M23.5 6.5a3 3 0 00-2.1-2.1C19.5 4 12 4 12 4s-7.5 0-9.4.4A3 3 0 00.5 6.5C.1 8.4.1 12 .1 12s0 3.6.4 5.5a3 3 0 002.1 2.1C4.5 20 12 20 12 20s7.5 0 9.4-.4a3 3 0 002.1-2.1c.4-1.9.4-5.5.4-5.5s0-3.6-.4-5.5zM9.8 15.6V8.4l6.2 3.6-6.2 3.6z"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Programs -->
+      <div class="lg:col-span-2">
+        <h4 class="text-[11px] font-bold uppercase tracking-[0.16em] text-white mb-5">Programs</h4>
+        <ul class="flex flex-col gap-3">
+          <li><a href="programs.html#class-a" class="text-sm text-emerald-100/70 hover:text-emerald-400 transition-colors">Class A · Tractor-Trailer</a></li>
+          <li><a href="programs.html#class-b" class="text-sm text-emerald-100/70 hover:text-emerald-400 transition-colors">Class B · Straight Truck</a></li>
+          <li><a href="programs.html#class-c" class="text-sm text-emerald-100/70 hover:text-emerald-400 transition-colors">Class C · Delivery</a></li>
+          <li><a href="programs.html#endorsements" class="text-sm text-emerald-100/70 hover:text-emerald-400 transition-colors">Endorsements</a></li>
+          <li><a href="programs.html#refresher" class="text-sm text-emerald-100/70 hover:text-emerald-400 transition-colors">Refresher Course</a></li>
+        </ul>
+      </div>
+
+      <!-- Company -->
+      <div class="lg:col-span-2">
+        <h4 class="text-[11px] font-bold uppercase tracking-[0.16em] text-white mb-5">Company</h4>
+        <ul class="flex flex-col gap-3">
+          <li><a href="about.html" class="text-sm text-emerald-100/70 hover:text-emerald-400 transition-colors">About Us</a></li>
+          <li><a href="instructors.html" class="text-sm text-emerald-100/70 hover:text-emerald-400 transition-colors">Instructors</a></li>
+          <li><a href="placement.html" class="text-sm text-emerald-100/70 hover:text-emerald-400 transition-colors">Job Placement</a></li>
+          <li><a href="contact.html" class="text-sm text-emerald-100/70 hover:text-emerald-400 transition-colors">Contact</a></li>
+          <li><a href="login.html" class="text-sm text-emerald-100/70 hover:text-emerald-400 transition-colors">Student Login</a></li>
+        </ul>
+      </div>
+
+      <!-- Contact -->
+      <div class="lg:col-span-4">
+        <h4 class="text-[11px] font-bold uppercase tracking-[0.16em] text-white mb-5">Get In Touch</h4>
+
+        <ul class="flex flex-col gap-4 mb-6">
+          <li class="flex items-start gap-3">
+            <span class="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 flex-shrink-0">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a2 2 0 01-2.828 0l-4.243-4.243a8 8 0 1111.314 0z"/><circle cx="12" cy="11" r="3"/></svg>
+            </span>
+            <span class="text-sm text-emerald-100/70 leading-relaxed">4820 Industrial Parkway<br />Building C, Gate 4</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <span class="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 flex-shrink-0">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3l2 5-2.5 1.5a11 11 0 005 5L14 12l5 2v3a2 2 0 01-2 2A15 15 0 013 5z"/></svg>
+            </span>
+            <a href="tel:+15550142200" class="text-sm text-emerald-100/70 hover:text-emerald-400 transition-colors leading-relaxed">(555) 014-2200</a>
+          </li>
+          <li class="flex items-start gap-3">
+            <span class="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 flex-shrink-0">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l9 6 9-6M3 6h18v12H3z"/></svg>
+            </span>
+            <a href="mailto:admissions@ironroutecdl.com" class="text-sm text-emerald-100/70 hover:text-emerald-400 transition-colors leading-relaxed break-all">admissions@ironroutecdl.com</a>
+          </li>
+        </ul>
+
+        <a href="enroll.html#apply" class="inline-flex items-center justify-center gap-2 w-full px-6 py-3.5 rounded-lg bg-gradient-to-r from-primary to-secondary hover:from-primaryHover hover:to-secondaryHover text-white text-[11px] font-bold uppercase tracking-[0.14em] shadow-bloom hover:shadow-bloom-hover hover:-translate-y-0.5 transition-all duration-300 border border-emerald-400/30">
+          Start Enrollment
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+        </a>
+      </div>
+
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="border-t border-white/10 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <p class="text-[11px] font-semibold uppercase tracking-[0.14em] text-emerald-100/60 text-center sm:text-start">
+        © <span id="footer-year">2026</span> IronRoute CDL Academy. All rights reserved.
+      </p>
+
+      <ul class="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
+        <li><a href="#" class="text-[11px] font-semibold uppercase tracking-[0.14em] text-emerald-100/60 hover:text-emerald-400 transition-colors">Privacy Policy</a></li>
+        <li><a href="#" class="text-[11px] font-semibold uppercase tracking-[0.14em] text-emerald-100/60 hover:text-emerald-400 transition-colors">Terms</a></li>
+        <li><a href="#" class="text-[11px] font-semibold uppercase tracking-[0.14em] text-emerald-100/60 hover:text-emerald-400 transition-colors">Accessibility</a></li>
+      </ul>
+    </div>
+
+  </div>
+</footer>
+
+<script>
+  /* Footer year */
+  document.addEventListener('DOMContentLoaded', function () {
+    const y = document.getElementById('footer-year');
+    if (y) y.textContent = new Date().getFullYear();
+  });
+</script>
+
+</body>
+</html>

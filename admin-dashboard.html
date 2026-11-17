@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="light">
+<head>
+  <script>
+    (function () {
+      try {
+        const savedDir = localStorage.getItem('dir');
+        if (savedDir === 'rtl') document.documentElement.setAttribute('dir', 'rtl');
+        else document.documentElement.setAttribute('dir', 'ltr');
+
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (savedTheme === 'dark' || (!savedTheme && prefersDark)) document.documentElement.classList.add('dark');
+        else document.documentElement.classList.remove('dark');
+      } catch (e) {}
+    })();
+  </script>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Yard Control &amp; Dashboard — IronRoute CDL Academy</title>
+  <meta name="description" content="FMCSA-registered ELDT Admin Dashboard for IronRoute CDL Academy. Manage trainee rosters, verify behind-the-wheel hours, schedule state road exams, and track carrier job placements." />
+
+  <!-- ================= FAVICON (Semi Truck) ================= -->
+  <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%2315803d'/%3E%3Cpath d='M5 10h13v11H5z' fill='none' stroke='%23ffffff' stroke-width='1.8' stroke-linejoin='round'/%3E%3Cpath d='M18 14h5l4 4v3h-9z' fill='none' stroke='%23ffffff' stroke-width='1.8' stroke-linejoin='round'/%3E%3Ccircle cx='10' cy='23' r='2.4' fill='none' stroke='%23bbf7d0' stroke-width='1.8'/%3E%3Ccircle cx='22' cy='23' r='2.4' fill='none' stroke='%23bbf7d0' stroke-width='1.8'/%3E%3C/svg%3E" />
+
+  <!-- ================= FONTS ================= -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- ================= TAILWIND ================= -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['"Barlow Condensed"', 'sans-serif'],
+            sans: ['Plus Jakarta Sans', 'sans-serif']
+          },
+          colors: {
+            primary: '#15803d',
+            primaryHover: '#166534',
+            primaryLight: '#ecfdf5',
+            secondary: '#22c55e',
+            secondaryHover: '#16a34a',
+            accentCoral: '#ea580c',
+            accentAmber: '#d97706',
+            accentViolet: '#7c3aed',
+            brandLight: '#f8fafc',
+            brandDark: '#051b0e'
+          },
+          boxShadow: {
+            bloom: '0 10px 30px -5px rgba(21, 128, 61, 0.25)',
+            'bloom-hover': '0 20px 40px -10px rgba(21, 128, 61, 0.38)',
+            card: '0 2px 12px -2px rgba(15, 23, 42, 0.05)'
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+
+    .sidebar-scroll { scrollbar-width: thin; scrollbar-color: #cbd5e1 transparent; }
+    .sidebar-scroll::-webkit-scrollbar { width: 5px; }
+    .sidebar-scroll::-webkit-scrollbar-track { background: transparent; }
+    .sidebar-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+    html.dark .sidebar-scroll { scrollbar-color: #14532d transparent; }
+    html.dark .sidebar-scroll::-webkit-scrollbar-thumb { background: #14532d; }
+
+    .table-scroll { scrollbar-width: thin; scrollbar-color: #15803d transparent; }
+    .table-scroll::-webkit-scrollbar { height: 6px; }
+    .table-scroll::-webkit-scrollbar-track { background: transparent; }
+    .table-scroll::-webkit-scrollbar-thumb { background: #15803d; border-radius: 9999px; }
+
+    .dash-page-view {
+      animation: fadeSlideIn 0.24s ease-out;
+    }
+    @keyframes fadeSlideIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    html[dir="rtl"] .rtl-icon-flip {
+      transform: scaleX(-1);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+    }
+  </style>
+</head>
+
+<body class="bg-brandLight dark:bg-brandDark text-slate-800 dark:text-slate-100 antialiased overflow-x-hidden transition-colors duration-300">
+
+  <!-- Mobile Sidebar Backdrop -->
+  <div id="sidebar-backdrop" onclick="toggleMobileSidebar(false)" class="fixed inset-0 z-40 bg-slate-950/60 backdrop-blur-xs hidden lg:hidden transition-opacity"></div>
+
+  <!-- ===================================================================== -->
+  <!-- APP SHELL: FIXED ADMIN SIDEBAR + TOP HEADER + MULTI-PAGE VIEWS        -->
+  <!-- ===================================================================== -->
+  <div class="min-h-screen flex">
+
+    <!-- ================= LEFT ADMIN SIDEBAR ================= -->
+    <aside id="app-sidebar" class="fixed lg:sticky top-0 start-0 z-50 h-screen w-72 bg-white dark:bg-[#071f11] border-e border-slate-200/80 dark:border-emerald-950/80 flex flex-col justify-between transition-transform duration-300 -translate-x-full rtl:translate-x-full lg:translate-x-0 rtl:lg:translate-x-0 flex-shrink-0">
+
+      <!-- Top Brand + Admin Navigation -->
+      <div class="flex flex-col min-h-0 flex-1">
+        <div class="h-20 px-6 flex items-center justify-between border-b border-slate-100 dark:border-emerald-950/70 flex-shrink-0">
+          <a href="index.html" class="flex items-center gap-3 group" aria-label="IronRoute CDL Home">
+            <span class="w-10 h-10 rounded-xl bg-gradient-to-tr from-primary to-secondary flex items-center justify-center shadow-bloom text-white transition-transform duration-300 group-hover:scale-105">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2 7h11v10H2z" />
+                <path d="M13 10h5l4 4v3h-9z" />
+                <circle cx="6.5" cy="18.5" r="2" />
+                <circle cx="17.5" cy="18.5" r="2" />
+              </svg>
+            </span>
+            <span class="flex flex-col">
+              <span class="font-display text-xl font-extrabold tracking-wide uppercase text-slate-900 dark:text-white leading-none">
+                IronRoute CDL
+              </span>
+              <span class="text-[9px] uppercase font-bold tracking-[0.18em] text-primary dark:text-emerald-400 mt-1">
+                Admin Yard Control
+              </span>
+            </span>
+          </a>
+
+          <button type="button" onclick="toggleMobileSidebar(false)" aria-label="Close sidebar" class="lg:hidden p-1.5 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-emerald-950">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+          </button>
+        </div>
+
+        <!-- Dedicated Page Switcher Links -->
+        <div class="flex-1 overflow-y-auto sidebar-scroll px-4 py-6 space-y-6">
+
+          <div>
+            <p class="px-3 text-[10px] font-bold uppercase tracking-[0.16em] text-slate-400 dark:text-slate-500 mb-2.5">
+              Operations Control
+            </p>
+            <nav class="space-y-1.5" aria-label="Admin portal pages">
+              <!-- FIX: Wrapped icon & text in a span to maintain left alignment -->
+              <button type="button" data-page="overview" onclick="openAdminPage('overview')" class="nav-pill active w-full flex items-center gap-3 px-3.5 py-3 rounded-xl text-sm font-bold transition-all duration-200 bg-gradient-to-r from-primary to-secondary text-white shadow-bloom">
+                <span class="flex items-center gap-3">
+                  <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
+                  <span>Yard Overview</span>
+                </span>
+              </button>
+
+              <!-- FIX: Wrapped icon & text in a span -->
+              <button type="button" data-page="students" onclick="openAdminPage('students')" class="nav-pill w-full flex items-center gap-3 px-3.5 py-3 rounded-xl text-sm font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-emerald-950/60 transition-all duration-200">
+                <span class="flex items-center gap-3">
+                  <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                  <span>Trainee Roster</span>
+                </span>
+              </button>
+
+              <!-- This one already had a wrapper, so it was partially working before -->
+              <button type="button" data-page="approvals" onclick="openAdminPage('approvals')" class="nav-pill w-full flex items-center justify-between px-3.5 py-3 rounded-xl text-sm font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-emerald-950/60 transition-all duration-200">
+                <span class="flex items-center gap-3">
+                  <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  <span>Hours Sign-Offs</span>
+                </span>
+                <span id="sidebar-pending-pill" class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300">4</span>
+              </button>
+
+              <!-- FIX: Wrapped icon & text in a span -->
+              <button type="button" data-page="exams" onclick="openAdminPage('exams')" class="nav-pill w-full flex items-center gap-3 px-3.5 py-3 rounded-xl text-sm font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-emerald-950/60 transition-all duration-200">
+                <span class="flex items-center gap-3">
+                  <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  <span>State Skills &amp; Fleet</span>
+                </span>
+              </button>
+
+              <!-- FIX: Wrapped icon & text in a span -->
+              <button type="button" data-page="placement" onclick="openAdminPage('placement')" class="nav-pill w-full flex items-center gap-3 px-3.5 py-3 rounded-xl text-sm font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-emerald-950/60 transition-all duration-200">
+                <span class="flex items-center gap-3">
+                  <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                  <span>Carrier Placement</span>
+                </span>
+              </button>
+            </nav>
+          </div>
+
+          <div>
+            <p class="px-3 text-[10px] font-bold uppercase tracking-[0.16em] text-slate-400 dark:text-slate-500 mb-2.5">
+              Regulatory Audit
+            </p>
+            <nav class="space-y-1.5">
+              <!-- FIX: Wrapped icon & text in a span with w-full to ensure truncate works if needed -->
+              <button type="button" data-page="fmcsa" onclick="openAdminPage('fmcsa')" class="nav-pill w-full flex items-center gap-3 px-3.5 py-3 rounded-xl text-sm font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-emerald-950/60 transition-all duration-200">
+                <span class="flex items-center gap-3 w-full">
+                  <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                  <span class="truncate">FMCSA TPR &amp; DOT Audit</span>
+                </span>
+              </button>
+            </nav>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar Bottom Controls: RTL + Dark/Light Mode Icon Buttons -->
+      <div class="p-4 border-t border-slate-100 dark:border-emerald-950/70 bg-slate-50/70 dark:bg-[#051b0e]/60 flex-shrink-0">
+        <div class="flex items-center gap-2.5">
+          <!-- RTL / LTR Toggle Button -->
+          <button id="sidebar-rtl-btn" type="button" onclick="toggleRTL()" aria-label="Toggle text direction" title="Switch text direction (RTL / LTR)" class="flex-1 flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl bg-white dark:bg-[#0a2a17] border border-slate-200 dark:border-emerald-900/60 text-xs font-bold text-slate-700 dark:text-slate-200 hover:border-primary hover:text-primary dark:hover:text-emerald-400 transition-colors">
+            <svg class="w-4 h-4 transition-transform duration-300 rtl-icon-flip" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M16 4h-6.5a3.5 3.5 0 0 0 0 7h.5" />
+              <path d="M14 4v10" />
+              <path d="M10 4v10" />
+              <path d="M4 18h12" />
+              <path d="M7 15l-3 3 3 3" />
+            </svg>
+            <span id="sidebar-rtl-label" class="uppercase tracking-wider">RTL</span>
+          </button>
+
+          <!-- Dark / Light Mode Icon Toggle Button -->
+          <button type="button" onclick="toggleTheme()" aria-label="Toggle dark or light theme" title="Switch color theme" class="flex-1 flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl bg-white dark:bg-[#0a2a17] border border-slate-200 dark:border-emerald-900/60 text-xs font-bold text-slate-700 dark:text-slate-200 hover:border-primary hover:text-primary dark:hover:text-emerald-400 transition-colors">
+            <svg class="w-4 h-4 hidden dark:block text-amber-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+            </svg>
+            <svg class="w-4 h-4 block dark:hidden text-primary" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+            </svg>
+            <span class="hidden dark:inline uppercase tracking-wider">Light</span>
+            <span class="inline dark:hidden uppercase tracking-wider">Dark</span>
+          </button>
+        </div>
+      </div>
+
+    </aside>
+
+    <!-- ================= MAIN WORKSPACE AREA ================= -->
+    <div class="flex-1 flex flex-col min-w-0">
+
+      <!-- TOP UTILITY BAR -->
+      <header class="sticky top-0 z-30 h-20 bg-white/90 dark:bg-[#051b0e]/90 backdrop-blur-md border-b border-slate-200/80 dark:border-emerald-950/70 px-4 sm:px-8 flex items-center justify-between gap-4">
+
+        <div class="flex items-center gap-3 min-w-0">
+          <button type="button" onclick="toggleMobileSidebar(true)" aria-label="Open navigation menu" class="lg:hidden p-2 rounded-xl border border-slate-200 dark:border-emerald-900 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-emerald-950">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
+          </button>
+
+          <div class="inline-flex items-center gap-2 bg-emerald-50 dark:bg-emerald-950/80 border border-emerald-200/80 dark:border-emerald-800/60 rounded-full px-3.5 py-1.5 max-w-full">
+            <span class="w-2 h-2 rounded-full bg-secondary animate-pulse flex-shrink-0"></span>
+            <span class="text-[11px] font-bold text-primary dark:text-emerald-300 truncate">
+              Fleet Status: 14/15 Tractors Active · Cohort #18 · FMCSA TPR Synced
+            </span>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2.5 flex-shrink-0">
+         
+          <!-- Pending Approvals Notification Bell -->
+          <button type="button" onclick="openAdminPage('approvals')" aria-label="Review pending hours sign-offs" class="relative w-10 h-10 rounded-xl border border-slate-200 dark:border-emerald-900/70 bg-white dark:bg-[#0a2a17] text-slate-600 dark:text-slate-300 hover:border-primary flex items-center justify-center transition-colors">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+            <span id="bell-dot" class="absolute top-2 end-2 w-2 h-2 rounded-full bg-accentCoral"></span>
+          </button>
+
+          <!-- Register Trainee CTA -->
+          <button type="button" onclick="openEnrollModal()" class="inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl bg-gradient-to-r from-primary to-secondary hover:from-primaryHover hover:to-secondaryHover text-white text-xs font-bold shadow-bloom hover:shadow-bloom-hover transition-all">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+            <span class="hidden sm:inline">Enroll Trainee</span>
+            <span class="sm:hidden">Enroll</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- =================================================================== -->
+      <!-- DEDICATED ADMIN PAGES (No Scrolling — Clicking Switches Full View)  -->
+      <!-- =================================================================== -->
+      <main class="flex-1 px-4 sm:px-8 py-8 max-w-[1380px] w-full mx-auto">
+
+        <!-- =============================================================== -->
+        <!-- PAGE 1: YARD OVERVIEW                                           -->
+        <!-- =============================================================== -->
+        <div id="page-overview" class="dash-page-view space-y-8">
+          <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div>
+              <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+                Yard Command Center 📋
+              </h1>
+              <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
+                Cohort #18 active operations, instructor behind-the-wheel sign-offs, and state CDL road exam dispatch.
+              </p>
+            </div>
+
+            <div class="inline-flex items-center gap-2 self-start md:self-auto bg-white dark:bg-[#0a2a17] border border-slate-200 dark:border-emerald-900/60 px-4 py-2.5 rounded-xl shadow-card text-xs font-semibold text-slate-600 dark:text-slate-300">
+              <span>Next State Examiner Visit:</span>
+              <strong class="text-slate-900 dark:text-white font-extrabold">Nov 28, 2026 (14 Trainees)</strong>
+            </div>
+          </div>
+
+          <!-- 4 Admin KPI Cards -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
+            <div onclick="openAdminPage('students')" class="cursor-pointer bg-white dark:bg-[#0a2a17] border border-slate-200/80 dark:border-emerald-900/50 rounded-2xl p-6 shadow-card hover:shadow-bloom hover:border-primary/40 transition-all">
+              <div class="flex items-center justify-between mb-5">
+                <span class="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-950 text-primary dark:text-emerald-400 flex items-center justify-center">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                </span>
+                <span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-100 dark:bg-emerald-950/90 text-primary dark:text-emerald-400">+6 This Week</span>
+              </div>
+              <p id="kpi-active-trainees" class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">84 Trainees</p>
+              <p class="text-xs font-medium text-slate-500 dark:text-slate-400 mt-1">Manage Trainee Roster →</p>
+            </div>
+
+            <div onclick="openAdminPage('approvals')" class="cursor-pointer bg-white dark:bg-[#0a2a17] border border-slate-200/80 dark:border-emerald-900/50 rounded-2xl p-6 shadow-card hover:shadow-bloom hover:border-primary/40 transition-all">
+              <div class="flex items-center justify-between mb-5">
+                <span class="w-10 h-10 rounded-xl bg-amber-50 dark:bg-amber-950/60 text-accentAmber flex items-center justify-center">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                </span>
+                <span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-amber-100 dark:bg-amber-950/80 text-amber-800 dark:text-amber-300">Action Needed</span>
+              </div>
+              <p class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+                <span id="kpi-pending-logs">4</span> Logs
+              </p>
+              <p class="text-xs font-medium text-slate-500 dark:text-slate-400 mt-1">Verify Driving Hours →</p>
+            </div>
+
+            <div onclick="openAdminPage('exams')" class="cursor-pointer bg-white dark:bg-[#0a2a17] border border-slate-200/80 dark:border-emerald-900/50 rounded-2xl p-6 shadow-card hover:shadow-bloom hover:border-primary/40 transition-all">
+              <div class="flex items-center justify-between mb-5">
+                <span class="w-10 h-10 rounded-xl bg-sky-50 dark:bg-sky-950/60 text-sky-600 dark:text-sky-400 flex items-center justify-center">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                </span>
+                <span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-sky-100 dark:bg-sky-950/80 text-sky-700 dark:text-sky-300">96.4% Pass</span>
+              </div>
+              <p class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">14 Exams</p>
+              <p class="text-xs font-medium text-slate-500 dark:text-slate-400 mt-1">State Road Tests &amp; Fleet →</p>
+            </div>
+
+            <div onclick="openAdminPage('placement')" class="cursor-pointer bg-white dark:bg-[#0a2a17] border border-slate-200/80 dark:border-emerald-900/50 rounded-2xl p-6 shadow-card hover:shadow-bloom hover:border-primary/40 transition-all">
+              <div class="flex items-center justify-between mb-5">
+                <span class="w-10 h-10 rounded-xl bg-violet-50 dark:bg-violet-950/60 text-accentViolet dark:text-violet-300 flex items-center justify-center">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                </span>
+                <span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-violet-100 dark:bg-violet-950/80 text-accentViolet dark:text-violet-300">40+ Fleets</span>
+              </div>
+              <p class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">63 Seats</p>
+              <p class="text-xs font-medium text-slate-500 dark:text-slate-400 mt-1">Open Carrier Requisitions →</p>
+            </div>
+          </div>
+
+          <!-- Cohort #18 Live Operations Table -->
+          <div class="space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+              <div class="flex items-center gap-2.5">
+                <span class="w-5 h-5 rounded-md border-2 border-primary flex items-center justify-center text-primary text-xs font-bold">≡</span>
+                <h2 class="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white">
+                  Cohort #18 Active Trainee Progress
+                </h2>
+              </div>
+              <button type="button" onclick="openAdminPage('students')" class="self-start sm:self-auto px-4 py-2 rounded-xl bg-white dark:bg-[#0a2a17] border border-slate-200 dark:border-emerald-900/70 text-xs font-bold text-primary dark:text-emerald-400 hover:border-primary shadow-card transition-colors">
+                Full Trainee Roster →
+              </button>
+            </div>
+
+            <div class="bg-white dark:bg-[#0a2a17] border border-slate-200/80 dark:border-emerald-900/50 rounded-2xl shadow-card overflow-hidden">
+              <div class="overflow-x-auto table-scroll">
+                <table class="w-full min-w-[680px] text-start border-collapse">
+                  <thead>
+                    <tr class="border-b border-slate-100 dark:border-emerald-950 bg-slate-50/70 dark:bg-[#051b0e]/50 text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                      <th class="py-3.5 px-6 text-start">Trainee</th>
+                      <th class="py-3.5 px-4 text-start">License Track</th>
+                      <th class="py-3.5 px-4 text-start">Logged Hours</th>
+                      <th class="py-3.5 px-4 text-start">Theory Avg</th>
+                      <th class="py-3.5 px-6 text-end">Placement Status</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-100 dark:divide-emerald-950/70 text-sm">
+                    <tr class="hover:bg-slate-50/70 dark:hover:bg-emerald-950/30 transition-colors">
+                      <td class="py-4 px-6 font-bold text-slate-900 dark:text-white">Jamal Rivera <span class="block text-xs font-normal text-slate-500">ID: IR-2026-419</span></td>
+                      <td class="py-4 px-4">Class A · Tractor-Trailer</td>
+                      <td class="py-4 px-4 font-extrabold text-primary dark:text-emerald-400">124.5 / 160 Hrs</td>
+                      <td class="py-4 px-4 font-bold">93.0%</td>
+                      <td class="py-4 px-6 text-end"><span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-100 dark:bg-emerald-950 text-primary dark:text-emerald-400">3 Pre-Hire Offers</span></td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/70 dark:hover:bg-emerald-950/30 transition-colors">
+                      <td class="py-4 px-6 font-bold text-slate-900 dark:text-white">Tasha Whitmore <span class="block text-xs font-normal text-slate-500">ID: IR-2026-412</span></td>
+                      <td class="py-4 px-4">Class B · Straight Truck</td>
+                      <td class="py-4 px-4 font-extrabold text-primary dark:text-emerald-400">100.0 / 100 Hrs</td>
+                      <td class="py-4 px-4 font-bold">95.5%</td>
+                      <td class="py-4 px-6 text-end"><span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-100 dark:bg-emerald-950 text-primary dark:text-emerald-400">Hired · Metro LTL</span></td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/70 dark:hover:bg-emerald-950/30 transition-colors">
+                      <td class="py-4 px-6 font-bold text-slate-900 dark:text-white">Devon Achterberg <span class="block text-xs font-normal text-slate-500">ID: IR-2026-423</span></td>
+                      <td class="py-4 px-4">Class A + HazMat (H)</td>
+                      <td class="py-4 px-4 font-extrabold text-amber-600 dark:text-amber-400">88.0 / 160 Hrs</td>
+                      <td class="py-4 px-4 font-bold">89.0%</td>
+                      <td class="py-4 px-6 text-end"><span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-amber-100 dark:bg-amber-950/70 text-amber-800 dark:text-amber-300">Range Backing</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- =============================================================== -->
+        <!-- PAGE 2: TRAINEE ROSTER (Separate Dedicated Page View)           -->
+        <!-- =============================================================== -->
+        <div id="page-students" class="dash-page-view hidden space-y-8">
+          <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-slate-200 dark:border-emerald-950 pb-6">
+            <div>
+              <span class="text-[11px] font-bold uppercase tracking-widest text-primary dark:text-emerald-400">Admissions &amp; Cohorts</span>
+              <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mt-1">Active Trainee Roster</h1>
+              <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Search enrolled Class A, B, and C students, inspect ELDT completion, or register new trainees.</p>
+            </div>
+            <div class="flex flex-wrap items-center gap-3">
+              <button type="button" onclick="openEnrollModal()" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-primary to-secondary text-white text-xs font-bold uppercase tracking-wider shadow-bloom">
+                + Enroll Trainee
+              </button>
+              <button type="button" onclick="openAdminPage('overview')" class="px-4 py-2.5 rounded-xl bg-white dark:bg-[#0a2a17] border border-slate-200 dark:border-emerald-900 text-xs font-bold text-slate-700 dark:text-slate-200 hover:border-primary">
+                ← Overview
+              </button>
+            </div>
+          </div>
+
+          <div class="bg-white dark:bg-[#0a2a17] border border-slate-200/80 dark:border-emerald-900/50 rounded-2xl shadow-card overflow-hidden">
+            <div class="overflow-x-auto table-scroll">
+              <table class="w-full min-w-[720px] text-start border-collapse">
+                <thead>
+                  <tr class="border-b border-slate-100 dark:border-emerald-950 bg-slate-50/70 dark:bg-[#051b0e]/50 text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                    <th class="py-3.5 px-6 text-start">Student Name &amp; ID</th>
+                    <th class="py-3.5 px-4 text-start">Program &amp; Endorsements</th>
+                    <th class="py-3.5 px-4 text-start">Assigned Instructor</th>
+                    <th class="py-3.5 px-4 text-start">Hours</th>
+                    <th class="py-3.5 px-6 text-end">DOT / CLP Status</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-roster-tbody" class="divide-y divide-slate-100 dark:divide-emerald-950/70 text-sm">
+                  <tr>
+                    <td class="py-4 px-6 font-bold text-slate-900 dark:text-white">Jamal Rivera <span class="block text-xs font-normal text-slate-500">IR-2026-419</span></td>
+                    <td class="py-4 px-4">Class A Tractor-Trailer + Air Brakes</td>
+                    <td class="py-4 px-4">Ray Callahan</td>
+                    <td class="py-4 px-4 font-extrabold text-primary dark:text-emerald-400">124.5 / 160</td>
+                    <td class="py-4 px-6 text-end"><span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-100 dark:bg-emerald-950 text-primary dark:text-emerald-400">✓ Cleared</span></td>
+                  </tr>
+                  <tr>
+                    <td class="py-4 px-6 font-bold text-slate-900 dark:text-white">Tasha Whitmore <span class="block text-xs font-normal text-slate-500">IR-2026-412</span></td>
+                    <td class="py-4 px-4">Class B Straight Truck</td>
+                    <td class="py-4 px-4">Denise Okafor</td>
+                    <td class="py-4 px-4 font-extrabold text-primary dark:text-emerald-400">100.0 / 100</td>
+                    <td class="py-4 px-6 text-end"><span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-100 dark:bg-emerald-950 text-primary dark:text-emerald-400">✓ CDL Issued</span></td>
+                  </tr>
+                  <tr>
+                    <td class="py-4 px-6 font-bold text-slate-900 dark:text-white">Devon Achterberg <span class="block text-xs font-normal text-slate-500">IR-2026-423</span></td>
+                    <td class="py-4 px-4">Class A + HazMat (H)</td>
+                    <td class="py-4 px-4">Marcus Biel</td>
+                    <td class="py-4 px-4 font-extrabold text-amber-600 dark:text-amber-400">88.0 / 160</td>
+                    <td class="py-4 px-6 text-end"><span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-100 dark:bg-emerald-950 text-primary dark:text-emerald-400">✓ Cleared</span></td>
+                  </tr>
+                  <tr>
+                    <td class="py-4 px-6 font-bold text-slate-900 dark:text-white">Carlos Mendez <span class="block text-xs font-normal text-slate-500">IR-2026-428</span></td>
+                    <td class="py-4 px-4">Class C + Passenger (P)</td>
+                    <td class="py-4 px-4">Alina Petrov</td>
+                    <td class="py-4 px-4 font-extrabold text-primary dark:text-emerald-400">42.0 / 60</td>
+                    <td class="py-4 px-6 text-end"><span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-100 dark:bg-emerald-950 text-primary dark:text-emerald-400">✓ Cleared</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- =============================================================== -->
+        <!-- PAGE 3: HOURS SIGN-OFFS (Separate Dedicated Page View)          -->
+        <!-- =============================================================== -->
+        <div id="page-approvals" class="dash-page-view hidden space-y-8">
+          <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-slate-200 dark:border-emerald-950 pb-6">
+            <div>
+              <span class="text-[11px] font-bold uppercase tracking-widest text-primary dark:text-emerald-400">FMCSA ELDT Verification</span>
+              <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mt-1">Behind-the-Wheel Hours Sign-Offs</h1>
+              <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Approve or audit student-submitted range and interstate highway driving logs.</p>
+            </div>
+            <button type="button" onclick="openAdminPage('overview')" class="self-start md:self-auto px-4 py-2.5 rounded-xl bg-white dark:bg-[#0a2a17] border border-slate-200 dark:border-emerald-900 text-xs font-bold text-slate-700 dark:text-slate-200 hover:border-primary">
+              ← Back to Overview
+            </button>
+          </div>
+
+          <div class="bg-white dark:bg-[#0a2a17] border border-slate-200/80 dark:border-emerald-900/50 rounded-2xl shadow-card overflow-hidden">
+            <div class="overflow-x-auto table-scroll">
+              <table class="w-full min-w-[700px] text-start border-collapse">
+                <thead>
+                  <tr class="border-b border-slate-100 dark:border-emerald-950 bg-slate-50/70 dark:bg-[#051b0e]/50 text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                    <th class="py-3.5 px-6 text-start">Trainee</th>
+                    <th class="py-3.5 px-4 text-start">Session Module</th>
+                    <th class="py-3.5 px-4 text-start">Instructor</th>
+                    <th class="py-3.5 px-4 text-start">Hours</th>
+                    <th class="py-3.5 px-6 text-end">Action</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 dark:divide-emerald-950/70 text-sm">
+                  <tr>
+                    <td class="py-4 px-6 font-bold text-slate-900 dark:text-white">Jamal Rivera</td>
+                    <td class="py-4 px-4">Interstate Night Merge &amp; Grade Braking</td>
+                    <td class="py-4 px-4">Ray Callahan</td>
+                    <td class="py-4 px-4 font-extrabold text-primary dark:text-emerald-400">4.5 Hrs</td>
+                    <td class="py-4 px-6 text-end">
+                      <button type="button" onclick="approveLogRow(this)" class="px-3.5 py-1.5 rounded-xl bg-primary hover:bg-primaryHover text-white text-xs font-bold transition-colors">
+                        ✓ Approve Sign-Off
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="py-4 px-6 font-bold text-slate-900 dark:text-white">Devon Achterberg</td>
+                    <td class="py-4 px-4">90° Alley Dock &amp; Offset Backing Drills</td>
+                    <td class="py-4 px-4">Denise Okafor</td>
+                    <td class="py-4 px-4 font-extrabold text-primary dark:text-emerald-400">6.0 Hrs</td>
+                    <td class="py-4 px-6 text-end">
+                      <button type="button" onclick="approveLogRow(this)" class="px-3.5 py-1.5 rounded-xl bg-primary hover:bg-primaryHover text-white text-xs font-bold transition-colors">
+                        ✓ Approve Sign-Off
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="py-4 px-6 font-bold text-slate-900 dark:text-white">Carlos Mendez</td>
+                    <td class="py-4 px-4">Urban Bus &amp; Passenger Stop Maneuvers</td>
+                    <td class="py-4 px-4">Alina Petrov</td>
+                    <td class="py-4 px-4 font-extrabold text-primary dark:text-emerald-400">5.0 Hrs</td>
+                    <td class="py-4 px-6 text-end">
+                      <button type="button" onclick="approveLogRow(this)" class="px-3.5 py-1.5 rounded-xl bg-primary hover:bg-primaryHover text-white text-xs font-bold transition-colors">
+                        ✓ Approve Sign-Off
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="py-4 px-6 font-bold text-slate-900 dark:text-white">Priya Nair</td>
+                    <td class="py-4 px-4">10-Speed Manual Double-Clutching</td>
+                    <td class="py-4 px-4">Marcus Biel</td>
+                    <td class="py-4 px-4 font-extrabold text-primary dark:text-emerald-400">4.0 Hrs</td>
+                    <td class="py-4 px-6 text-end">
+                      <button type="button" onclick="approveLogRow(this)" class="px-3.5 py-1.5 rounded-xl bg-primary hover:bg-primaryHover text-white text-xs font-bold transition-colors">
+                        ✓ Approve Sign-Off
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- =============================================================== -->
+        <!-- PAGE 4: STATE SKILLS & FLEET (Separate Dedicated Page View)     -->
+        <!-- =============================================================== -->
+        <div id="page-exams" class="dash-page-view hidden space-y-8">
+          <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-slate-200 dark:border-emerald-950 pb-6">
+            <div>
+              <span class="text-[11px] font-bold uppercase tracking-widest text-primary dark:text-emerald-400">Examiner &amp; Equipment Dispatch</span>
+              <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mt-1">State CDL Road Exams &amp; Fleet</h1>
+              <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Tractor-trailer assignments for upcoming state skills tests and DOT inspection readiness.</p>
+            </div>
+            <button type="button" onclick="openAdminPage('overview')" class="self-start md:self-auto px-4 py-2.5 rounded-xl bg-white dark:bg-[#0a2a17] border border-slate-200 dark:border-emerald-900 text-xs font-bold text-slate-700 dark:text-slate-200 hover:border-primary">
+              ← Back to Overview
+            </button>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="p-6 rounded-2xl bg-white dark:bg-[#0a2a17] border border-slate-200/80 dark:border-emerald-900/50 shadow-card">
+              <span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase bg-emerald-100 dark:bg-emerald-950 text-primary dark:text-emerald-400">Bay #1 · Ready</span>
+              <h3 class="text-lg font-extrabold text-slate-900 dark:text-white mt-3">Freightliner Cascadia #14</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Eaton 10-Speed Manual · 53' Dry Van Trailer</p>
+              <p class="text-xs font-bold text-slate-700 dark:text-slate-200 mt-4">Assigned: Jamal Rivera (Nov 28 Exam)</p>
+            </div>
+
+            <div class="p-6 rounded-2xl bg-white dark:bg-[#0a2a17] border border-slate-200/80 dark:border-emerald-900/50 shadow-card">
+              <span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase bg-emerald-100 dark:bg-emerald-950 text-primary dark:text-emerald-400">Bay #2 · Ready</span>
+              <h3 class="text-lg font-extrabold text-slate-900 dark:text-white mt-3">Kenworth T680 #09</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Automated 12-Speed · 53' Refrigerated Trailer</p>
+              <p class="text-xs font-bold text-slate-700 dark:text-slate-200 mt-4">Assigned: Devon Achterberg (Dec 02 Exam)</p>
+            </div>
+
+            <div class="p-6 rounded-2xl bg-white dark:bg-[#0a2a17] border border-slate-200/80 dark:border-emerald-900/50 shadow-card">
+              <span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300">PM Service</span>
+              <h3 class="text-lg font-extrabold text-slate-900 dark:text-white mt-3">Peterbilt 579 #04</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Air Brake Chamber &amp; Steer Tire Inspection</p>
+              <p class="text-xs font-bold text-slate-700 dark:text-slate-200 mt-4">Returns to Range Rotation Tomorrow</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- =============================================================== -->
+        <!-- PAGE 5: CARRIER PLACEMENT (Separate Dedicated Page View)        -->
+        <!-- =============================================================== -->
+        <div id="page-placement" class="dash-page-view hidden space-y-8">
+          <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-slate-200 dark:border-emerald-950 pb-6">
+            <div>
+              <span class="text-[11px] font-bold uppercase tracking-widest text-primary dark:text-emerald-400">Employer Recruiting Desk</span>
+              <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mt-1">Carrier Partner Requisitions</h1>
+              <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Active hiring quotas and tuition reimbursement agreements across 40+ partner fleets.</p>
+            </div>
+            <button type="button" onclick="openAdminPage('overview')" class="self-start md:self-auto px-4 py-2.5 rounded-xl bg-white dark:bg-[#0a2a17] border border-slate-200 dark:border-emerald-900 text-xs font-bold text-slate-700 dark:text-slate-200 hover:border-primary">
+              ← Back to Overview
+            </button>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="p-6 rounded-2xl bg-white dark:bg-[#0a2a17] border border-slate-200/80 dark:border-emerald-900/50 shadow-card">
+              <span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase bg-emerald-100 dark:bg-emerald-950 text-primary dark:text-emerald-400">22 Open Seats</span>
+              <h3 class="text-xl font-extrabold text-slate-900 dark:text-white mt-3">Schneider National</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Regional Dedicated · $74,500 Avg · $6,000 Tuition Payback</p>
+              <p class="text-xs font-bold text-primary dark:text-emerald-400 mt-4">Recruiter On Campus: Thursday 10:00 AM</p>
+            </div>
+
+            <div class="p-6 rounded-2xl bg-white dark:bg-[#0a2a17] border border-slate-200/80 dark:border-emerald-900/50 shadow-card">
+              <span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase bg-sky-100 dark:bg-sky-950 text-sky-700 dark:text-sky-300">18 Open Seats</span>
+              <h3 class="text-xl font-extrabold text-slate-900 dark:text-white mt-3">J.B. Hunt Transport</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Local Intermodal Drayage · Home Daily Shifts</p>
+              <p class="text-xs font-bold text-primary dark:text-emerald-400 mt-4">9 Graduates Matched This Month</p>
+            </div>
+
+            <div class="p-6 rounded-2xl bg-white dark:bg-[#0a2a17] border border-slate-200/80 dark:border-emerald-900/50 shadow-card">
+              <span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300">23 Open Seats</span>
+              <h3 class="text-xl font-extrabold text-slate-900 dark:text-white mt-3">Werner Enterprises</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Temperature-Controlled &amp; Flatbed · $200/mo Tuition Payback</p>
+              <p class="text-xs font-bold text-primary dark:text-emerald-400 mt-4">Direct Pre-Hire Portal Active</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- =============================================================== -->
+        <!-- PAGE 6: FMCSA TPR & DOT AUDIT (Separate Dedicated Page View)    -->
+        <!-- =============================================================== -->
+        <div id="page-fmcsa" class="dash-page-view hidden space-y-8">
+          <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-slate-200 dark:border-emerald-950 pb-6">
+            <div>
+              <span class="text-[11px] font-bold uppercase tracking-widest text-primary dark:text-emerald-400">Federal Compliance</span>
+              <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mt-1">FMCSA Training Provider Registry &amp; DOT Audit</h1>
+              <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Automated ELDT theory &amp; behind-the-wheel certification submissions to the federal registry.</p>
+            </div>
+            <button type="button" onclick="openAdminPage('overview')" class="self-start md:self-auto px-4 py-2.5 rounded-xl bg-white dark:bg-[#0a2a17] border border-slate-200 dark:border-emerald-900 text-xs font-bold text-slate-700 dark:text-slate-200 hover:border-primary">
+              ← Back to Overview
+            </button>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="p-6 rounded-2xl bg-white dark:bg-[#0a2a17] border border-slate-200/80 dark:border-emerald-900/50 shadow-card">
+              <span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase bg-emerald-100 dark:bg-emerald-950 text-primary dark:text-emerald-400">✓ 100% Synced</span>
+              <h3 class="text-lg font-extrabold text-slate-900 dark:text-white mt-3">FMCSA TPR Submissions</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">All 84 active student ELDT completions transmitted within 24 hours.</p>
+            </div>
+
+            <div class="p-6 rounded-2xl bg-white dark:bg-[#0a2a17] border border-slate-200/80 dark:border-emerald-900/50 shadow-card">
+              <span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase bg-emerald-100 dark:bg-emerald-950 text-primary dark:text-emerald-400">✓ Verified</span>
+              <h3 class="text-lg font-extrabold text-slate-900 dark:text-white mt-3">DOT Medical &amp; Clearinghouse</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Zero expired medical cards or pending drug screen queries in Cohort #18.</p>
+            </div>
+
+            <div class="p-6 rounded-2xl bg-white dark:bg-[#0a2a17] border border-slate-200/80 dark:border-emerald-900/50 shadow-card">
+              <span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase bg-emerald-100 dark:bg-emerald-950 text-primary dark:text-emerald-400">✓ Accredited</span>
+              <h3 class="text-lg font-extrabold text-slate-900 dark:text-white mt-3">State Third-Party Tester</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Yard Bays #1–#4 certified for official state CDL skills examinations.</p>
+            </div>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- MODAL: ENROLL NEW TRAINEE                                             -->
+  <!-- ===================================================================== -->
+  <div id="enroll-trainee-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/65 backdrop-blur-xs p-4">
+    <div class="relative w-full max-w-lg bg-white dark:bg-[#0a2a17] border border-slate-200 dark:border-emerald-800 rounded-3xl p-6 sm:p-8 shadow-2xl">
+      <button type="button" onclick="closeEnrollModal()" aria-label="Close modal" class="absolute top-5 end-5 w-9 h-9 rounded-full bg-slate-100 dark:bg-emerald-950 text-slate-600 dark:text-slate-300 flex items-center justify-center hover:bg-slate-200">
+        ✕
+      </button>
+
+      <span class="text-[10px] font-bold uppercase tracking-widest text-primary dark:text-emerald-400">Admissions Desk</span>
+      <h3 class="text-2xl font-extrabold text-slate-900 dark:text-white mt-0.5 mb-1">Enroll New Trainee</h3>
+      <p class="text-xs text-slate-500 dark:text-slate-400 mb-6">Add a student to Cohort #18 and assign their ELDT instructor.</p>
+
+      <form id="modal-enroll-form" class="space-y-4">
+        <div>
+          <label for="t-name" class="block text-[11px] font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">Trainee Full Name</label>
+          <input type="text" id="t-name" placeholder="e.g., Jordan Vance" required class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-[#051b0e] border border-slate-200 dark:border-emerald-900 text-sm focus:outline-none focus:border-primary" />
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label for="t-program" class="block text-[11px] font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">License Program</label>
+            <select id="t-program" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-[#051b0e] border border-slate-200 dark:border-emerald-900 text-sm focus:outline-none focus:border-primary">
+              <option value="Class A Tractor-Trailer (160 Hrs)">Class A Tractor-Trailer</option>
+              <option value="Class B Straight Truck (100 Hrs)">Class B Straight Truck</option>
+              <option value="Class C + Passenger (60 Hrs)">Class C + Passenger</option>
+              <option value="Class A + HazMat (H)">Class A + HazMat (H)</option>
+            </select>
+          </div>
+          <div>
+            <label for="t-instructor" class="block text-[11px] font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">Lead Instructor</label>
+            <select id="t-instructor" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-[#051b0e] border border-slate-200 dark:border-emerald-900 text-sm focus:outline-none focus:border-primary">
+              <option value="Ray Callahan">Ray Callahan</option>
+              <option value="Denise Okafor">Denise Okafor</option>
+              <option value="Marcus Biel">Marcus Biel</option>
+              <option value="Alina Petrov">Alina Petrov</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="pt-2 flex items-center justify-end gap-3">
+          <button type="button" onclick="closeEnrollModal()" class="px-5 py-2.5 rounded-xl border border-slate-200 dark:border-emerald-900 text-xs font-bold text-slate-600 dark:text-slate-300">
+            Cancel
+          </button>
+          <button type="submit" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-primary to-secondary text-white text-xs font-bold uppercase tracking-wider shadow-bloom">
+            Register Trainee
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= JAVASCRIPT ================= -->
+  <script>
+    (function () {
+      'use strict';
+
+      /* ---------- Dedicated Page Switcher ---------- */
+      const ADMIN_PAGES = ['overview', 'students', 'approvals', 'exams', 'placement', 'fmcsa'];
+
+      window.openAdminPage = function (pageName) {
+        if (!ADMIN_PAGES.includes(pageName)) pageName = 'overview';
+
+        ADMIN_PAGES.forEach(function (id) {
+          const el = document.getElementById('page-' + id);
+          if (el) el.classList.toggle('hidden', id !== pageName);
+        });
+
+        document.querySelectorAll('.nav-pill').forEach(function (btn) {
+          const isActive = btn.getAttribute('data-page') === pageName;
+          btn.className = isActive
+            ? 'nav-pill active w-full flex items-center justify-between px-3.5 py-3 rounded-xl text-sm font-bold transition-all duration-200 bg-gradient-to-r from-primary to-secondary text-white shadow-bloom'
+            : 'nav-pill w-full flex items-center justify-between px-3.5 py-3 rounded-xl text-sm font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-emerald-950/60 transition-all duration-200';
+        });
+
+        toggleMobileSidebar(false);
+        window.scrollTo({ top: 0, behavior: 'instant' });
+      };
+
+      /* ---------- Theme Toggle ---------- */
+      window.toggleTheme = function () {
+        const isDark = document.documentElement.classList.toggle('dark');
+        try { localStorage.setItem('theme', isDark ? 'dark' : 'light'); } catch (e) {}
+      };
+
+      /* ---------- RTL / LTR Toggle ---------- */
+      window.toggleRTL = function () {
+        const html = document.documentElement;
+        const isLtr = html.getAttribute('dir') !== 'rtl';
+        html.setAttribute('dir', isLtr ? 'rtl' : 'ltr');
+        const label = document.getElementById('sidebar-rtl-label');
+        if (label) label.textContent = isLtr ? 'LTR' : 'RTL';
+        try { localStorage.setItem('dir', isLtr ? 'rtl' : 'ltr'); } catch (e) {}
+      };
+
+      /* ---------- Mobile Sidebar Drawer ---------- */
+      window.toggleMobileSidebar = function (open) {
+        const sidebar  = document.getElementById('app-sidebar');
+        const backdrop = document.getElementById('sidebar-backdrop');
+        if (open) {
+          sidebar.classList.remove('-translate-x-full', 'rtl:translate-x-full');
+          backdrop.classList.remove('hidden');
+        } else {
+          sidebar.classList.add('-translate-x-full', 'rtl:translate-x-full');
+          backdrop.classList.add('hidden');
+        }
+      };
+
+      /* ---------- Approve Driving Hours Sign-Off ---------- */
+      let pendingLogs = 4;
+      window.approveLogRow = function (btn) {
+        const td = btn.parentElement;
+        td.innerHTML = '<span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-100 dark:bg-emerald-950 text-primary dark:text-emerald-400">✓ Verified &amp; Signed</span>';
+        pendingLogs = Math.max(0, pendingLogs - 1);
+        document.getElementById('kpi-pending-logs').textContent     = pendingLogs;
+        document.getElementById('sidebar-pending-pill').textContent = pendingLogs;
+        if (pendingLogs === 0) {
+          document.getElementById('bell-dot').classList.add('hidden');
+        }
+      };
+
+      /* ---------- Enroll Trainee Modal ---------- */
+      const enrollModal = document.getElementById('enroll-trainee-modal');
+      window.openEnrollModal = function () {
+        enrollModal.classList.remove('hidden');
+        enrollModal.classList.add('flex');
+      };
+      window.closeEnrollModal = function () {
+        enrollModal.classList.add('hidden');
+        enrollModal.classList.remove('flex');
+      };
+
+      let totalTrainees = 84;
+      const enrollForm = document.getElementById('modal-enroll-form');
+      if (enrollForm) {
+        enrollForm.addEventListener('submit', function (e) {
+          e.preventDefault();
+          const name = document.getElementById('t-name').value.trim();
+          const prog = document.getElementById('t-program').value;
+          const inst = document.getElementById('t-instructor').value;
+          if (!name) return;
+
+          totalTrainees += 1;
+          document.getElementById('kpi-active-trainees').textContent = totalTrainees + ' Trainees';
+
+          const tbody = document.getElementById('admin-roster-tbody');
+          const tr = document.createElement('tr');
+          tr.innerHTML =
+            '<td class="py-4 px-6 font-bold text-slate-900 dark:text-white">' + name + ' <span class="block text-xs font-normal text-slate-500">IR-2026-' + (430 + totalTrainees) + '</span></td>' +
+            '<td class="py-4 px-4">' + prog + '</td>' +
+            '<td class="py-4 px-4">' + inst + '</td>' +
+            '<td class="py-4 px-4 font-extrabold text-primary dark:text-emerald-400">0.0 / 160</td>' +
+            '<td class="py-4 px-6 text-end"><span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-100 dark:bg-emerald-950 text-primary dark:text-emerald-400">✓ Enrolled</span></td>';
+          tbody.prepend(tr);
+
+          document.getElementById('t-name').value = '';
+          closeEnrollModal();
+          openAdminPage('students');
+        });
+      }
+
+      if (document.documentElement.getAttribute('dir') === 'rtl') {
+        const label = document.getElementById('sidebar-rtl-label');
+        if (label) label.textContent = 'LTR';
+      }
+    })();
+  </script>
+</body>
+</html>
